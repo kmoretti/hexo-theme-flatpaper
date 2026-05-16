@@ -1,0 +1,15 @@
+<section class="taxonomy-paper">
+  <h1>标签</h1>
+  <%
+  var tags = site.tags ? site.tags.toArray() : [];
+  %>
+  <% if (tags.length) { %>
+    <div class="tag-cloud">
+      <% tags.forEach(function(tag, index) { %>
+        <a class="tag-chip tag-chip-<%= index % 6 %>" href="<%- url_for(tag.path) %>"><%= tag.name %></a>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">暂时还没有标签。</p>
+  <% } %>
+</section>

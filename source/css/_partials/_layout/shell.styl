@@ -1,0 +1,130 @@
+/* ============== SHELL & PAPERS ============== */
+.paper-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 280px;
+  gap: 28px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+/* Non-article pages: sidebars stick to the top while the main column scrolls.
+   Targets the two specific subclasses so the drawer override (.paper-sidebar--right
+   inside a media query) wins on narrow screens. */
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--left,
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--right {
+  position: sticky;
+  top: 110px;
+  max-height: calc(100dvh - 130px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--left::-webkit-scrollbar,
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--right::-webkit-scrollbar {
+  width: 6px;
+}
+
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--left::-webkit-scrollbar-thumb,
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--right::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--left::-webkit-scrollbar-track,
+.paper-shell:not(.paper-shell--article) > .paper-sidebar--right::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Article pages: two columns, wider main */
+.paper-shell--article {
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: stretch;
+}
+
+
+/* The sidebar grid cell stretches to match the main column's full height,
+   so the sticky TOC stays pinned all the way to the end of the article. */
+.paper-shell--article .paper-sidebar {
+  align-content: start;
+  height: 100%;
+}
+
+.paper-main {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+
+.paper-sidebar {
+  display: grid;
+  gap: 22px;
+}
+
+/* Article-page sidebar: scrolls with the page. Only the TOC sticks once the author card scrolls away. */
+.paper-shell--article .paper-sidebar .toc-card {
+  position: sticky;
+  top: 110px;
+  max-height: calc(100dvh - 130px);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.paper-shell--article .paper-sidebar .toc-card > h2 {
+  flex-shrink: 0;
+}
+
+.paper-shell--article .paper-sidebar .toc-content {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+
+.side-card,
+.welcome-card,
+.featured-paper,
+.post-card,
+.article-paper,
+.archive-paper,
+.taxonomy-paper,
+.empty-paper {
+  position: relative;
+  border: 2px dashed var(--dash);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--small-shadow);
+}
+
+.side-card {
+  padding: 20px 22px;
+}
+
+.side-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.side-card h2 > .lucide {
+  width: 16px;
+  height: 16px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.dark-mode .side-card h2 > .lucide {
+  color: var(--green-leaf);
+}
+
+.green-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}

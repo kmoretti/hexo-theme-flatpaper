@@ -1,0 +1,337 @@
+/* ============== CODE ============== */
+.article-content pre,
+.article-content code,
+.article-content .highlight,
+.article-content .highlight table,
+.article-content .highlight pre {
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Cascadia Code", monospace;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+/* inline code */
+.article-content :not(pre) > code {
+  padding: 2px 7px;
+  margin: 0 2px;
+  border-radius: 5px;
+  font-size: 0.86em;
+  font-weight: 500;
+  color: var(--green-deep);
+  background: rgba(111, 176, 131, 0.13);
+  border: 1px solid rgba(111, 176, 131, 0.22);
+  white-space: break-spaces;
+}
+
+.dark-mode .article-content :not(pre) > code {
+  color: var(--green-leaf);
+  background: rgba(130, 191, 144, 0.14);
+  border-color: rgba(130, 191, 144, 0.28);
+}
+
+/* plain fenced ```code``` (no highlight wrapper) */
+.article-content > pre {
+  position: relative;
+  overflow: auto;
+  margin: 22px 0;
+  padding: 18px 22px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #e9e3d4;
+  background: #232a2c;
+  box-shadow: var(--small-shadow);
+}
+
+.article-content > pre code {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Hexo highlight.js wrapper */
+.article-content .highlight {
+  position: relative;
+  margin: 22px 0;
+  padding-top: 38px;
+  border-radius: 12px;
+  background: #232a2c;
+  color: #e9e3d4;
+  font-size: 13px;
+  line-height: 1.55;
+  box-shadow: var(--small-shadow);
+  overflow: hidden;
+}
+
+/* macOS title bar */
+.article-content .highlight::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.025);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 0;
+}
+
+/* traffic lights */
+.article-content .highlight::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ff6058;
+  box-shadow: 18px 0 0 #febc2e, 36px 0 0 #28c840;
+  opacity: 0.92;
+  z-index: 1;
+}
+
+.article-content .highlight figcaption {
+  position: absolute;
+  top: 0;
+  left: 70px;
+  right: 56px;
+  height: 38px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  color: #b8b1a0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.article-content .highlight figcaption a {
+  pointer-events: auto;
+}
+
+/* title bar widgets (lang label left, action buttons right) */
+.article-content .highlight .code-bar {
+  position: absolute;
+  top: 0;
+  left: 70px;
+  right: 10px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  z-index: 3;
+}
+
+.article-content .highlight .code-lang {
+  margin-right: auto;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cfc8b6;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.article-content .highlight .code-action {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: #b8b1a0;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.article-content .highlight .code-action:hover {
+  color: #e9e3d4;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.article-content .highlight .code-copy.is-copied {
+  color: var(--green-leaf);
+  border-color: rgba(130, 191, 144, 0.45);
+  background: rgba(130, 191, 144, 0.16);
+}
+
+.article-content .highlight .code-fold .lucide {
+  transition: transform 0.22s ease;
+}
+
+.article-content .highlight.is-folded .code-fold .lucide {
+  transform: rotate(180deg);
+}
+
+.article-content .highlight.is-folded table {
+  display: none;
+}
+
+.article-content .highlight.is-folded {
+  padding-top: 38px;
+}
+
+.article-content .highlight .code-copy .lucide {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2;
+}
+
+
+.article-content .highlight figcaption a {
+  color: var(--green-leaf);
+}
+
+.article-content .highlight figcaption a:hover {
+  text-decoration: underline;
+}
+
+.article-content .highlight table {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  border-radius: 0;
+  table-layout: fixed;
+}
+
+.article-content .highlight tr,
+.article-content .highlight td {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+.article-content .highlight td.gutter {
+  width: 48px;
+  padding: 14px 0;
+  text-align: right;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.025);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.article-content .highlight td.gutter pre {
+  margin: 0;
+  padding: 0 14px 0 18px;
+  background: transparent;
+  color: #6f6a5d;
+  font: inherit;
+  line-height: inherit;
+}
+
+.article-content .highlight td.code {
+  width: calc(100% - 48px);
+  padding: 14px 0;
+}
+
+.article-content .highlight td.code pre {
+  margin: 0;
+  padding: 0 20px;
+  overflow-x: auto;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.article-content .highlight .line {
+  padding: 0;
+}
+
+.article-content .highlight pre br {
+  line-height: 0;
+}
+
+.article-content .highlight pre * {
+  vertical-align: baseline;
+}
+
+/* Token colors (highlight.js without hljs prefix uses generic class names) */
+.article-content .highlight .comment,
+.article-content .highlight .quote { color: #7e8a83; font-style: italic; }
+.article-content .highlight .keyword,
+.article-content .highlight .selector-tag,
+.article-content .highlight .literal,
+.article-content .highlight .built_in { color: #c594c5; }
+.article-content .highlight .string,
+.article-content .highlight .regexp,
+.article-content .highlight .meta-string { color: #a3be8c; }
+.article-content .highlight .number,
+.article-content .highlight .symbol,
+.article-content .highlight .bullet { color: #f0bd4d; }
+.article-content .highlight .title,
+.article-content .highlight .name,
+.article-content .highlight .selector-id,
+.article-content .highlight .selector-class { color: #8ab9d8; }
+.article-content .highlight .attr,
+.article-content .highlight .variable,
+.article-content .highlight .template-variable { color: #ec9b5b; }
+.article-content .highlight .params { color: #d8d2c5; }
+.article-content .highlight .tag,
+.article-content .highlight .doctag { color: #c594c5; }
+.article-content .highlight .property,
+.article-content .highlight .attribute { color: #8ab9d8; }
+.article-content .highlight .type,
+.article-content .highlight .class { color: #f0bd4d; }
+.article-content .highlight .deletion { color: #d4716c; }
+.article-content .highlight .addition { color: #8ab98d; }
+
+/* Scrollbar inside code */
+.article-content .highlight td.code pre::-webkit-scrollbar,
+.article-content > pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.article-content .highlight td.code pre::-webkit-scrollbar-thumb,
+.article-content > pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.article-content .highlight td.code pre::-webkit-scrollbar-track,
+.article-content > pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 22px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.article-content th,
+.article-content td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.article-content th {
+  background: rgba(111, 176, 131, 0.14);
+  font-weight: 700;
+}
+
+.article-content img {
+  display: block;
+  margin: 22px auto;
+  border-radius: 8px;
+  box-shadow: var(--small-shadow);
+}
+

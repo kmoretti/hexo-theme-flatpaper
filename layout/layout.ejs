@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="<%= config.language || 'zh-CN' %>">
+<head>
+  <%- partial('_partial/head') %>
+</head>
+<%
+var tapeDisabled = theme.tape === false || (theme.tape && theme.tape.enable === false);
+var tagStyle = theme.tags && theme.tags.style === 'pill' ? 'pill' : 'tape';
+var codeTheme = theme.code && theme.code.theme ? String(theme.code.theme).toLowerCase() : 'dark';
+if (['dark', 'sand', 'light'].indexOf(codeTheme) === -1) codeTheme = 'dark';
+%>
+<body
+  class="<%= is_post() ? 'is-post' : (is_home() ? 'is-home' : 'is-list') %><%= tapeDisabled ? ' tape-disabled' : '' %> tag-style-<%= tagStyle %>"
+  data-code-theme="<%= codeTheme %>"
+>
+  <div class="page-grain"></div>
+  <%- partial('_partial/header') %>
+
+  <%
+  // Two-column layout: posts and standalone pages (about / friends / etc.) drop the recent-posts rail.
+  var isTwoColumn = is_post() || page.layout === 'page';
+  %>
+  <main class="paper-shell <%= isTwoColumn ? 'paper-shell--article' : '' %>">
+    <%- partial('_partial/sidebar-right') %>
+    <section class="paper-main">
+      <%- body %>
+    </section>
+    <% if (!isTwoColumn) { %>
+      <%- partial('_partial/sidebar-left') %>
+    <% } %>
+  </main>
+
+  <div class="sidebar-backdrop js-sidebar-close" aria-hidden="true"></div>
+
+  <%- partial('_partial/footer') %>
+  <%- partial('_partial/search') %>
+  <%- js('js/main') %>
+</body>
+</html>

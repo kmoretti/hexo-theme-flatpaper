@@ -1,0 +1,41 @@
+<%
+var variant = index % 3;
+var classes = ['paper-thumb', 'paper-thumb-' + variant];
+var isLarge = typeof large !== 'undefined' && large;
+var isSmall = typeof small !== 'undefined' && small;
+if (isLarge) classes.push('paper-thumb--large');
+if (isSmall) classes.push('paper-thumb--small');
+
+// Resolve a real cover image from the post, if any.
+var cover = '';
+var safeCover = '';
+var thumbAlt = '';
+if (typeof post !== 'undefined' && post) {
+  cover = post.cover || post.thumbnail || post.image || post.banner || '';
+  if (!cover && post.content) {
+    var m = String(post.content).match(/<img[^>]+src=["']([^"'>]+)["']/i);
+    if (m) cover = m[1];
+  }
+  thumbAlt = post.title || '';
+}
+safeCover = cover ? flatpaper_safe_url(cover, 'image') : '';
+if (safeCover) classes.push('paper-thumb--cover');
+%>
+<div class="<%= classes.join(' ') %>">
+  <% if (safeCover) { %>
+    <img class="paper-thumb__img" src="<%= safeCover %>" alt="<%= thumbAlt %>" loading="lazy" referrerpolicy="no-referrer">
+  <% } else { %>
+    <div class="sun"></div>
+    <div class="cloud cloud-a"></div>
+    <div class="cloud cloud-b"></div>
+    <div class="mountain mountain-a"></div>
+    <div class="mountain mountain-b"></div>
+    <div class="mountain mountain-c"></div>
+    <% if (variant === 1) { %>
+      <div class="screen"><i></i><i></i><i></i></div>
+    <% } %>
+    <% if (variant === 2) { %>
+      <div class="camera"><i></i></div>
+    <% } %>
+  <% } %>
+</div>

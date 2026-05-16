@@ -1,0 +1,22 @@
+<%
+// Allow `type: categories | tags | link` in front-matter to route to a custom layout,
+// keeping compatibility with the NexT-style convention.
+var routableTypes = ['link', 'links', 'tags', 'categories'];
+var typeKey = String(page.type || '').toLowerCase();
+var typeMap = { links: 'link' };
+if (typeMap[typeKey]) typeKey = typeMap[typeKey];
+%>
+<% if (typeKey && routableTypes.indexOf(typeKey) > -1) { %>
+  <%- partial(typeKey) %>
+<% } else { %>
+<article class="article-paper">
+  <span class="tape tape--top-right" aria-hidden="true"></span>
+  <header class="article-header">
+    <span class="label-pill">页面</span>
+    <h1><%= page.title || 'FlatPaper' %></h1>
+  </header>
+  <div class="article-content">
+    <%- page.content %>
+  </div>
+</article>
+<% } %>

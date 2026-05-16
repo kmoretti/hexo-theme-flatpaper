@@ -1,0 +1,72 @@
+/* ============== TABS BLOCK ============== */
+.flatpaper-tabs {
+  margin: 22px 0;
+  border: 2px dashed var(--dash);
+  border-radius: 12px;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.flatpaper-tabs__intro {
+  padding: 12px 16px;
+  border-bottom: 1px dashed var(--line);
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.flatpaper-tabs__intro > :first-child { margin-top: 0; }
+.flatpaper-tabs__intro > :last-child { margin-bottom: 0; }
+
+.flatpaper-tabs__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 8px 8px 0;
+  background: var(--paper-warm);
+  border-bottom: 1px dashed var(--line);
+}
+
+.flatpaper-tabs__nav-item {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 8px 8px 0 0;  
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.flatpaper-tabs__nav-item:hover {
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.dark-mode .flatpaper-tabs__nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.flatpaper-tabs__nav-item.is-active {
+  color: var(--green-deep);
+  background: var(--paper);
+  box-shadow: inset 0 2px 0 var(--green);
+}
+
+.dark-mode .flatpaper-tabs__nav-item.is-active {
+  color: var(--green-leaf);
+}
+
+.flatpaper-tabs__panels {
+  padding: 16px 18px;
+}
+
+.flatpaper-tabs__panel > :first-child { margin-top: 0; }
+.flatpaper-tabs__panel > :last-child { margin-bottom: 0; }
+.flatpaper-tabs__panel[hidden] { display: none; }
+

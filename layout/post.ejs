@@ -1,0 +1,135 @@
+<%
+var categories = page.categories ? page.categories.toArray() : [];
+var tags = page.tags ? page.tags.toArray() : [];
+var relatedCount = theme.related_posts || theme.recent_posts || 3;
+var allPosts = flatpaper_sorted_posts();
+
+// Build id sets for fast match
+var curCatIds = {};
+categories.forEach(function (c) { curCatIds[c._id || c.path || c.name] = true; });
+var curTagIds = {};
+tags.forEach(function (t) { curTagIds[t._id || t.path || t.name] = true; });
+
+var CAT_WEIGHT = 3;
+var TAG_WEIGHT = 2;
+
+function score(post) {
+  var s = 0;
+  var cats = post.categories ? post.categories.toArray() : [];
+  cats.forEach(function (c) {
+    if (curCatIds[c._id || c.path || c.name]) s += CAT_WEIGHT;
+  });
+  var ts = post.tags ? post.tags.toArray() : [];
+  ts.forEach(function (t) {
+    if (curTagIds[t._id || t.path || t.name]) s += TAG_WEIGHT;
+  });
+  return s;
+}
+
+var relatedPosts = allPosts
+  .filter(function (p) { return p.path !== page.path; })
+  .map(function (p) { return { post: p, score: score(p), time: +new Date(p.date) }; })
+  .filter(function (x) { return x.score > 0; })
+  .sort(function (a, b) {
+    if (b.score !== a.score) return b.score - a.score;
+    return b.time - a.time;
+  })
+  .slice(0, relatedCount)
+  .map(function (x) { return x.post; });
+%>
+
+<article class="article-paper">
+  <span class="tape tape--top-right" aria-hidden="true"></span>
+  <header class="article-header">
+    <% if (categories.length) { %>
+      <a class="label-pill" href="<%- url_for(categories[0].path) %>"><%= categories[0].name %></a>
+    <% } %>
+    <h1><%= page.title %></h1>
+    <div class="meta-line meta-line--article">
+      <span class="meta-date"><%- partial('_partial/icons', { icon: 'calendar' }) %><%= date(page.date, 'YYYY-MM-DD') %></span>
+      <% if (tags.length) { %>
+        <span class="meta-tags">
+          <%- partial('_partial/icons', { icon: 'tag' }) %>
+          <% tags.forEach(function(tag) { %><a class="meta-tag-link" href="<%- url_for(tag.path) %>">#<%= tag.name %></a><% }) %>
+        </span>
+      <% } %>
+    </div>
+  </header>
+
+  <div class="article-content">
+    <%- page.content %>
+  </div>
+
+  <footer class="article-reactions">
+    <div class="reaction-group">
+      <button type="button" class="reaction reaction--like" aria-label="喜欢">
+        <%- partial('_partial/icons', { icon: 'heart' }) %>
+      </button>
+      <span class="reaction-label">Like</span>
+      <button type="button" class="reaction reaction--comment" aria-label="评论">
+        <%- partial('_partial/icons', { icon: 'message-circle' }) %>
+      </button>
+      <span class="reaction-label">评论</span>
+    </div>
+    <div class="reaction-group reaction-group--right">
+      <button type="button" class="reaction reaction--share" aria-label="分享">
+        <%- partial('_partial/icons', { icon: 'share-2' }) %>
+      </button>
+      <span class="reaction-label">分享</span>
+    </div>
+  </footer>
+
+  <nav class="article-actions">
+    <% if (page.prev) { %>
+      <a class="article-action article-action--prev" href="<%- url_for(page.prev.path) %>">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span class="action-label">上一篇</span>
+        <span class="action-title"><%= page.prev.title %></span>
+      </a>
+    <% } else { %>
+      <span class="article-action article-action--prev is-disabled" aria-disabled="true">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span class="action-label">上一篇</span>
+        <span class="action-title">没有更早的文章了</span>
+      </span>
+    <% } %>
+    <% if (page.next) { %>
+      <a class="article-action article-action--next" href="<%- url_for(page.next.path) %>">
+        <span class="action-label">下一篇</span>
+        <span class="action-title"><%= page.next.title %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </a>
+    <% } else { %>
+      <span class="article-action article-action--next is-disabled" aria-disabled="true">
+        <span class="action-label">下一篇</span>
+        <span class="action-title">已经是最新的一篇</span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </span>
+    <% } %>
+  </nav>
+</article>
+
+<% if (relatedPosts.length) { %>
+  <section class="related-paper">
+    <header class="related-paper__head">
+      <h2><%- partial('_partial/icons', { icon: 'link' }) %>相关文章</h2>
+      <a class="related-paper__more" href="<%- url_for('archives/') %>">
+        <span>查看更多</span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </a>
+    </header>
+    <div class="related-paper__grid">
+      <% relatedPosts.forEach(function (post, index) { %>
+        <a class="related-card" href="<%- url_for(post.path) %>">
+          <span class="related-card__thumb">
+            <%- partial('_partial/thumbnail', { index: index, post: post }) %>
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title"><%= post.title %></strong>
+            <em class="related-card__date"><%= date(post.date, 'YYYY-MM-DD') %></em>
+          </span>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+<% } %>

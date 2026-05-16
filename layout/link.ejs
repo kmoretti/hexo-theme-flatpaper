@@ -1,0 +1,66 @@
+<%
+var data = site.data && site.data.links ? site.data.links : [];
+var groups = Array.isArray(data) ? data : [data];
+groups = groups.filter(function (g) { return g && (g.link_list || g.class_name); });
+%>
+
+<article class="article-paper friends-page">
+  <header class="article-header">
+    <span class="label-pill">友链</span>
+    <h1><%= page.title || '友情链接' %></h1>
+    <% if (page.subtitle) { %>
+      <p class="friends-subtitle"><%= page.subtitle %></p>
+    <% } %>
+  </header>
+
+  <% if (!groups.length) { %>
+    <p class="friends-empty">暂未加载到友链数据。请确认 <code>source/_data/links.yml</code> 存在并已 <code>hexo clean</code>。</p>
+  <% } %>
+
+  <% groups.forEach(function (group) {
+    var list = group && group.link_list ? group.link_list : [];
+    if (!list.length) return;
+  %>
+    <section class="friends-group">
+      <div class="friends-group__head">
+        <h2><span class="green-dot"></span><%= group.class_name || '友情链接' %></h2>
+        <% if (group.class_desc) { %>
+          <span class="friends-group__desc"><%= group.class_desc %></span>
+        <% } %>
+      </div>
+
+      <ul class="friends-grid">
+        <% list.forEach(function (item) {
+          var avatar = item.avatar ? flatpaper_safe_url(item.avatar, 'image') : '';
+        %>
+          <li class="friend-card">
+            <a class="friend-card__link" href="<%= flatpaper_safe_url(item.link, 'href') %>" target="_blank" rel="noopener noreferrer" title="<%= item.name %>">
+              <% if (avatar) { %>
+                <img class="friend-card__avatar" src="<%= avatar %>" alt="<%= item.name %>" loading="lazy" referrerpolicy="no-referrer">
+              <% } else { %>
+                <span class="friend-card__avatar friend-card__avatar--text" aria-hidden="true"><%= (item.name || '?').charAt(0) %></span>
+              <% } %>
+              <div class="friend-card__body">
+                <strong class="friend-card__name"><%= item.name %></strong>
+                <% if (item.descr) { %>
+                  <span class="friend-card__desc"><%= item.descr %></span>
+                <% } %>
+              </div>
+            </a>
+            <% if (item.rss) { %>
+              <a class="friend-card__rss" href="<%= flatpaper_safe_url(item.rss, 'href') %>" target="_blank" rel="noopener noreferrer" aria-label="<%= item.name %> 的 RSS" title="RSS">
+                <%- partial('_partial/icons', { icon: 'rss' }) %>
+              </a>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
+  <% }) %>
+
+  <% if (page.content && page.content.trim()) { %>
+    <div class="article-content friends-intro">
+      <%- page.content %>
+    </div>
+  <% } %>
+</article>

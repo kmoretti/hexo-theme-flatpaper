@@ -1,0 +1,37 @@
+/* ============== TAPE DECORATION ============== */
+.tape {
+  position: absolute;
+  z-index: 4;
+  width: 86px;
+  height: 22px;
+  background: var(--tape-yellow);
+  filter: saturate(0.88);
+}
+
+.tape--top-left {
+  top: -10px;
+  left: 24px;
+  transform: rotate(-6deg);
+}
+
+.tape--top-right {
+  top: -10px;
+  right: 32px;
+  width: 70px;
+  background: var(--tape-pink);
+  transform: rotate(7deg);
+}
+
+.tape--center {
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  background: var(--tape-green);
+}
+
+.tape-disabled .tape,
+.tape-disabled .categories-card::before,
+.tape-disabled .tag-card::before,
+.tape-disabled .toc-card::before {
+  display: none;
+}

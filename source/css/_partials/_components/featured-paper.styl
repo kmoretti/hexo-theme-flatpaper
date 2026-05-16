@@ -1,0 +1,126 @@
+/* ============== FEATURED PAPER ============== */
+.featured-paper {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(170px, 0.9fr);
+  gap: 24px;
+  align-items: stretch;
+  padding: 26px 28px;
+  overflow: visible;
+}
+
+.featured-paper > .tape {
+  z-index: 5;
+}
+
+.featured-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.label-pill {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 24px;
+  padding: 0 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #7cba8c, #5a9970);
+  box-shadow: 0 4px 10px rgba(89, 151, 103, 0.24);
+}
+
+.featured-paper h1 {
+  margin: 14px 0 10px;
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.featured-paper h1 a {
+  background-image: linear-gradient(180deg, transparent 62%, rgba(241, 193, 84, 0.45) 62%);
+}
+
+.featured-paper p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meta-line span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-tags {
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.meta-tag-link,
+.meta-cat-link {
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+.meta-tag-link:hover,
+.meta-cat-link:hover {
+  color: var(--green-deep);
+}
+
+.dark-mode .meta-tag-link:hover,
+.dark-mode .meta-cat-link:hover {
+  color: var(--green-leaf);
+}
+
+.meta-line .lucide {
+  display: block;
+  width: 13px;
+  height: 13px;
+  opacity: 0.75;
+  stroke-width: 1.8;
+  flex-shrink: 0;
+}
+
+/* Optical alignment: folder/tag mass sits slightly higher than calendar's
+   geometric center; nudge them down 1px to align visually. */
+.meta-line .lucide-folder,
+.meta-line .lucide-tag {
+  transform: translateY(1px);
+}
+
+.read-more {
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.featured-thumb {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 160px;
+}
+
+.featured-thumb .paper-thumb,
+.featured-thumb .paper-thumb--large {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  border-radius: 10px;
+}

@@ -1,0 +1,37 @@
+<header class="site-header">
+  <button class="icon-button js-sidebar-toggle sidebar-toggle" type="button" aria-label="打开侧边栏" aria-controls="paper-sidebar-drawer" aria-expanded="false">
+    <%- partial('_partial/icons', { icon: 'panel-left' }) %>
+  </button>
+
+  <a class="brand" href="<%- url_for('/') %>" aria-label="FlatPaper home">
+    <span class="brand-mark" aria-hidden="true"><%- partial('_partial/icons', { icon: 'leaf' }) %></span>
+    <span class="brand-text"><%= config.title || 'FlatPaper' %></span>
+  </a>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <% Object.keys(theme.menu || {}).forEach(function(label) {
+      var item = theme.menu[label];
+      var isObjectItem = item && typeof item === 'object' && !Array.isArray(item);
+      var href = isObjectItem ? (item.path || item.href || item.url || item.link || '/') : item;
+      var icon = isObjectItem ? item.icon : null;
+      var text = isObjectItem ? (item.label || item.name || label) : label;
+      var hrefPath = String(href || '/');
+      var active = (hrefPath === '/' && is_home()) || (hrefPath !== '/' && page.path && page.path.indexOf(hrefPath.replace(/^\//, '')) === 0);
+    %>
+      <a class="<%= active ? 'active' : '' %>" href="<%= flatpaper_safe_url(url_for(hrefPath), 'href') %>">
+        <% if (icon) { %><%- partial('_partial/icons', { icon: icon }) %><% } %>
+        <span><%= text %></span>
+      </a>
+    <% }) %>
+  </nav>
+
+  <div class="header-tools">
+    <button class="icon-button js-search-open" type="button" aria-label="搜索文章">
+      <%- partial('_partial/icons', { icon: 'search' }) %>
+    </button>
+    <button class="theme-toggle" type="button" aria-label="切换颜色模式">
+      <span class="theme-icon theme-icon--sun"><%- partial('_partial/icons', { icon: 'sun' }) %></span>
+      <span class="theme-icon theme-icon--moon"><%- partial('_partial/icons', { icon: 'moon' }) %></span>
+    </button>
+  </div>
+</header>

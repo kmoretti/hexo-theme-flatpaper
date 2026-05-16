@@ -1,0 +1,105 @@
+<%
+var allPosts = flatpaper_sorted_posts();
+var categories = site.categories ? site.categories.toArray() : [];
+var tags = site.tags ? site.tags.toArray() : [];
+var profile = theme.profile || {};
+%>
+
+<aside id="paper-sidebar-drawer" class="paper-sidebar paper-sidebar--right" aria-label="侧边栏">
+  <button class="icon-button drawer-close js-sidebar-close" type="button" aria-label="关闭侧边栏">
+    <%- partial('_partial/icons', { icon: 'x' }) %>
+  </button>
+
+  <section class="side-card nav-card">
+    <nav class="site-nav-drawer" aria-label="移动端导航">
+      <% Object.keys(theme.menu || {}).forEach(function(label) {
+        var item = theme.menu[label];
+        var isObjectItem = item && typeof item === 'object' && !Array.isArray(item);
+        var href = isObjectItem ? (item.path || item.href || item.url || item.link || '/') : item;
+        var icon = isObjectItem ? item.icon : null;
+        var text = isObjectItem ? (item.label || item.name || label) : label;
+        var hrefPath = String(href || '/');
+        var active = (hrefPath === '/' && is_home()) || (hrefPath !== '/' && page.path && page.path.indexOf(hrefPath.replace(/^\//, '')) === 0);
+      %>
+        <a class="<%= active ? 'active' : '' %>" href="<%= flatpaper_safe_url(url_for(hrefPath), 'href') %>">
+          <% if (icon) { %><%- partial('_partial/icons', { icon: icon }) %><% } %>
+          <span><%= text %></span>
+        </a>
+      <% }) %>
+    </nav>
+  </section>
+
+  <section class="side-card profile-card">
+    <h2><%= is_post() ? '关于作者' : '关于我' %></h2>
+    <% if (profile.avatar) { %>
+      <div class="avatar avatar--image">
+        <img src="<%= flatpaper_safe_url(url_for(profile.avatar), 'image') %>" alt="<%= profile.name || config.author || '' %>" loading="lazy" referrerpolicy="no-referrer">
+      </div>
+    <% } else { %>
+      <div class="avatar" aria-hidden="true">
+        <span></span><i></i><em></em><b></b>
+      </div>
+    <% } %>
+    <h3><%= profile.name || config.author || 'FlatPaper' %></h3>
+    <% if (profile.role) { %><p class="profile-role"><%= profile.role %></p><% } %>
+    <p><%= profile.bio || '热爱生活，热爱代码，喜欢分享技术与生活中的点滴。' %></p>
+    <div class="socials">
+      <% Object.keys(theme.social || {}).forEach(function(name) {
+        var key = name.toLowerCase();
+        var iconMap = { github: 'github', twitter: 'twitter', x: 'twitter', email: 'mail', mail: 'mail', rss: 'rss' };
+        var iconName = iconMap[key] || 'send';
+      %>
+        <a href="<%= flatpaper_safe_url(theme.social[name], 'href') %>" target="_blank" rel="noopener" aria-label="<%= name %>">
+          <%- partial('_partial/icons', { icon: iconName }) %>
+        </a>
+      <% }) %>
+      <% if (theme.rss && theme.rss.enable) { %>
+        <a href="<%= flatpaper_safe_url(url_for(theme.rss.path || 'atom.xml'), 'href') %>" aria-label="RSS feed" title="RSS">
+          <%- partial('_partial/icons', { icon: 'rss' }) %>
+        </a>
+      <% } %>
+    </div>
+  </section>
+
+  <% if (is_post()) { %>
+    <section class="side-card toc-card">
+      <h2><%- partial('_partial/icons', { icon: 'table-of-contents' }) %>文章目录</h2>
+      <div class="toc-content">
+        <% if (typeof toc === 'function') { %>
+          <%- toc(page.content, { list_number: false, min_depth: 2, max_depth: 3 }) %>
+        <% } else { %>
+          <p>目录会根据文章标题自动生成。</p>
+        <% } %>
+      </div>
+    </section>
+  <% } else { %>
+    <section class="side-card categories-card">
+      <h2><%- partial('_partial/icons', { icon: 'folder' }) %>分类</h2>
+      <% categories.slice(0, 6).forEach(function(category, index) { %>
+        <a href="<%- url_for(category.path) %>">
+          <span class="dot dot-<%= index % 4 %>"></span>
+          <strong><%= category.name %></strong>
+          <em><%= category.length %></em>
+        </a>
+      <% }) %>
+    </section>
+
+    <section class="side-card tag-card">
+      <header class="tag-card__head">
+        <h2><%- partial('_partial/icons', { icon: 'flame' }) %>热门标签</h2>
+        <a class="tag-card__more" href="<%- url_for('tags/') %>">
+          <span>查看全部</span>
+          <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+        </a>
+      </header>
+      <div class="tag-cloud">
+        <%
+          var hotTags = tags.slice().sort(function (a, b) { return (b.length || 0) - (a.length || 0); }).slice(0, 12);
+        %>
+        <% hotTags.forEach(function(tag, index) { %>
+          <a class="tag-chip tag-chip-<%= index % 6 %>" href="<%- url_for(tag.path) %>"><%= tag.name %></a>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</aside>

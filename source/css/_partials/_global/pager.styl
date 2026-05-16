@@ -1,0 +1,58 @@
+/* ============== PAGER ============== */
+.pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.pager-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 2px dashed var(--dash);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--paper);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.pager-link .lucide {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+a.pager-link:hover {
+  color: var(--green-deep);
+  background: var(--green-soft);
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+a.pager-link--prev:hover .lucide { transform: translateX(-2px); }
+a.pager-link--next:hover .lucide { transform: translateX(2px); }
+
+.pager-link.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: var(--muted);
+}
+
+.pager-pages {
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.section-meta {
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+

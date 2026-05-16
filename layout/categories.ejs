@@ -1,0 +1,19 @@
+<section class="taxonomy-paper">
+  <h1>分类</h1>
+  <%
+  var categories = site.categories ? site.categories.toArray() : [];
+  %>
+  <% if (categories.length) { %>
+    <div class="taxonomy-grid">
+      <% categories.forEach(function(category, index) { %>
+        <a class="taxonomy-card" href="<%- url_for(category.path) %>">
+          <span class="dot dot-<%= index % 4 %>"></span>
+          <strong><%= category.name %></strong>
+          <em><%= category.length %> 篇</em>
+        </a>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">暂时还没有分类。</p>
+  <% } %>
+</section>

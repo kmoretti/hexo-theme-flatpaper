@@ -1,0 +1,32 @@
+/* ============== FOOTER ============== */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  margin-top: 36px;
+  margin-bottom: 24px;
+  padding: 18px 0 0;
+  background-image: linear-gradient(to right, var(--dash) 60%, transparent 60%);
+  background-size: 18px 1px;
+  background-repeat: repeat-x;
+  background-position: top left;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.site-footer__left { text-align: left; }
+.site-footer__right { text-align: right; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+[hidden] {
+  display: none !important;
+}
