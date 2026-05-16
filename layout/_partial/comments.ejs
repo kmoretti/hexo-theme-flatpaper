@@ -1,12 +1,15 @@
 <%
-// Twikoo comments. Renders on every page that doesn't explicitly opt out via
-// front-matter `comments: false`. Three required gates: theme.twikoo.enable,
-// theme.twikoo.envId, and `page.comments !== false`. page.comments defaults
-// to undefined, which counts as opted-in.
+// Twikoo comments. Renders on content pages — posts and standalone pages
+// (about / friends / etc.) — never on index pages (home / archive / category /
+// tag), where the visible content is a list of posts and a comment box has no
+// clear subject. Four gates: theme.twikoo.enable, theme.twikoo.envId, the
+// page being a post or `page` layout, and `page.comments !== false` (any page
+// can still opt out via front-matter).
 // The Twikoo SDK <script> is loaded once globally by _partial/twikoo-sdk.ejs;
 // this partial only emits the DOM mount point and the init call.
 var tk = theme.twikoo || {};
-var enabled = tk.enable && tk.envId && page.comments !== false;
+var isContentPage = is_post() || page.layout === 'page';
+var enabled = tk.enable && tk.envId && isContentPage && page.comments !== false;
 if (enabled) {
 %>
 <section class="comments-section" aria-label="评论">
