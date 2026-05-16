@@ -2,6 +2,8 @@
 
 FlatPaper is a Hexo theme inspired by flat illustrations and paper cards, featuring dashed outlines, sticky notes, tape strips, and a soft low-contrast reading interface. The theme is built with modular Stylus partials and a small EJS template layer, with no runtime dependencies.
 
+**[Live demo](https://flatpaper.nep.me/)** · **[Preview: Author's blog](https://homulilly.com/)**
+
 ![preview](preview/home.webp)
 
 ## Highlights

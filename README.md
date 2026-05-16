@@ -2,6 +2,8 @@
 
 FlatPaper 是一个受扁平插画与纸质卡片启发的 Hexo 主题，包含虚线描边、便签、胶带条以及柔和低对比度的阅读界面。主题基于模块化 Stylus partial、小量 EJS 模板层构建，没有运行时依赖。
 
+**[Demo 站点](https://flatpaper.nep.me/)** · **[预览：Author's blog](https://homulilly.com/)**
+
 ![preview](preview/home.webp)
 
 ## 亮点
