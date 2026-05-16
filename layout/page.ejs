@@ -9,8 +9,9 @@ if (typeMap[typeKey]) typeKey = typeMap[typeKey];
 <% if (typeKey && routableTypes.indexOf(typeKey) > -1) { %>
   <%- partial(typeKey) %>
 <% } else { %>
+<div class="article-tape-wrap">
+<span class="tape tape--top-right" aria-hidden="true"></span>
 <article class="article-paper">
-  <span class="tape tape--top-right" aria-hidden="true"></span>
   <header class="article-header">
     <span class="label-pill">页面</span>
     <h1><%= page.title || 'FlatPaper' %></h1>
@@ -19,4 +20,5 @@ if (typeMap[typeKey]) typeKey = typeMap[typeKey];
     <%- page.content %>
   </div>
 </article>
+</div>
 <% } %>

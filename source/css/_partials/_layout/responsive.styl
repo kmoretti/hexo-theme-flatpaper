@@ -43,22 +43,15 @@
     width: unquote('min(94vw, 760px)');
   }
 
-  /* Header is static on narrow screens; the fixed top fade-mask would otherwise
-     overlap the header's top edge, so hide it here. */
-  body::before {
-    display: none;
-  }
-
   .paper-shell--article .paper-sidebar {
     max-height: none;
     overflow: visible;
   }
 
   .site-header {
-    position: static;
-    /* Drawer toggle on the left mirrors the slide-in direction; brand center-left, tools right. */
+    /* 窄屏沿用宽屏的吸附行为（position: sticky; top: 16px 由基础样式提供）。
+       Drawer toggle on the left mirrors the slide-in direction; brand center-left, tools right. */
     grid-template-columns: auto 1fr auto;
-    margin-top: 22px;
     padding: 16px 20px;
   }
 
@@ -146,7 +139,8 @@
     width: unquote('min(86vw, 320px)');
     max-width: 100vw;
     max-height: none;
-    padding: 22px 18px 26px;
+    /* padding-top 给绝对定位的 .drawer-close（top:14 + 40 高）让出空间，避免压住第一张 card。 */
+    padding: 60px 18px 26px;
     background: var(--paper);
     border-right: 2px dashed var(--dash);
     box-shadow: 12px 0 28px rgba(60, 44, 22, 0.18);

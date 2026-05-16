@@ -1,4 +1,10 @@
 /* ============== ARTICLE PAPER ============== */
+/* 胶带的定位上下文。包住 .article-paper，让胶带可以贴着 .article-paper 顶部
+   绝对定位、又不被它的 overflow-x: clip 裁切（iOS Safari 上裁得尤其狠）。 */
+.article-tape-wrap {
+  position: relative;
+}
+
 .article-paper {
   padding: 44px 64px 0;
   min-width: 0;

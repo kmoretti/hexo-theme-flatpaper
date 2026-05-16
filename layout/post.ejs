@@ -39,8 +39,9 @@ var relatedPosts = allPosts
   .map(function (x) { return x.post; });
 %>
 
+<div class="article-tape-wrap">
+<span class="tape tape--top-right" aria-hidden="true"></span>
 <article class="article-paper">
-  <span class="tape tape--top-right" aria-hidden="true"></span>
   <header class="article-header">
     <% if (categories.length) { %>
       <a class="label-pill" href="<%- url_for(categories[0].path) %>"><%= categories[0].name %></a>
@@ -109,6 +110,7 @@ var relatedPosts = allPosts
     <% } %>
   </nav>
 </article>
+</div>
 
 <% if (relatedPosts.length) { %>
   <section class="related-paper">
