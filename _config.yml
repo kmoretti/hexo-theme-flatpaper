@@ -42,7 +42,9 @@ welcome:
   cta_text: 开始阅读
   cta_link: archives/
 
+# 首页文章卡片摘要的最大字符数（无 <!-- more --> 时按正文截断）
 excerpt_length: 96
+# 侧边栏 / 相关位置展示的最近文章数量
 recent_posts: 5
 
 # 前端搜索索引上限（0 或留空 = 不限）。文章很多时调小可减小首屏 JSON 体积。
