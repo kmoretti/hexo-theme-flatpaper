@@ -74,3 +74,15 @@ footer:
 # 代码块外观主题： dark | sand | light
 code:
   theme: dark
+
+# Umami 网站统计（https://umami.is）
+# enable 为 true 时，会在每个页面 </head> 前注入 Umami tracker：
+#   <script defer src="https://<host>/script.js" data-website-id="<website_id>" [data-domains="..."]></script>
+# host       Umami 服务的域名（不含协议、不含路径），例如 analytics.example.com
+# website_id 后台为站点生成的 UUID
+# domains    可选，逗号分隔或 YAML 列表，仅在这些域名下上报；用来过滤 localhost / 预览域名 / 被拷贝部署到其他域的情况
+umami:
+  enable: false
+  host:                                 # 例如：analytics.example.com
+  website_id:                           # 例如：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  # domains: example.com,www.example.com

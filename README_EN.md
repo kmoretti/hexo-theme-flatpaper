@@ -136,7 +136,22 @@ footer:                               # HTML allowed; interpolates {year} and {n
 
 code:
   theme: sand                         # "dark", "sand", or "light"
+
+umami:                                # Umami analytics; no script is injected when disabled
+  enable: false
+  host: analytics.example.com         # Umami service domain (no scheme, no path)
+  website_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  domains: example.com,www.example.com # optional; only report on these hostnames
 ```
+
+When Umami is enabled, the following snippet is injected right before `</head>`:
+
+```html
+<script defer src="https://<host>/script.js" data-website-id="<website_id>" data-domains="..."></script>
+```
+
+- `host` only accepts plain `domain` or `domain:port` values (e.g. `analytics.example.com`, `localhost:3000`). A leading `https://` is stripped automatically; anything containing other characters is rejected and no script is injected.
+- `domains` is Umami's built-in **blog-domain allowlist**: the tracker only reports when the visiting page's `hostname` matches an entry, which is the cleanest way to keep `localhost`, ephemeral preview URLs, or sites cloned and redeployed by others out of your stats. The field is optional; both a comma-separated string and a YAML list are accepted.
 
 ### UI Options and Current Defaults
 

@@ -135,7 +135,22 @@ footer:                               # 允许 HTML；会插值 {year} 和 {name
 
 code:
   theme: sand                         # "dark"、"sand" 或 "light"
+
+umami:                                # Umami 网站统计；关闭时不注入任何脚本
+  enable: false
+  host: analytics.example.com         # Umami 服务的域名（不含协议、不含路径）
+  website_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  domains: example.com,www.example.com # 可选；仅在这些域名下上报
 ```
+
+启用 Umami 后，会在每个页面 `</head>` 之前注入：
+
+```html
+<script defer src="https://<host>/script.js" data-website-id="<website_id>" data-domains="..."></script>
+```
+
+- `host` 仅接受形如 `analytics.example.com` 或 `localhost:3000` 的纯域名 / 域名+端口；带协议的写法（`https://...`）会被自动清洗，其他特殊字符会被拒绝，脚本不会注入。
+- `domains` 是 Umami 自带的**博客域名白名单**：只有当访客打开的页面 `hostname` 在列表里时 tracker 才会上报，用来排除 `localhost`、临时预览域名、或别人 clone 部署到自己域名的情况。字段可省略；可写成逗号分隔的字符串或 YAML 列表。
 
 ### UI 选项与当前默认值
 
