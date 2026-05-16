@@ -19,11 +19,11 @@ menu:
     icon: user
 
 profile:
-  name: FlatPaper
+  # 作者名直接取站点 _config.yml 的 author 字段；这里不再重复配置
   role: 日常记录
   bio: 介绍一下自己 — 一两句话，写写你想被别人记住的部分。
   # 头像图片路径（站点根的 source/ 目录下）。留空则使用 CSS 绘制的默认头像。
-  avatar: 
+  avatar:
 
 social:
   GitHub: https://github.com/
@@ -66,10 +66,12 @@ featured_autoplay: 5000
 tape:
   enable: true
 
-# 页脚（支持 HTML；{year} 会被替换成当前年份，{name} 替换为 theme.profile.name）
+# 页脚（支持 HTML；占位符：{year}=当前年份，{name}=站点 _config.yml 的 author，{theme}=主题署名链接）
+# 想去掉主题署名直接删掉 {theme} 即可
+# 不配置 footer 时默认：左 "© {year} {author}"，右 "Powered by Theme FlatPaper"
 footer:
-  left: '© {year} FlatPaper. All rights reserved.'
-  right: 'Made with ❤ by {name}'
+  left: '© {year} By {name}'
+  right: 'Powered by Theme {theme}'
 
 # 代码块外观主题： dark | sand | light
 code:

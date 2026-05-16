@@ -1,13 +1,14 @@
 <%
 var f = theme.footer || {};
 var year = new Date().getFullYear();
-var name = (theme.profile && theme.profile.name) ? theme.profile.name : (config.author || 'FlatPaper');
+var name = config.author || 'FlatPaper';
+var themeLink = '<a href="https://github.com/Homulilly/hexo-theme-flatpaper" target="_blank" rel="noopener">FlatPaper</a>';
 function fill(tpl, fallback) {
   var s = (tpl == null) ? fallback : String(tpl);
-  return s.replace(/\{year\}/g, year).replace(/\{name\}/g, name);
+  return s.replace(/\{year\}/g, year).replace(/\{name\}/g, name).replace(/\{theme\}/g, themeLink);
 }
-var left = fill(f.left, '© ' + year + ' ' + (config.title || 'FlatPaper') + '. All rights reserved.');
-var right = fill(f.right, 'Made with care by ' + name);
+var left = fill(f.left, '© ' + year + ' ' + name);
+var right = fill(f.right, 'Powered by Theme ' + themeLink);
 %>
 <footer class="site-footer">
   <span class="site-footer__left"><%- left %></span>

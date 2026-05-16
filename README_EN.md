@@ -19,15 +19,14 @@ FlatPaper is a Hexo theme inspired by flat illustrations and paper cards, featur
 - **In-page search**: global Ctrl+K / Cmd+K popup backed by an inline JSON index of all posts (large sites can cap the count with `search.limit` in `_config.yml`).
 - **Optional Twikoo comments**: enable in `_config.yml` with your own deployed backend URL; per-page opt-out via front-matter `comments: false`.
 - **Dark mode**: single-class toggle, persisted to `localStorage`; every component has a dark variant.
-- **Configurable footer**: write custom copy with `{year}` and `{name}` placeholders.
+- **Configurable footer**: write custom copy with `{year}` / `{name}` (the site's `author`) / `{theme}` (a link back to the theme repo) placeholders; the attribution can be kept or dropped.
 - **Icons via Lucide**: icons are embedded as inline SVG (no network, no font), and every theme icon is driven by the same EJS partial.
 
 ## Quick Start
 
 ```bash
 # inside your Hexo site
-cd themes
-git clone <this-repo> flatpaper
+git clone https://github.com/Homulilly/hexo-theme-flatpaper.git themes/flatpaper
 # or copy this folder directly
 
 # enable it in <site>/_config.yml
@@ -95,8 +94,7 @@ menu:                                 # primary nav; string paths are still supp
     path: /about/
     icon: user
 
-profile:                              # rendered in the left sidebar
-  name: FlatPaper
+profile:                              # rendered in the left sidebar; author name is read from the site _config.yml's `author`
   role: Daily notes
   bio: Likes walking, brewing coffee, and reading a little...
 
@@ -131,9 +129,9 @@ featured_autoplay: 5000               # milliseconds; 0 disables it
 tape:
   enable: true                        # false hides all tape decorations
 
-footer:                               # HTML allowed; interpolates {year} and {name}
-  left: '&copy; {year} FlatPaper. All rights reserved.'
-  right: 'Made with &hearts; by {name}'
+footer:                               # HTML allowed; placeholders: {year} / {name} / {theme}
+  left: '&copy; {year} {name}'        # {name} is the site _config.yml's `author`
+  right: 'Powered by Theme {theme}'   # {theme} renders as a link to the theme repo
 
 code:
   theme: sand                         # "dark", "sand", or "light"
@@ -336,7 +334,7 @@ Shared partials in `layout/_partial/`:
 
 - `head.ejs`: meta + stylesheet
 - `header.ejs`: brand, navigation, search, theme toggle, drawer toggle (narrow screens only)
-- `footer.ejs`: configurable footer with `{year}` / `{name}` template tokens
+- `footer.ejs`: configurable footer with `{year}` / `{name}` / `{theme}` template tokens; `{theme}` renders as a link to the theme repo
 - `sidebar-left.ejs` / `sidebar-right.ejs`: see the sidebar layout note below
 - `recent-posts.ejs`: reusable "Recent Posts" card
 - `post-card.ejs`: home / grid card with edge-bleed thumbnail
