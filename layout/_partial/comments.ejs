@@ -1,17 +1,20 @@
 <%
-// Twikoo comments. Renders on content pages — posts and standalone pages
-// (about / friends / etc.) — never on index pages (home / archive / category /
-// tag), where the visible content is a list of posts and a comment box has no
-// clear subject. Four gates: theme.twikoo.enable, theme.twikoo.envId, the
-// page being a post or `page` layout, and `page.comments !== false` (any page
-// can still opt out via front-matter).
-// The Twikoo SDK <script> is loaded once globally by _partial/twikoo-sdk.ejs;
-// this partial only emits the DOM mount point and the init call.
-var tk = theme.twikoo || {};
+// Comment section router. Renders the chosen comment system's mount point and
+// init script on posts / standalone pages, when:
+//   1. theme.comments is set to a supported value (twikoo | artalk),
+//   2. the system's required config (envId / server) is filled in,
+//   3. the page itself didn't opt out via front-matter `comments: false`.
+// The SDK <script>/<link> tags are loaded once globally by _partial/comments-sdk.ejs.
+var sys = theme.comments ? String(theme.comments).toLowerCase() : '';
 var isContentPage = is_post() || page.layout === 'page';
-var enabled = tk.enable && tk.envId && isContentPage && page.comments !== false;
-if (enabled) {
+var canRender = isContentPage && page.comments !== false;
+
+var tk = theme.twikoo || {};
+var ak = theme.artalk || {};
+var renderTwikoo = canRender && sys === 'twikoo' && tk.envId;
+var renderArtalk = canRender && sys === 'artalk' && ak.server;
 %>
+<% if (renderTwikoo) { %>
 <section class="comments-section" aria-label="评论">
   <header class="comments-section__head">
     <h2><%- partial('_partial/icons', { icon: 'message-circle' }) %>评论</h2>
@@ -24,6 +27,25 @@ window.addEventListener('load', function () {
   twikoo.init({
     envId: <%- JSON.stringify(tk.envId) %>,
     el: '#tcomment'
+  });
+});
+</script>
+<% } else if (renderArtalk) { %>
+<section class="comments-section" aria-label="评论">
+  <header class="comments-section__head">
+    <h2><%- partial('_partial/icons', { icon: 'message-circle' }) %>评论</h2>
+  </header>
+  <div id="artalk-comments"></div>
+</section>
+<script>
+window.addEventListener('load', function () {
+  if (typeof Artalk === 'undefined') return;
+  new Artalk({
+    el: '#artalk-comments',
+    pageKey: <%- JSON.stringify(url_for(page.path || '')) %>,
+    pageTitle: <%- JSON.stringify(page.title || '') %>,
+    server: <%- JSON.stringify(ak.server) %>,
+    site: <%- JSON.stringify(ak.site || '') %>
   });
 });
 </script>
