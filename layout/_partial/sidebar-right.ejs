@@ -32,7 +32,7 @@ var profile = theme.profile || {};
   <section class="side-card profile-card">
     <h2><%= is_post() ? '关于作者' : '关于我' %></h2>
     <% if (profile.avatar) { %>
-      <div class="avatar avatar--image">
+      <div class="avatar avatar--image<%= profile.avatar_shape === 'circle' ? ' avatar--circle' : '' %>">
         <img src="<%= flatpaper_safe_url(url_for(profile.avatar), 'image') %>" alt="<%= config.author || '' %>" loading="lazy" referrerpolicy="no-referrer">
       </div>
     <% } else { %>

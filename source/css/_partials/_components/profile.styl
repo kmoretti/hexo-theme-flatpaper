@@ -113,6 +113,8 @@
 .avatar--image {
   background: var(--paper-warm);
   border: 1px dashed var(--dash);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .avatar--image::before,
@@ -125,6 +127,10 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.avatar--image.avatar--circle {
+  border-radius: 50%;
 }
 
 .profile-card h3 {
