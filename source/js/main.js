@@ -304,6 +304,48 @@
     bar.appendChild(foldBtn);
 
     block.appendChild(bar);
+
+    setupGutterInteractions(block);
+  }
+
+  function copyText(text, onDone) {
+    var done = function () { if (typeof onDone === 'function') onDone(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text); done(); });
+    } else {
+      fallbackCopy(text); done();
+    }
+  }
+
+  function setupGutterInteractions(block) {
+    var gutterPre = block.querySelector('td.gutter pre');
+    var codePre = block.querySelector('td.code pre');
+    if (!gutterPre || !codePre) return;
+    var gutterLines = gutterPre.querySelectorAll('.line');
+    var codeLines = codePre.querySelectorAll('.line');
+    if (!gutterLines.length || gutterLines.length !== codeLines.length) return;
+
+    Array.prototype.forEach.call(gutterLines, function (gLine, idx) {
+      var cLine = codeLines[idx];
+      var clickTimer = null;
+
+      gLine.addEventListener('click', function () {
+        if (clickTimer) return;
+        clickTimer = setTimeout(function () {
+          clickTimer = null;
+          gLine.classList.toggle('is-highlight');
+          cLine.classList.toggle('is-highlight');
+        }, 220);
+      });
+
+      gLine.addEventListener('dblclick', function () {
+        if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+        copyText(cLine.innerText, function () {
+          gLine.classList.add('is-copied');
+          setTimeout(function () { gLine.classList.remove('is-copied'); }, 500);
+        });
+      });
+    });
   }
 
   document.querySelectorAll('.article-content .highlight').forEach(enhanceCodeBlock);

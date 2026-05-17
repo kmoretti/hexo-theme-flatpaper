@@ -256,6 +256,48 @@
   line-height: 0;
 }
 
+/* Line-number interactions: single-click toggles row highlight,
+   double-click copies the matching code line.
+   Each gutter .line is rendered as a full-row block so the entire row is
+   clickable, not just the digits. */
+.article-content .highlight td.gutter .line {
+  display: block;
+  cursor: pointer;
+  margin: 0 -14px 0 -18px;
+  padding: 0 14px 0 18px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.article-content .highlight td.gutter pre br {
+  display: none;
+}
+
+.article-content .highlight td.gutter .line:hover:not(.is-highlight):not(.is-copied) {
+  background: rgba(255, 255, 255, 0.04);
+  color: #d8d2c5;
+}
+
+.article-content .highlight td.gutter .line.is-highlight {
+  background: rgba(241, 193, 84, 0.18);
+  color: #f0bd4d;
+}
+
+.article-content .highlight td.gutter .line.is-copied {
+  background: rgba(88, 199, 192, 0.4);
+  color: #fff;
+}
+
+.article-content .highlight td.code .line.is-highlight {
+  display: block;
+  margin: 0 -20px;
+  padding: 0 20px;
+  background: rgba(241, 193, 84, 0.12);
+}
+
+.article-content .highlight td.code .line.is-highlight + br {
+  display: none;
+}
+
 .article-content .highlight pre * {
   vertical-align: baseline;
 }
