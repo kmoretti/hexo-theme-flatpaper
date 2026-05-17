@@ -7,34 +7,8 @@
   align-items: start;
 }
 
-/* Non-article pages: sidebars stick to the top while the main column scrolls.
-   Targets the two specific subclasses so the drawer override (.paper-sidebar--right
-   inside a media query) wins on narrow screens. */
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--left,
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--right {
-  position: sticky;
-  top: 110px;
-  max-height: calc(100dvh - 130px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--left::-webkit-scrollbar,
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--right::-webkit-scrollbar {
-  width: 6px;
-}
-
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--left::-webkit-scrollbar-thumb,
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--right::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 999px;
-}
-
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--left::-webkit-scrollbar-track,
-.paper-shell:not(.paper-shell--article) > .paper-sidebar--right::-webkit-scrollbar-track {
-  background: transparent;
-}
+/* Non-article pages (home / archive / category / tag): sidebars scroll
+   with the page in normal flow — no sticky pinning. */
 
 /* Article pages: two columns, wider main */
 .paper-shell--article {
