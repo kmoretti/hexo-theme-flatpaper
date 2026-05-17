@@ -18,11 +18,11 @@ if (sys === 'twikoo' && theme.twikoo && theme.twikoo.envId) {
 <% }
 } else if (sys === 'artalk' && theme.artalk && theme.artalk.server) {
   var akCss = flatpaper_safe_url(
-    theme.artalk.cdn_css || 'https://cdn.jsdelivr.net/npm/artalk@2.9.4/dist/Artalk.css',
+    theme.artalk.cdn_css || 'https://cdn.jsdelivr.net/npm/artalk@2.9.1/dist/Artalk.css',
     'href'
   );
   var akJs = flatpaper_safe_url(
-    theme.artalk.cdn_js || 'https://cdn.jsdelivr.net/npm/artalk@2.9.4/dist/Artalk.js',
+    theme.artalk.cdn_js || 'https://cdn.jsdelivr.net/npm/artalk@2.9.1/dist/Artalk.js',
     'href'
   );
   if (akCss && akCss !== '#') { %>

@@ -39,10 +39,10 @@ window.addEventListener('load', function () {
 </section>
 <script>
 window.addEventListener('load', function () {
-  if (typeof Artalk === 'undefined') return;
-  new Artalk({
+  if (typeof Artalk === 'undefined' || typeof Artalk.init !== 'function') return;
+  Artalk.init({
     el: '#artalk-comments',
-    pageKey: <%- JSON.stringify(url_for(page.path || '')) %>,
+    pageKey: <%- JSON.stringify(page.permalink || url_for(page.path || '')) %>,
     pageTitle: <%- JSON.stringify(page.title || '') %>,
     server: <%- JSON.stringify(ak.server) %>,
     site: <%- JSON.stringify(ak.site || '') %>
