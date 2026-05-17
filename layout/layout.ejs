@@ -8,6 +8,9 @@ var fbEnabled = theme.fancybox && theme.fancybox.enable && (is_post() || page.la
   <%- partial('_partial/umami') %>
   <%- partial('_partial/twikoo-sdk') %>
   <%- partial('_partial/fancybox') %>
+  <% (theme.inject && Array.isArray(theme.inject.head) ? theme.inject.head : []).forEach(function(snippet) { if (snippet) { %>
+  <%- snippet %>
+  <% } }) %>
 </head>
 <%
 var tapeDisabled = theme.tape === false || (theme.tape && theme.tape.enable === false);
@@ -42,5 +45,8 @@ if (['dark', 'sand', 'light'].indexOf(codeTheme) === -1) codeTheme = 'dark';
   <%- partial('_partial/footer') %>
   <%- partial('_partial/search') %>
   <%- js('js/main') %>
+  <% (theme.inject && Array.isArray(theme.inject.bottom) ? theme.inject.bottom : []).forEach(function(snippet) { if (snippet) { %>
+  <%- snippet %>
+  <% } }) %>
 </body>
 </html>

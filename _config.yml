@@ -136,4 +136,15 @@ twikoo:
 fancybox:
   enable: false
   # cdn_css:                            # 可选；覆盖默认 jsDelivr CSS
-  # cdn_js:                             # 可选；覆盖默认 jsDelivr JS
+  # cdn_js:    
+  
+# 自定义 css 与 js 注入
+# head：每个条目原样输出到 </head> 之前
+# bottom：每个条目原样输出到 </body> 之前
+# 条目为完整 HTML 字符串（<link> / <script> / <style> 等均可）
+inject:
+  head:
+    # - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
+    # - <script src="/js/xxx.js"></script>
+  bottom:
+    # - <script src="/js/xxx.js" defer></script>
