@@ -127,3 +127,91 @@ details.flatpaper-note > .flatpaper-note__title:hover {
   background: rgba(255, 255, 255, 0.04);
 }
 
+/* ===== Style: simple — left accent + thin border, no fill ===== */
+body[data-note-style="simple"] .flatpaper-note {
+  padding: 10px 14px;
+  border: 1px solid var(--note-border);
+  border-left: 4px solid var(--note-accent);
+  border-radius: 6px;
+  background: transparent;
+}
+body[data-note-style="simple"] .flatpaper-note__icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  background: transparent;
+  color: var(--note-accent);
+}
+body[data-note-style="simple"] .flatpaper-note__icon::before {
+  color: var(--note-accent);
+}
+body[data-note-style="simple"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 6px 14px;
+}
+body[data-note-style="simple"] details.flatpaper-note > .flatpaper-note__body {
+  padding: 4px 14px 8px 44px;
+  border-top: 0;
+}
+
+/* ===== Style: modern — filled box, no left accent ===== */
+body[data-note-style="modern"] .flatpaper-note {
+  border-left: 0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: var(--note-bg);
+  box-shadow: inset 0 0 0 1px var(--note-border);
+}
+body[data-note-style="modern"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 12px 16px;
+}
+body[data-note-style="modern"] details.flatpaper-note > .flatpaper-note__body {
+  border-top: 1px solid var(--note-border);
+  padding: 12px 18px 14px 48px;
+}
+
+/* ===== Icons off: hide the badge and reclaim the grid column ===== */
+body[data-note-icons="off"] .flatpaper-note {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+body[data-note-icons="off"] .flatpaper-note__icon { display: none; }
+body[data-note-icons="off"] details.flatpaper-note > .flatpaper-note__body {
+  padding-left: 18px;
+}
+body[data-note-icons="off"][data-note-style="simple"] details.flatpaper-note > .flatpaper-note__body {
+  padding-left: 14px;
+}
+
+/* ===== Style: disabled — strip decoration, keep semantics ===== */
+body[data-note-style="disabled"] .flatpaper-note {
+  display: block;
+  margin: 18px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+}
+body[data-note-style="disabled"] .flatpaper-note__icon { display: none; }
+body[data-note-style="disabled"] .flatpaper-note__body {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+body[data-note-style="disabled"] .flatpaper-note__body code {
+  color: inherit;
+}
+body[data-note-style="disabled"] details.flatpaper-note { padding: 0; }
+body[data-note-style="disabled"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 0;
+  color: inherit;
+  font-weight: 700;
+}
+body[data-note-style="disabled"] details.flatpaper-note > .flatpaper-note__title:hover {
+  background: transparent;
+}
+body[data-note-style="disabled"] details.flatpaper-note > .flatpaper-note__body {
+  padding: 4px 0 0;
+  border-top: 0;
+}
+

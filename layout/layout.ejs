@@ -17,10 +17,15 @@ var tapeDisabled = theme.tape === false || (theme.tape && theme.tape.enable === 
 var tagStyle = theme.tags && theme.tags.style === 'pill' ? 'pill' : 'tape';
 var codeTheme = theme.code && theme.code.theme ? String(theme.code.theme).toLowerCase() : 'dark';
 if (['dark', 'sand', 'light'].indexOf(codeTheme) === -1) codeTheme = 'dark';
+var noteStyle = theme.note && theme.note.style ? String(theme.note.style).toLowerCase() : 'flat';
+if (['flat', 'simple', 'modern', 'disabled'].indexOf(noteStyle) === -1) noteStyle = 'flat';
+var noteIcons = !(theme.note && theme.note.icons === false);
 %>
 <body
   class="<%= is_post() ? 'is-post' : (is_home() ? 'is-home' : 'is-list') %><%= tapeDisabled ? ' tape-disabled' : '' %> tag-style-<%= tagStyle %>"
   data-code-theme="<%= codeTheme %>"
+  data-note-style="<%= noteStyle %>"
+  data-note-icons="<%= noteIcons ? 'on' : 'off' %>"
 >
   <div class="page-grain"></div>
   <%- partial('_partial/header') %>

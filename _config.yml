@@ -105,6 +105,16 @@ footer:
   left: '© {year} By {name}'
   right: 'Powered by Theme {theme}'
 
+# {% note %} 提示块外观风格：
+#   flat      左侧实色条 + 淡背景填充（默认）
+#   simple    无背景，仅左侧实色条 + 细边框 — 干净低调
+#   modern    完全填充的圆角盒，无左侧条
+#   disabled  去掉所有装饰，保留语义结构
+# icons：是否在正文/标题前显示圆形图标徽章（true | false）
+note:
+  style: flat
+  icons: true  
+
 # 代码块外观主题： dark | sand | light
 code:
   theme: dark
