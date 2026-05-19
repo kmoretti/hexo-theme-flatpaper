@@ -130,6 +130,7 @@ featured:                             # up to 4 pinned posts on the home page
   - hello-world                       # slug / full path / last path segment / title
   - flatpaper-design-notes
 featured_autoplay: 5000               # milliseconds; 0 disables it
+featured_image_zigzag: true           # enable the zigzag edge on featured images
 
 tape:
   enable: true                        # false hides all tape decorations
@@ -227,6 +228,7 @@ menu:
 ### Featured Carousel
 
 - `featured` accepts post slugs, full permalink paths, the last path segment, or exact titles. Matching is case-insensitive.
+- Set `featured_image_zigzag: false` to disable the zigzag edge on featured images.
 - It renders only on **page 1** of the home pagination.
 - 1 post renders as a single static card. 2-4 posts render as a carousel with arrows, dot indicators, keyboard arrow support, and autoplay that pauses on hover / focus.
 

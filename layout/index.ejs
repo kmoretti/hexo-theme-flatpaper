@@ -20,6 +20,7 @@ if (isFirstPage && theme.featured && theme.featured.length) {
   });
 }
 var autoplay = (typeof theme.featured_autoplay === 'number') ? theme.featured_autoplay : 5000;
+var featuredImageZigzag = theme.featured_image_zigzag !== false;
 %>
 
 <% if (featured.length) { %>
@@ -52,7 +53,7 @@ var autoplay = (typeof theme.featured_autoplay === 'number') ? theme.featured_au
               <a class="read-more" href="<%- url_for(post.path) %>"><span>阅读全文</span><%- partial('_partial/icons', { icon: 'arrow-right' }) %></a>
             </div>
           </div>
-          <div class="featured-thumb">
+          <div class="featured-thumb<%= featuredImageZigzag ? ' featured-thumb--zigzag' : '' %>">
             <%- partial('_partial/thumbnail', { index: idx, large: true, post: post }) %>
           </div>
         </article>

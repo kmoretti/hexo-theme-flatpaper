@@ -130,6 +130,7 @@ featured:                             # 首页最多 4 篇置顶文章
   - hello-world                       # slug / 完整路径 / 最后一段路径 / 标题
   - flatpaper-design-notes
 featured_autoplay: 5000               # 毫秒；0 表示禁用
+featured_image_zigzag: true           # 是否启用 featured 图片左侧折线特效
 
 tape:
   enable: true                        # false 会隐藏所有胶带装饰
@@ -227,6 +228,7 @@ menu:
 ### 精选轮播
 
 - `featured` 接受文章 slug、完整 permalink 路径、最后一段路径或精确标题。匹配不区分大小写。
+- `featured_image_zigzag: false` 可关闭 featured 图片左侧折线特效。
 - 只在首页分页的**第 1 页**渲染。
 - 1 篇文章渲染为单张静态卡片。2–4 篇文章渲染为轮播，包含箭头、圆点指示器、键盘方向键和悬停 / 聚焦暂停的自动轮播。
 
