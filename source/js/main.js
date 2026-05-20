@@ -10,16 +10,82 @@
       try { localStorage.setItem(key, value); } catch (e) { /* noop */ }
     }
   };
+  var safeCookie = {
+    get: function (key) {
+      var escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var match = document.cookie.match(new RegExp('(?:^|;\\s*)' + escaped + '=([^;]+)'));
+      return match ? decodeURIComponent(match[1]) : null;
+    },
+    set: function (key, value) {
+      try {
+        var maxAge = 60 * 60 * 24 * 365;
+        document.cookie = key + '=' + encodeURIComponent(value) + '; path=/; max-age=' + maxAge + '; SameSite=Lax';
+      } catch (e) { /* noop */ }
+    }
+  };
 
   // Global, idempotent bindings (theme toggle, global keydown, viewport
   // breakpoint listener) go through bindGlobalOnce() and are guarded against
   // double-binding via a dataset flag. Everything else binds inline on
   // initial DOM nodes — fine for a multi-page Hexo build.
   var root = document.documentElement;
+  var accents = ['green', 'pink', 'sakura', 'blue', 'orange'];
+  var defaultAccent = document.body && document.body.dataset.defaultAccent ? document.body.dataset.defaultAccent : 'green';
+  if (accents.indexOf(defaultAccent) === -1) defaultAccent = 'green';
+  var storedAccent = safeCookie.get('flatpaper-accent');
+  var activeAccent = accents.indexOf(storedAccent) > -1 ? storedAccent : defaultAccent;
+  root.setAttribute('data-accent', activeAccent);
   var stored = safeStorage.get('flatpaper-mode');
   if (stored === 'dark') root.classList.add('dark-mode');
 
+  function setAccent(value) {
+    if (accents.indexOf(value) === -1) value = defaultAccent;
+    root.setAttribute('data-accent', value);
+    document.querySelectorAll('[data-accent-option]').forEach(function (option) {
+      option.setAttribute('aria-checked', option.dataset.accentOption === value ? 'true' : 'false');
+    });
+  }
+
+  setAccent(activeAccent);
+
   function bindGlobalOnce() {
+    var accentPicker = document.querySelector('.accent-picker');
+    var accentToggle = document.querySelector('.accent-toggle');
+    var accentMenu = document.querySelector('.accent-menu');
+    function closeAccentMenu() {
+      if (!accentPicker || !accentToggle) return;
+      accentPicker.classList.remove('is-open');
+      accentToggle.setAttribute('aria-expanded', 'false');
+    }
+    function openAccentMenu() {
+      if (!accentPicker || !accentToggle) return;
+      accentPicker.classList.add('is-open');
+      accentToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    if (accentPicker && accentToggle && accentMenu && !accentToggle.dataset.flatpaperBound) {
+      accentToggle.dataset.flatpaperBound = '1';
+      accentToggle.addEventListener('click', function (event) {
+        event.stopPropagation();
+        if (accentPicker.classList.contains('is-open')) closeAccentMenu();
+        else openAccentMenu();
+      });
+      accentMenu.querySelectorAll('[data-accent-option]').forEach(function (option) {
+        option.addEventListener('click', function () {
+          var next = option.dataset.accentOption;
+          setAccent(next);
+          safeCookie.set('flatpaper-accent', next);
+          closeAccentMenu();
+        });
+      });
+      document.addEventListener('click', function (event) {
+        if (!accentPicker.contains(event.target)) closeAccentMenu();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeAccentMenu();
+      });
+    }
+
     var toggle = document.querySelector('.theme-toggle');
     if (toggle && !toggle.dataset.flatpaperBound) {
       toggle.dataset.flatpaperBound = '1';

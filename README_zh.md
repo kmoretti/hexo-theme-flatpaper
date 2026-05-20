@@ -265,6 +265,10 @@ cover: /images/walk.jpg               # 或绝对 URL
 
 Header 中的圆形切换按钮会将状态存储到 `localStorage['flatpaper-mode']`。切换按钮会在绘制前读取已存储状态，以避免 FOUC 闪烁。
 
+### 主题色
+
+在主题配置里设置 `color: green`、`pink`、`sakura`、`blue` 或 `orange` 可指定默认主题色。Header 中的调色盘按钮会打开颜色菜单，并将选择写入 `flatpaper-accent` cookie。
+
 ### 代码块主题
 
 `code.theme` 接受 `dark`、`sand` 或 `light`。`sand` 是奶油 / 浅色代码主题；`light` 是白色代码主题。该值会写入 `<body data-code-theme="...">`，一个 CSS scope 会覆盖所有代码块。

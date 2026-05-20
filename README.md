@@ -265,6 +265,10 @@ Click the magnifier button in the header, or press **Ctrl + K / Cmd + K** anywhe
 
 The circular toggle button in the header stores state in `localStorage['flatpaper-mode']`. The toggle reads the stored state before paint to avoid FOUC.
 
+### Accent Color
+
+Set `color: green`, `pink`, `sakura`, `blue`, or `orange` in the theme config to choose the default accent color. The palette button in the header opens the color menu and stores the selection in the `flatpaper-accent` cookie.
+
 ### Code Block Theme
 
 `code.theme` accepts `dark`, `sand`, or `light`. `sand` is the cream / light code theme; `light` is the white code theme. The value is written to `<body data-code-theme="...">`, and a CSS scope covers all code blocks.

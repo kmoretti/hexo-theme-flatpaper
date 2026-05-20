@@ -44,7 +44,10 @@ var relatedPosts = allPosts
 <article class="article-paper">
   <header class="article-header">
     <% if (categories.length) { %>
-      <a class="label-pill" href="<%- url_for(categories[0].path) %>"><%= categories[0].name %></a>
+      <a class="label-pill" href="<%- url_for(categories[0].path) %>">
+        <%- partial('_partial/icons', { icon: 'folder' }) %>
+        <%= categories[0].name %>
+      </a>
     <% } %>
     <h1><%= page.title %></h1>
     <div class="meta-line meta-line--article">

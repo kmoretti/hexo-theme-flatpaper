@@ -5,4 +5,23 @@
 <% if (config.description) { %>
   <meta name="description" content="<%= config.description %>">
 <% } %>
+<%
+var accentColor = theme.color || theme.accent_color || theme.theme_color || 'green';
+accentColor = String(accentColor).toLowerCase();
+if (['green', 'pink', 'blue', 'orange', 'sakura'].indexOf(accentColor) === -1) accentColor = 'green';
+%>
+<script>
+  (function () {
+    var accents = { green: 1, pink: 1, blue: 1, orange: 1, sakura: 1 };
+    var match = document.cookie.match(/(?:^|;\s*)flatpaper-accent=([^;]+)/);
+    var accent = match ? decodeURIComponent(match[1]) : '<%= accentColor %>';
+    if (!accents[accent]) accent = '<%= accentColor %>';
+    document.documentElement.setAttribute('data-accent', accent);
+    try {
+      if (localStorage.getItem('flatpaper-mode') === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+      }
+    } catch (e) {}
+  })();
+</script>
 <%- css('css/style') %>

@@ -144,6 +144,75 @@ body::before {
   transform: translateY(-1px);
 }
 
+.accent-picker {
+  position: relative;
+}
+
+.accent-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 30;
+  display: none;
+  padding: 8px;
+  border: 1px dashed var(--dash);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: var(--small-shadow);
+}
+
+.accent-picker.is-open .accent-menu {
+  display: flex;
+  gap: 4px;
+}
+
+.accent-option {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.accent-option:hover,
+.accent-option[aria-checked="true"] {
+  color: var(--green-deep);
+  background: var(--green-soft);
+}
+
+.accent-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(44, 53, 49, 0.12);
+}
+
+.accent-swatch--green {
+  background: #6fa67c;
+}
+
+.accent-swatch--pink {
+  background: #df7f9b;
+}
+
+.accent-swatch--sakura {
+  background: #ffc0cb;
+}
+
+.accent-swatch--blue {
+  background: #6fa9d9;
+}
+
+.accent-swatch--orange {
+  background: #ec9b5b;
+}
+
 .dark-mode .icon-button {
   background: rgba(255, 255, 255, 0.04);
 }
