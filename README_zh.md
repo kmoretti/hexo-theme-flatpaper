@@ -126,7 +126,7 @@ welcome:
   # image: /images/welcome.jpg        # 可选 16:9 封面图；留空保留 CSS 山景
 
 excerpt_length: 96
-recent_posts: 10                      # 侧边栏随机文章数量；候选池为生成期最新 100 篇
+recent_posts: 6                       # 侧边栏随机文章数量；候选池为生成期最新 100 篇
 related_posts: 4                      # 0 表示禁用相关文章
 
 search:

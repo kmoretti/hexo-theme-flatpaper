@@ -126,7 +126,7 @@ welcome:
   # image: /images/welcome.jpg        # optional 16:9 cover image; empty keeps the CSS mountain scene
 
 excerpt_length: 96
-recent_posts: 10                      # random sidebar post count; candidates are the latest 100 posts at generate time
+recent_posts: 6                       # random sidebar post count; candidates are the latest 100 posts at generate time
 related_posts: 4                      # 0 disables related posts
 
 search:
