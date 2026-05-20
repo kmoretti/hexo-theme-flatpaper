@@ -1,11 +1,7 @@
 /* ============== PROFILE CARD ============== */
 .profile-card {
   text-align: center;
-  padding: 22px 20px;
-}
-
-.profile-card h2 {
-  justify-content: center;
+  padding: 24px 20px 22px;
 }
 
 /* Layers: hair cap (+ pigtails via box-shadow) -> face -> bangs -> eyes -> tie -> eye highlights */
@@ -13,7 +9,7 @@
   position: relative;
   width: 84px;
   height: 84px;
-  margin: 4px auto 12px;
+  margin: 0 auto 14px;
   border-radius: 50%;
   background: linear-gradient(180deg, #f4f9ff 0%, #e6f4f3 100%);
   overflow: visible;
@@ -146,11 +142,63 @@
 }
 
 .profile-card p:last-of-type {
-  margin: 0 auto 16px;
+  margin: 0 auto 10px;
   max-width: 220px;
   color: var(--muted);
   font-size: 13px;
   line-height: 1.6;
+}
+
+.site-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(52px, 1fr));
+  gap: 4px;
+  margin: 0 auto 12px;
+  max-width: 220px;
+  padding: 0;
+}
+
+.site-info__item {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 2px;
+  border-radius: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-info__item strong {
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.site-info__item span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a.site-info__item {
+  transition: transform 0.2s ease;
+}
+
+a.site-info__item:hover {
+  transform: translateY(-1px);
+}
+
+a.site-info__item:focus-visible {
+  outline: 1px dashed var(--green);
+  outline-offset: 2px;
+  transform: translateY(-1px);
+}
+
+a.site-info__item:hover strong,
+a.site-info__item:focus-visible strong {
+  color: var(--green-deep);
 }
 
 .socials {

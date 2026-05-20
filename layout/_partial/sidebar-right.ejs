@@ -3,9 +3,43 @@ var allPosts = flatpaper_sorted_posts();
 var categories = site.categories ? site.categories.toArray() : [];
 var tags = site.tags ? site.tags.toArray() : [];
 var profile = theme.profile || {};
+function siteInfoEntry(value) {
+  if (value === false || value == null) return false;
+  if (value === true) return { href: '' };
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return siteInfoEntry(value.link);
+  }
+  var href = String(value || '').trim();
+  return href ? { href: href } : false;
+}
+function siteInfoConfig(key) {
+  var info = profile.site_info;
+  if (info === true) return siteInfoEntry(true);
+  if (info === false || !info) return false;
+  if (typeof info === 'object' && Object.prototype.hasOwnProperty.call(info, key)) {
+    return siteInfoEntry(info[key]);
+  }
+  return false;
+}
+function siteInfoUrl(href) {
+  var value = String(href || '').trim();
+  if (!value) return '';
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(value)) return flatpaper_safe_url(value, 'href');
+  return flatpaper_safe_url(url_for(value), 'href');
+}
+var siteInfoItems = [
+  { key: 'posts', value: allPosts.length, label: '文章' },
+  { key: 'categories', value: categories.length, label: '分类' },
+  { key: 'tags', value: tags.length, label: '标签' }
+].map(function (item) {
+  var entry = siteInfoConfig(item.key);
+  if (!entry) return null;
+  item.href = siteInfoUrl(entry.href);
+  return item;
+}).filter(Boolean);
 function menuChildren(item) {
   if (!item || typeof item !== 'object' || Array.isArray(item)) return [];
-  var raw = item.children || item.items || item.submenu || item.submenus;
+  var raw = item.item;
   if (!raw) return [];
   if (Array.isArray(raw)) {
     return raw.map(function (child, index) {
@@ -85,7 +119,6 @@ function menuActive(href) {
   </section>
 
   <section class="side-card profile-card">
-    <h2><%= is_post() ? '关于作者' : '关于我' %></h2>
     <% if (profile.avatar) { %>
       <div class="avatar avatar--image<%= profile.avatar_shape === 'circle' ? ' avatar--circle' : '' %>">
         <img src="<%= flatpaper_safe_url(url_for(profile.avatar), 'image') %>" alt="<%= config.author || '' %>" loading="lazy" referrerpolicy="no-referrer">
@@ -98,6 +131,23 @@ function menuActive(href) {
     <h3><%= config.author || 'FlatPaper' %></h3>
     <% if (profile.role) { %><p class="profile-role"><%= profile.role %></p><% } %>
     <p><%= profile.bio || '热爱生活，热爱代码，喜欢分享技术与生活中的点滴。' %></p>
+    <% if (siteInfoItems.length) { %>
+      <div class="site-info" aria-label="站点信息">
+        <% siteInfoItems.forEach(function(item) { %>
+          <% if (item.href) { %>
+            <a class="site-info__item" href="<%= item.href %>">
+              <strong><%= item.value %></strong>
+              <span><%= item.label %></span>
+            </a>
+          <% } else { %>
+            <div class="site-info__item">
+              <strong><%= item.value %></strong>
+              <span><%= item.label %></span>
+            </div>
+          <% } %>
+        <% }) %>
+      </div>
+    <% } %>
     <div class="socials">
       <% Object.keys(theme.social || {}).forEach(function(name) {
         var raw = theme.social[name];

@@ -1,8 +1,7 @@
 # 导航菜单：
 # - 一级链接可用对象写法：名称 -> { path, icon }
-# - 也兼容字符串写法：名称 -> /path/
-# - 二级链接写在父级的 children / items / submenu 下；子项同样支持 path / icon / label
-# - 有二级链接时，父级会渲染为展开按钮，不作为链接跳转；需要父级页请在 children 中单独加一项
+# - 二级链接写在父级的 item 下；子项同样支持 path / icon / label
+# - 有二级链接时，父级会渲染为展开按钮，不作为链接跳转；需要父级页请在 item 中单独加一项
 menu:
   首页:
     path: /
@@ -13,22 +12,22 @@ menu:
   友链:
     path: /links/
     icon: link
-    # children:
+    # item:
     #   项目:
     #     path: /projects/
     #     icon: folder
     #   朋友:
     #     path: /links/friends/
     #     icon: link
-  分类:
-    path: /categories/
-    icon: folder
-  标签:
-    path: /tags/
-    icon: tag
-  关于:
-    path: /about/
-    icon: user
+  # 分类:
+  #   path: /categories/
+  #   icon: folder
+  # 标签:
+  #   path: /tags/
+  #   icon: tag
+  # 关于:
+  #   path: /about/
+  #   icon: user
 
 profile:
   # 作者名直接取站点 _config.yml 的 author 字段；这里不再重复配置
@@ -38,6 +37,11 @@ profile:
   avatar:
   # 头像图片形状：square（默认，原始方形）或 circle（应用圆形遮罩）
   avatar_shape: square
+  # Profile 卡片站点统计；为空或 false 隐藏，true 显示无链接，其他非空值渲染为链接
+  site_info:
+    posts: /archives/
+    categories: /categories/
+    tags: /tags/
 
 social:
   # 内置图标（按键名自动匹配，大小写不敏感）：

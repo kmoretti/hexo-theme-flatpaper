@@ -92,6 +92,10 @@ profile:                              # rendered in the left sidebar; author nam
   bio: Likes walking, brewing coffee, and reading a little...
   # avatar: /images/avatar.png        # avatar image path; leave empty to use the CSS-drawn default
   avatar_shape: square                # `square` (default) or `circle` (circular mask)
+  site_info:                          # empty / false hides; true shows plain text; other non-empty values become links
+    posts: /archives/
+    categories: /categories/
+    tags: /tags/
 
 social:                               # key -> URL; icons auto-match by key (case-insensitive)
   # Built-in: github, twitter, x, mail/email, rss, steam, bilibili,
@@ -224,7 +228,7 @@ menu:
   Docs:
     path: /docs/
     icon: folder
-    children:
+    item:
       Guide:
         path: /docs/guide/
         icon: link
@@ -233,7 +237,7 @@ menu:
         icon: hash
 ```
 
-Second-level links can also use `items` or `submenu` instead of `children`. A parent with second-level links renders as a toggle button, not a link; add a child item explicitly if you need a parent landing page link.
+Second-level links must be placed under the parent `item` field. A parent with second-level links renders as a toggle button, not a link; add a child item explicitly if you need a parent landing page link.
 
 - Internal separators that may move while scrolling use native `1px dashed` borders where possible; outer paper / card outlines stay `2px dashed`.
 - `tags.style` controls tag chips globally: `tape` uses lightly rotated small tape strips, while `pill` uses rounded capsules.
@@ -305,6 +309,7 @@ Per-block UI:
 
 - `profile.avatar`: an image path under the site `source/` (e.g. `/images/avatar.png`) or an absolute URL; leave it empty to use the CSS-drawn default avatar.
 - `profile.avatar_shape`: `square` (default) renders the avatar with a 10px subtle rounding; `circle` applies a circular mask.
+- `profile.site_info`: stats shown in the profile card. Empty values and `false` hide an item, `true` shows plain text, and any other non-empty value renders as that item's link.
 - `welcome.image`: cover image for the welcome card; setting it switches the container to a 16:9 aspect ratio, flush with the card edge (`overflow: hidden` + 12px top corner radius). Leave empty to keep the default CSS mountain scene.
 
 ### Note Block Appearance

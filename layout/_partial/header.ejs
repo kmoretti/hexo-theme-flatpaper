@@ -2,7 +2,7 @@
   <%
   function menuChildren(item) {
     if (!item || typeof item !== 'object' || Array.isArray(item)) return [];
-    var raw = item.children || item.items || item.submenu || item.submenus;
+    var raw = item.item;
     if (!raw) return [];
     if (Array.isArray(raw)) {
       return raw.map(function (child, index) {
