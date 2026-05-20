@@ -67,24 +67,24 @@ All options live in `themes/flatpaper/_config.yml`. Copy it to `<site>/_config.f
 > The site name (brand text in the header) and `<meta name="description">` are read directly from the Hexo site `_config.yml` (`title` and `description`); the theme no longer duplicates them.
 
 ```yaml
-menu:                                 # primary nav; string paths are still supported
+menu:                                 # primary nav; string link shorthand is still supported
   Home:
-    path: /
+    link: /
     icon: home
   Archives:
-    path: /archives/
+    link: /archives/
     icon: archive
   Links:
-    path: /links/
+    link: /links/
     icon: link
   Categories:
-    path: /categories/
+    link: /categories/
     icon: folder
   Tags:
-    path: /tags/
+    link: /tags/
     icon: tag
   About:
-    path: /about/
+    link: /about/
     icon: user
 
 profile:                              # rendered in the left sidebar; author name is read from the site _config.yml's `author`
@@ -205,7 +205,7 @@ With Fancybox enabled, every `<img>` inside `.article-content` is wrapped client
 
 ```yml
 # Form 1
-# Here Home is the display text, and / is the link path.
+# Here Home is the display text, and / is the link.
 menu:
   Home: /
   Archives: /archives/
@@ -213,25 +213,25 @@ menu:
 
 # Form 2
 menu:
-  - path: /
+  - link: /
     label: Home
     icon: home
 
-  - path: /archives/
+  - link: /archives/
     name: Archives
     icon: archive
 
 # Second-level links
 menu:
   Docs:
-    path: /docs/
+    link: /docs/
     icon: folder
     item:
       Guide:
-        path: /docs/guide/
+        link: /docs/guide/
         icon: link
       API:
-        path: /docs/api/
+        link: /docs/api/
         icon: hash
 ```
 

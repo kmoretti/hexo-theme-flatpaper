@@ -1,32 +1,32 @@
 # 导航菜单：
-# - 一级链接可用对象写法：名称 -> { path, icon }
-# - 二级链接写在父级的 item 下；子项同样支持 path / icon / label
+# - 一级链接可用对象写法：名称 -> { link, icon }
+# - 二级链接写在父级的 item 下；子项同样支持 link / icon / label
 # - 有二级链接时，父级会渲染为展开按钮，不作为链接跳转；需要父级页请在 item 中单独加一项
 menu:
   首页:
-    path: /
+    link: /
     icon: home
   归档:
-    path: /archives/
+    link: /archives/
     icon: archive
   友链:
-    path: /links/
+    link: /links/
     icon: link
     # item:
     #   项目:
-    #     path: /projects/
+    #     link: /projects/
     #     icon: folder
     #   朋友:
-    #     path: /links/friends/
+    #     link: /links/friends/
     #     icon: link
   # 分类:
-  #   path: /categories/
+  #   link: /categories/
   #   icon: folder
   # 标签:
-  #   path: /tags/
+  #   link: /tags/
   #   icon: tag
   # 关于:
-  #   path: /about/
+  #   link: /about/
   #   icon: user
 
 profile:
