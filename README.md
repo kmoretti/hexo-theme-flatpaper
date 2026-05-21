@@ -126,7 +126,7 @@ welcome:
   # image: /images/welcome.jpg        # optional 16:9 cover image; empty keeps the CSS mountain scene
 
 excerpt_length: 96
-recent_posts: 6                       # random sidebar post count
+random_posts: 5                       # random sidebar post count; 0 disables the card
 random_posts_pool: 100                # candidate pool from latest N posts; 0 or empty means unlimited
 related_posts: 4                      # 0 disables related posts
 
@@ -244,7 +244,7 @@ Post pages automatically append a **standalone "Related Posts" card** below the 
 - Posts with a 0 score are excluded entirely; when no related posts exist, the card does not render
 - When scores tie, newer posts win
 
-Set `related_posts` (or fall back to `recent_posts`) to control how many cards are shown. Set `related_posts: 0` explicitly to disable the entire block (the card stops rendering).
+Set `related_posts` to control how many cards are shown. Set `related_posts: 0` explicitly to disable the entire block (the card stops rendering).
 
 ### Search
 

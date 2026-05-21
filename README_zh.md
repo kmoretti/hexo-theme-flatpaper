@@ -126,7 +126,7 @@ welcome:
   # image: /images/welcome.jpg        # 可选 16:9 封面图；留空保留 CSS 山景
 
 excerpt_length: 96
-recent_posts: 6                       # 侧边栏随机文章数量
+random_posts: 5                       # 侧边栏随机文章数量；0 表示禁用
 random_posts_pool: 100                # 候选池取生成期最新 N 篇；0 或留空表示不限
 related_posts: 4                      # 0 表示禁用相关文章
 
@@ -244,7 +244,7 @@ cover: /images/walk.jpg               # 或绝对 URL
 - 0 分文章会被完全排除；没有相关文章时，该卡片不会渲染
 - 分数相同时，较新的文章优先
 
-设置 `related_posts`（或回退到 `recent_posts`）可控制展示卡片数量。将 `related_posts` 显式设为 `0` 可完全禁用该模块（整块卡片不渲染）。
+设置 `related_posts` 可控制展示卡片数量。将 `related_posts` 显式设为 `0` 可完全禁用该模块（整块卡片不渲染）。
 
 ### 搜索
 
