@@ -29,6 +29,7 @@
   padding: 16px 0;
   border-bottom: 1px dashed var(--line);
   font-size: 14px;
+  transition: color 0.22s ease;
 }
 
 .archive-item:last-child {
@@ -38,6 +39,7 @@
 .archive-item strong {
   font-size: 15px;
   font-weight: 600;
+  transition: color 0.22s ease;
 }
 
 .archive-item span {
@@ -51,6 +53,19 @@
   border-top: 1.6px solid var(--muted);
   border-right: 1.6px solid var(--muted);
   transform: rotate(45deg);
+  transition: border-color 0.22s ease;
+}
+
+.archive-item:hover strong {
+  color: var(--green-deep);
+}
+
+.archive-item:hover em {
+  border-color: var(--green);
+}
+
+.dark-mode .archive-item:hover strong {
+  color: var(--green-leaf);
 }
 
 .taxonomy-grid {
