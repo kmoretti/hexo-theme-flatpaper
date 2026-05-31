@@ -57,7 +57,6 @@ body::before {
 }
 
 .brand-mark-wrapper:hover .brand-mark,
-.brand-mark-wrapper:focus-within .brand-mark,
 .brand-mark:hover {
   color: var(--green-deep);
   border-color: var(--green);
@@ -115,8 +114,7 @@ body::before {
   height: 12px;
 }
 
-.brand-mark-wrapper:hover .brand-nav-menu,
-.brand-mark-wrapper:focus-within .brand-nav-menu {
+.brand-mark-wrapper:hover .brand-nav-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -263,15 +261,13 @@ body::before {
 }
 
 .site-nav > .site-nav-link:hover,
-.site-nav-item:hover > .site-nav-link,
-.site-nav-item:focus-within > .site-nav-link {
+.site-nav-item:hover > .site-nav-link {
   color: var(--green-deep);
   background: transparent;
 }
 
 .site-nav > .site-nav-link:not(.active):hover::before,
-.site-nav-item:not(.active):hover > .site-nav-link::before,
-.site-nav-item:not(.active):focus-within > .site-nav-link::before {
+.site-nav-item:not(.active):hover > .site-nav-link::before {
   opacity: 0.72;
   animation: flatpaper-nav-spread 0.22s ease-out forwards;
 }
@@ -298,8 +294,7 @@ body::before {
 }
 
 .dark-mode .site-nav > .site-nav-link:hover,
-.dark-mode .site-nav-item:hover > .site-nav-link,
-.dark-mode .site-nav-item:focus-within > .site-nav-link {
+.dark-mode .site-nav-item:hover > .site-nav-link {
   color: var(--green-leaf);
   background: transparent;
 }
@@ -343,9 +338,7 @@ body::before {
   transition: opacity 0.16s ease, transform 0.16s ease, visibility 0s linear 0.16s;
 }
 
-.site-nav-item:hover .site-nav-menu,
-.site-nav-item:focus-within .site-nav-menu,
-.site-nav-item.is-open .site-nav-menu {
+.site-nav-item:hover .site-nav-menu {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
