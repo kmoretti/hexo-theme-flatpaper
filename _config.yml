@@ -26,19 +26,19 @@ menu:
 nav:
   enable: false
   menu:
-    - title: Live DEMO
-      item:
-        - name: FlapaperDemo
-          link: https://flatpaper.nep.me/
-          icon: leaf
-        - name: Homulilly
-          link: https://homulilly.com/
-          icon: https://homulilly.com/images/avatar.jpg
-    - title: Project
-      item:
-        - name: 简易工具
-          link: https://tools.ooo.run
-          icon: https://tools.ooo.run/favicon.ico
+    # - title: Live DEMO
+    #   item:
+    #     - name: FlapaperDemo
+    #       link: https://flatpaper.nep.me/
+    #       icon: leaf
+    #     - name: Homulilly
+    #       link: https://homulilly.com/
+    #       icon: https://homulilly.com/images/avatar.jpg
+    # - title: Project
+    #   item:
+    #     - name: 简易工具
+    #       link: https://tools.ooo.run
+    #       icon: https://tools.ooo.run/favicon.ico
 
 profile:
   role: 日常记录
