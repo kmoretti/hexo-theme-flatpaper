@@ -56,7 +56,9 @@ body::before {
   transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.brand:hover .brand-mark {
+.brand-mark-wrapper:hover .brand-mark,
+.brand-mark-wrapper:focus-within .brand-mark,
+.brand-mark:hover {
   color: var(--green-deep);
   border-color: var(--green);
   background: var(--green-soft);
