@@ -1,0 +1,335 @@
+# 配置说明
+
+所有主题选项都位于 `themes/flatpaper/_config.yml`。建议先复制为站点根目录下的 `_config.flatpaper.yml` 再修改。
+
+Header 中的站点标题与页面 description 读取自 Hexo 站点 `_config.yml` 的 `title` 与 `description`。
+
+## 导航菜单
+
+```yaml
+menu:
+  首页:
+    link: /
+    icon: home
+  归档:
+    link: /archives/
+    icon: archive
+  站点:
+    icon: folder
+    item:
+      分类:
+        link: /categories/
+        icon: folder
+      标签:
+        link: /tags/
+        icon: tag
+```
+
+`icon` 会通过 `layout/_partial/icons.ejs` 解析。
+
+## Brand Links
+
+`nav` 控制 brandmark 链接组。桌面端从 brandmark 菜单打开；移动端显示在侧栏作者卡片下方。
+
+```yaml
+nav:
+  enable: true
+  menu:
+    - title: Live DEMO
+      item:
+        - name: FlatPaperDemo
+          link: https://flatpaper.nep.me/
+          icon: leaf
+        - name: Homulilly
+          link: https://homulilly.com/
+          icon: https://homulilly.com/images/avatar.jpg
+```
+
+## 作者卡片
+
+```yaml
+profile:
+  role: 日常记录
+  bio: 介绍一下自己。
+  avatar:
+  avatar_shape: square
+  site_info:
+    posts: /archives/
+    categories: /categories/
+    tags: /tags/
+  social:
+    GitHub: https://github.com/yourname
+    Email: mailto:you@example.com
+  rss:
+    enable: true
+    path: /atom.xml
+```
+
+- `avatar` 可填站点 `source/` 下的路径或绝对 URL，留空使用 CSS 默认头像。
+- `avatar_shape` 支持 `square` 或 `circle`。
+- `site_info` 中空值 / `false` 隐藏，`true` 显示纯文本，其他非空值渲染为链接。
+- `social` 键名会自动匹配内置图标：`github`、`twitter`、`x`、`mail/email`、`rss`、`steam`、`bilibili`、`youtube`、`facebook`、`instagram`、`telegram`、`weibo`。
+
+对象写法可覆盖图标或提供内联 SVG：
+
+```yaml
+social:
+  Mastodon:
+    url: https://mastodon.social/@yourname
+    icon: send
+  知乎:
+    url: https://www.zhihu.com/people/yourname
+    svg: '<path d="M2 2 L22 22"/>'
+```
+
+## 欢迎卡片
+
+```yaml
+welcome:
+  label: 今日份记录
+  title: 把日子，慢慢写下来
+  text: 生活不是每天都精彩，但总有值得收藏的片段。
+  cta_text: 开始阅读
+  cta_link: archives/
+  image: /images/welcome.jpg
+```
+
+`welcome.image` 会把欢迎插画替换为 16:9 封面图；留空则使用 CSS 山景。
+
+## 文章相关
+
+```yaml
+excerpt_length: 96
+random_posts: 5
+random_posts_pool: 100
+related_posts: 4
+```
+
+- `excerpt_length`：没有 `<!-- more -->` 时的摘要截断长度。
+- `random_posts`：侧栏随机文章数量，`0` 禁用。
+- `random_posts_pool`：从最新 N 篇文章中抽取候选，`0` 或留空表示不限。
+- `related_posts`：相关文章数量，`0` 禁用整块。
+
+相关文章评分：
+
+- 相同分类 `+3`
+- 相同标签 `+2`
+- 0 分文章排除
+- 分数相同时较新文章优先
+
+## Reaction 按钮
+
+常用于赞赏 / 打赏二维码。
+
+```yaml
+reactions:
+  custom:
+    - type: image
+      name: 微信
+      icon: wechat
+      align: right
+      image: /images/reward-wechat.jpg
+      title: 微信赞赏
+```
+
+字段：
+
+- `type`：目前支持 `image`
+- `name`：按钮文字
+- `icon`：内置图标名，如 `gift`、`wechat`、`alipay`、`paypal`、`heart`
+- `align`：`left` 或 `right`
+- `image`：站内路径或绝对 URL
+- `title`：可选弹层标题
+
+## 搜索
+
+```yaml
+search:
+  limit: 0
+```
+
+`0` 或留空表示索引全部文章；填数字表示只索引最新 N 篇。用户可点击 Header 搜索按钮，或按 `Ctrl+K` / `Cmd+K` 打开搜索。
+
+## 精选文章
+
+```yaml
+featured:
+  - hello-world
+  - markdown-elements-showcase
+featured_autoplay: 5000
+featured_image_zigzag: true
+```
+
+- `featured` 可填文章 slug、完整 permalink 路径、最后一段路径或精确标题，不区分大小写。
+- 只在首页分页第 1 页渲染。
+- 1 篇文章为静态卡片，2 到 4 篇为轮播。
+- `featured_autoplay: 0` 关闭自动播放。
+- `featured_image_zigzag: false` 关闭图片折线边。
+
+## 视觉选项
+
+```yaml
+tags:
+  style: tape
+
+color: green
+
+tape:
+  enable: true
+```
+
+- `tags.style`：`tape` 或 `pill`
+- `color`：`green`、`pink`、`blue`、`orange`、`sakura`
+- 桌面端通过 Header 调色盘选择主题色；移动端在侧栏顶部直接显示色点。
+- 用户选择会写入 `flatpaper-accent` cookie。
+
+## 页脚
+
+```yaml
+footer:
+  left: '© {year} By {name}'
+  right: 'Powered by Theme {theme}'
+```
+
+占位符：
+
+- `{year}`：当前年份
+- `{name}`：站点 `_config.yml` 中的 `author`
+- `{theme}`：FlatPaper 仓库链接
+
+## Note 提示块
+
+```yaml
+note:
+  style: flat
+  icons: true
+```
+
+`style` 支持：
+
+- `flat`：左侧色条 + 淡背景
+- `simple`：左侧色条 + 细边框
+- `modern`：填充式圆角盒，无左侧色条
+- `disabled`：去掉装饰，仅保留语义结构
+
+`icons: false` 会隐藏圆形图标徽章。
+
+## 代码块
+
+```yaml
+code:
+  theme: dark
+```
+
+`code.theme` 支持 `dark`、`sand`、`light`、`simple`。值会写入 `<body data-code-theme="...">`。
+
+代码块包含：
+
+- macOS 风格标题栏
+- 语言徽标
+- 复制按钮
+- 折叠按钮
+- 单击行号高亮
+- 双击行号复制该行
+
+## Umami
+
+```yaml
+umami:
+  enable: false
+  host: analytics.example.com
+  website_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  domains: example.com,www.example.com
+```
+
+启用后注入：
+
+```html
+<script defer src="https://<host>/script.js" data-website-id="<website_id>" data-domains="..."></script>
+```
+
+`host` 只接受纯域名或 `domain:port`。`domains` 可省略，支持逗号字符串或 YAML 列表。
+
+## AdSense
+
+```yaml
+adsense:
+  enable: false
+  client: ca-pub-1234567890123456
+  account: false
+  slots:
+    post_top:
+    post_bottom:
+    sidebar:
+```
+
+- `client` 是发布商 ID。
+- `account` 默认等于 `client`，设为 `false` 可跳过 account meta。
+- 广告位可写字符串或对象。
+- 如 AdSense 需要 `ads.txt`，仍需放在站点 `source/` 下。
+
+## 评论
+
+```yaml
+comments: twikoo
+```
+
+支持：
+
+- `twikoo`
+- `artalk`
+- 留空 / 删除：关闭
+
+评论只在文章页和独立页面（`layout: page`）渲染。单页可用 front-matter 关闭：
+
+```yaml
+---
+comments: false
+---
+```
+
+Twikoo：
+
+```yaml
+twikoo:
+  envId: https://twikoo.example.com
+  cdn:
+```
+
+Artalk：
+
+```yaml
+artalk:
+  server: https://artalk.example.com
+  site: My Blog
+  cdn_css:
+  cdn_js:
+```
+
+两者都需要自行部署后端：
+
+- [Twikoo 快速开始](https://twikoo.js.org/quick-start.html)
+- [Artalk 部署文档](https://artalk.js.org/guide/deploy.html)
+
+## Fancybox
+
+```yaml
+fancybox:
+  enable: true
+  cdn_css:
+  cdn_js:
+```
+
+启用后，文章页和独立页面正文图片会自动接入 Fancybox。已被链接包裹或带 `class="no-zoom"` 的图片会跳过。
+
+## 自定义注入
+
+```yaml
+inject:
+  head:
+    - <link rel="stylesheet" href="/css/custom.css">
+  bottom:
+    - <script src="/js/extra.js" defer></script>
+```
+
+条目会原样输出到 `</head>` 或 `</body>` 前。只放可信 HTML。
