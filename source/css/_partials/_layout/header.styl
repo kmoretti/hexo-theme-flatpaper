@@ -261,6 +261,10 @@ body::before {
   display: none;
 }
 
+.drawer-toolbar {
+  display: none;
+}
+
 .brand-link-card {
   display: none;
 }
@@ -457,7 +461,8 @@ body::before {
 }
 
 .accent-option:hover,
-.accent-option[aria-checked="true"] {
+.accent-option[aria-checked="true"],
+.accent-option[aria-pressed="true"] {
   color: var(--green-deep);
   background: var(--green-soft);
 }

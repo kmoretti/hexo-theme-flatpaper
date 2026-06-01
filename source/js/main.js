@@ -43,15 +43,13 @@
     root.setAttribute('data-accent', value);
     document.querySelectorAll('[data-accent-option]').forEach(function (option) {
       option.setAttribute('aria-checked', option.dataset.accentOption === value ? 'true' : 'false');
+      option.setAttribute('aria-pressed', option.dataset.accentOption === value ? 'true' : 'false');
     });
   }
 
   setAccent(activeAccent);
 
   function bindGlobalOnce() {
-    var accentPicker = document.querySelector('.accent-picker');
-    var accentToggle = document.querySelector('.accent-toggle');
-    var accentMenu = document.querySelector('.accent-menu');
     var brandNavWrapper = document.querySelector('.brand-mark-wrapper');
     var brandNavToggle = brandNavWrapper ? brandNavWrapper.querySelector('.brand-mark') : null;
     var brandNavMenu = brandNavWrapper ? brandNavWrapper.querySelector('.brand-nav-menu') : null;
@@ -67,39 +65,60 @@
       brandNavWrapper.classList.add('is-open');
       brandNavToggle.setAttribute('aria-expanded', 'true');
     }
-    function closeAccentMenu() {
+    function closeAccentMenu(accentPicker) {
+      var accentToggle = accentPicker ? accentPicker.querySelector('.accent-toggle') : null;
       if (!accentPicker || !accentToggle) return;
       accentPicker.classList.remove('is-open');
       accentToggle.setAttribute('aria-expanded', 'false');
     }
-    function openAccentMenu() {
+    function closeOtherAccentMenus(currentPicker) {
+      document.querySelectorAll('.accent-picker.is-open').forEach(function (picker) {
+        if (picker !== currentPicker) closeAccentMenu(picker);
+      });
+    }
+    function openAccentMenu(accentPicker) {
+      var accentToggle = accentPicker ? accentPicker.querySelector('.accent-toggle') : null;
       if (!accentPicker || !accentToggle) return;
+      closeOtherAccentMenus(accentPicker);
       accentPicker.classList.add('is-open');
       accentToggle.setAttribute('aria-expanded', 'true');
     }
+    function bindAccentOption(option, onSelect) {
+      if (!option || option.dataset.flatpaperAccentBound) return;
+      option.dataset.flatpaperAccentBound = '1';
+      option.addEventListener('click', function () {
+        var next = option.dataset.accentOption;
+        setAccent(next);
+        safeCookie.set('flatpaper-accent', next);
+        if (typeof onSelect === 'function') onSelect();
+      });
+    }
 
-    if (accentPicker && accentToggle && accentMenu && !accentToggle.dataset.flatpaperBound) {
+    document.querySelectorAll('.accent-picker').forEach(function (accentPicker) {
+      var accentToggle = accentPicker.querySelector('.accent-toggle');
+      var accentMenu = accentPicker.querySelector('.accent-menu');
+      if (!accentToggle || !accentMenu || accentToggle.dataset.flatpaperBound) return;
       accentToggle.dataset.flatpaperBound = '1';
       accentToggle.addEventListener('click', function (event) {
         event.stopPropagation();
-        if (accentPicker.classList.contains('is-open')) closeAccentMenu();
-        else openAccentMenu();
+        if (accentPicker.classList.contains('is-open')) closeAccentMenu(accentPicker);
+        else openAccentMenu(accentPicker);
       });
       accentMenu.querySelectorAll('[data-accent-option]').forEach(function (option) {
-        option.addEventListener('click', function () {
-          var next = option.dataset.accentOption;
-          setAccent(next);
-          safeCookie.set('flatpaper-accent', next);
-          closeAccentMenu();
+        bindAccentOption(option, function () {
+          closeAccentMenu(accentPicker);
         });
       });
       document.addEventListener('click', function (event) {
-        if (!accentPicker.contains(event.target)) closeAccentMenu();
+        if (!accentPicker.contains(event.target)) closeAccentMenu(accentPicker);
       });
       document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeAccentMenu();
+        if (event.key === 'Escape') closeAccentMenu(accentPicker);
       });
-    }
+    });
+    document.querySelectorAll('[data-accent-option]').forEach(function (option) {
+      bindAccentOption(option);
+    });
 
     if (brandNavWrapper && brandNavToggle && brandNavMenu && !brandNavToggle.dataset.flatpaperBound) {
       brandNavToggle.dataset.flatpaperBound = '1';

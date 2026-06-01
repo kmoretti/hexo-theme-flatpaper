@@ -75,9 +75,28 @@ function menuActive(href) {
 %>
 
 <aside id="paper-sidebar-drawer" class="paper-sidebar paper-sidebar--right" aria-label="侧边栏">
-  <button class="icon-button drawer-close js-sidebar-close" type="button" aria-label="关闭侧边栏">
-    <%- partial('_partial/icons', { icon: 'x' }) %>
-  </button>
+  <div class="drawer-toolbar" aria-label="侧边栏工具">
+    <div class="drawer-accent-options" role="group" aria-label="主题色">
+      <button type="button" class="accent-option" aria-label="绿色" aria-pressed="false" data-accent-option="green">
+        <span class="accent-swatch accent-swatch--green" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="粉色" aria-pressed="false" data-accent-option="pink">
+        <span class="accent-swatch accent-swatch--pink" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="樱花粉" aria-pressed="false" data-accent-option="sakura">
+        <span class="accent-swatch accent-swatch--sakura" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="蓝色" aria-pressed="false" data-accent-option="blue">
+        <span class="accent-swatch accent-swatch--blue" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="橙色" aria-pressed="false" data-accent-option="orange">
+        <span class="accent-swatch accent-swatch--orange" aria-hidden="true"></span>
+      </button>
+    </div>
+    <button class="icon-button drawer-close js-sidebar-close" type="button" aria-label="关闭侧边栏">
+      <%- partial('_partial/icons', { icon: 'x' }) %>
+    </button>
+  </div>
 
   <section class="side-card nav-card">
     <nav class="site-nav-drawer" aria-label="移动端导航">

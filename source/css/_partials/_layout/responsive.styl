@@ -105,13 +105,35 @@
     display: inline-grid;
   }
 
-  /* In-drawer close button, top-right corner. */
+  .drawer-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2px;
+    margin-bottom: 0;
+  }
+
+  .drawer-accent-options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 4px;
+    border: 1px dashed var(--dash);
+    border-radius: 10px;
+    background: var(--paper);
+  }
+
   .icon-button.drawer-close {
     display: inline-grid;
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 1;
+    position: relative;
+    top: auto;
+    right: auto;
+    z-index: 31;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
   }
 
   /* Drawer nav lives in a .side-card (.nav-card) — vertical link list. */
@@ -296,8 +318,7 @@
     width: unquote('min(86vw, 320px)');
     max-width: 100vw;
     max-height: none;
-    /* padding-top 给绝对定位的 .drawer-close（top:14 + 40 高）让出空间，避免压住第一张 card。 */
-    padding: 60px 18px 26px;
+    padding: 14px 18px 26px;
     background: var(--paper);
     border-right: 2px dashed var(--dash);
     box-shadow: 12px 0 28px rgba(60, 44, 22, 0.18);
