@@ -154,7 +154,7 @@
   color: var(--ink-soft);
 }
 
-.article-content a {
+.article-content a:not(.heading-anchor) {
   position: relative;
   top: 0;
   color: var(--color-accent-strong);
@@ -167,18 +167,18 @@
   transition: color 0.18s ease, text-decoration-color 0.18s ease, top 0.18s ease;
 }
 
-.article-content a:hover {
+.article-content a:not(.heading-anchor):hover {
   top: -1px;
   color: var(--color-accent-strong);
   text-decoration-color: var(--color-accent-strong);
 }
 
-.dark-mode .article-content a {
+.dark-mode .article-content a:not(.heading-anchor) {
   color: var(--color-accent-muted);
   text-decoration-color: unquote('color-mix(in srgb, var(--color-accent-muted) 38%, transparent)');
 }
 
-.dark-mode .article-content a:hover {
+.dark-mode .article-content a:not(.heading-anchor):hover {
   top: -1px;
   color: var(--color-accent-muted);
   text-decoration-color: var(--color-accent-muted);
