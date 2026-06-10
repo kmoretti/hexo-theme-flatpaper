@@ -22,7 +22,8 @@
     set: function (key, value) {
       try {
         var maxAge = 60 * 60 * 24 * 365;
-        document.cookie = key + '=' + encodeURIComponent(value) + '; path=/; max-age=' + maxAge + '; SameSite=Lax';
+        var secure = location.protocol === 'https:' ? '; Secure' : '';
+        document.cookie = key + '=' + encodeURIComponent(value) + '; path=/; max-age=' + maxAge + '; SameSite=Lax' + secure;
       } catch (e) { /* noop */ }
     }
   };
@@ -58,6 +59,8 @@
     var brandNavMenu = brandNavWrapper ? brandNavWrapper.querySelector('.brand-nav-menu') : null;
     function closeBrandNav() {
       if (!brandNavWrapper || !brandNavToggle) return;
+      // Wired to scroll/resize below — skip the DOM writes when already closed.
+      if (!brandNavWrapper.classList.contains('is-open')) return;
       brandNavWrapper.classList.remove('is-open');
       brandNavToggle.setAttribute('aria-expanded', 'false');
     }
@@ -95,7 +98,8 @@
       });
     }
 
-    document.querySelectorAll('.accent-picker').forEach(function (accentPicker) {
+    var pickers = document.querySelectorAll('.accent-picker');
+    pickers.forEach(function (accentPicker) {
       var accentToggle = accentPicker.querySelector('.accent-toggle');
       var accentMenu = accentPicker.querySelector('.accent-menu');
       if (!accentToggle || !accentMenu || accentToggle.dataset.flatpaperBound) return;
@@ -110,13 +114,19 @@
           closeAccentMenu(accentPicker);
         });
       });
+    });
+    // One document-level dismiss pair for all pickers — registering these
+    // inside the loop would stack a global listener per picker instance.
+    if (pickers.length) {
       document.addEventListener('click', function (event) {
-        if (!accentPicker.contains(event.target)) closeAccentMenu(accentPicker);
+        pickers.forEach(function (picker) {
+          if (!picker.contains(event.target)) closeAccentMenu(picker);
+        });
       });
       document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeAccentMenu(accentPicker);
+        if (event.key === 'Escape') pickers.forEach(closeAccentMenu);
       });
-    });
+    }
     document.querySelectorAll('[data-accent-option]').forEach(function (option) {
       bindAccentOption(option);
     });
@@ -294,7 +304,12 @@
     if (!panel) return;
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
+    // Keep the body locked while the sidebar drawer is still open underneath
+    // (mirrors the check in closeSidebar()).
+    var openDrawer = document.getElementById('paper-sidebar-drawer');
+    if (!openDrawer || !openDrawer.classList.contains('is-open')) {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   // Append text into `parent`, wrapping every case-insensitive match of `keyword`
@@ -304,6 +319,10 @@
     if (!text) return;
     if (!keyword) { parent.appendChild(document.createTextNode(text)); return; }
     var lower = text.toLowerCase();
+    // toLowerCase() is not length-preserving for a few characters (e.g. 'İ'),
+    // which would shift every index found in `lower`. Skip highlighting then —
+    // the result list itself is unaffected.
+    if (lower.length !== text.length) { parent.appendChild(document.createTextNode(text)); return; }
     var i = 0;
     var idx;
     while ((idx = lower.indexOf(keyword, i)) !== -1) {
@@ -379,7 +398,13 @@
   });
 
   if (input) {
-    input.addEventListener('input', function () { render(input.value); });
+    // Debounced: render() linearly scans the whole index and rebuilds the
+    // result DOM, which janks on large sites if run per keystroke.
+    var searchDebounce = null;
+    input.addEventListener('input', function () {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(function () { render(input.value); }, 120);
+    });
   }
 
   document.addEventListener('keydown', function (e) {
@@ -682,7 +707,12 @@
     if (!headings.length) return;
 
     var visible = new Set();
+    var activeId = null;
     function activate(id) {
+      // Scroll/observer handlers re-derive the active heading constantly;
+      // bail before the class churn and layout reads when nothing changed.
+      if (id === activeId) return;
+      activeId = id;
       links.forEach(function (a) { a.classList.remove('is-active'); });
       var target = byId[id];
       if (!target) return;
@@ -735,7 +765,6 @@
     headings.forEach(function (h) { observer.observe(h); });
 
     window.addEventListener('scroll', function () {
-      var wasNearBottom = nearBottom;
       nearBottom = atPageEnd();
 
       if (nearBottom) {
@@ -870,7 +899,9 @@
       if (navigator.share) {
         navigator.share(data).catch(function () { /* user cancelled */ });
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(location.href);
+        navigator.clipboard.writeText(location.href).catch(function () { fallbackCopy(location.href); });
+      } else {
+        fallbackCopy(location.href);
       }
     } else if (action === 'toggle-pop') {
       var bubble = btn.parentNode.querySelector('.reaction-bubble');

@@ -84,7 +84,9 @@
   position: absolute;
   bottom: calc(100% + 12px);
   left: 0;
-  z-index: 20;
+  /* Above the sticky header (z 20): an open popover scrolling under the
+     header should stay readable rather than half-painted. */
+  z-index: 30;
   width: 180px;
   padding: 12px;
   display: flex;

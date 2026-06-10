@@ -81,6 +81,9 @@ social:
     svg: '<path d="M2 2 L22 22"/>'
 ```
 
+> Note: the `svg` field is injected into the page **as raw markup** (it has to
+> be, to draw the icon). Only paste path data you trust.
+
 ## Welcome Card
 
 ```yaml

@@ -31,7 +31,7 @@ groups = groups.filter(function (g) { return g && (g.link_list || g.class_name);
 
       <ul class="friends-grid">
         <% list.forEach(function (item) {
-          var avatar = item.avatar ? flatpaper_safe_url(item.avatar, 'image') : '';
+          var avatar = item.avatar ? flatpaper_safe_url(url_for(item.avatar), 'image') : '';
         %>
           <li class="friend-card">
             <a class="friend-card__link" href="<%= flatpaper_safe_url(item.link, 'href') %>" target="_blank" rel="noopener noreferrer" title="<%= item.name %>">

@@ -30,11 +30,13 @@ const TYPE_ALT = NOTE_TYPES.join('|');
 
 // One regex, anchored to line starts via /m. Captures: 1=type, 2=title, 3=body.
 // `:::` opener must sit on its own line (optional trailing spaces); closer is
-// a bare `:::` on its own line. Body is non-greedy so the nearest `:::`
-// terminates the block. No nesting support — same constraint as {% note %}.
+// a bare `:::` on its own line. Body lines may not start with `:::` — so an
+// unclosed block simply doesn't match (the raw `:::` stays visible, a loud
+// failure) instead of lazily extending to the NEXT note's closer and silently
+// destroying it. No nesting support — same constraint as {% note %}.
 const NOTE_RE = new RegExp(
   '^:::[ \\t]*(' + TYPE_ALT + ')(?:[ \\t]+([^\\r\\n]*?))?[ \\t]*\\r?\\n' +
-  '([\\s\\S]*?)' +
+  '((?:(?!:::)[^\\r\\n]*\\r?\\n)*?)' +
   '^:::[ \\t]*\\r?$',
   'gm'
 );
@@ -43,7 +45,18 @@ const NOTE_RE = new RegExp(
 // then indented code (line-by-line). Inline `code` spans aren't masked —
 // `:::` inside an inline span on a single line wouldn't match NOTE_RE anyway
 // (the opener regex requires a newline after the title).
-const FENCED_RE = /^([ \t]*)(```+|~~~+)[^\r\n]*\r?\n[\s\S]*?\r?\n\1\2[ \t]*\r?$/gm;
+// CommonMark closing-fence rules: same character, AT LEAST the opening
+// length (\2\3* — longer closers are valid), indented 0-3 spaces regardless
+// of the opener's indent, and an unclosed fence runs to end of input (the
+// empty-lookahead alternative). The old exact-backreference version missed
+// longer or differently-indented closers, so `:::` samples inside such
+// fences got rewritten. Fences indented 4+ spaces fall to INDENTED_RE.
+const FENCED_RE = new RegExp(
+  '^( {0,3})(([`~])\\3{2,})[^\\r\\n]*\\r?\\n' +
+  '[\\s\\S]*?' +
+  '(?:^ {0,3}\\2\\3*[ \\t]*\\r?$|(?![\\s\\S]))',
+  'gm'
+);
 const INDENTED_RE = /^(?: {4}|\t)[^\r\n]*(?:\r?\n(?: {4}|\t)[^\r\n]*)*/gm;
 
 const MASK_TOKEN_RE = /\x00FP_NOTE_MASK_(\d+)\x00/g;
@@ -75,7 +88,10 @@ function unmask(content, stash) {
 
 function rewrite(content) {
   return content.replace(NOTE_RE, function (_, type, title, body) {
-    const t = (title || '').trim();
+    // "%}" inside a title would terminate the generated Nunjucks tag early
+    // and leak the remainder into the note body; there is no way to escape
+    // it inside a tag, so drop the closing brace.
+    const t = (title || '').trim().replace(/%\}/g, '%');
     const head = '{% note ' + type + (t ? ' ' + t : '') + ' %}';
     // Trim leading/trailing blank lines inside body so the rendered note
     // doesn't carry an empty paragraph. Hexo's renderMarkdown handles

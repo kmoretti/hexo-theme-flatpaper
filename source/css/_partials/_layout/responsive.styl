@@ -4,6 +4,10 @@
     grid-template-columns: 280px minmax(0, 1fr);
   }
 
+  .related-paper__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .paper-sidebar--left {
     display: none;
   }
@@ -395,6 +399,10 @@
 }
 
 @media (max-width: 600px) {
+  .related-paper__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   body {
     font-size: 14px;
   }

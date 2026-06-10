@@ -26,6 +26,27 @@ hexo.extend.generator.register('flatpaper_search_index', function (locals) {
   const stripHtml = this.extend.helper.get('strip_html');
   const urlFor = this.extend.helper.get('url_for').bind(this);
 
+  // strip_html removes tags but keeps entities the markdown renderer emitted
+  // (&#x2F;, &amp;, …) — without decoding they show up literally in search
+  // snippets. Decoded text is safe here: main.js renders results via
+  // textContent only.
+  function decodeEntities(s) {
+    return s
+      .replace(/&#x([0-9a-f]{1,6});/gi, function (m, hex) {
+        const cp = parseInt(hex, 16);
+        return cp > 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : m;
+      })
+      .replace(/&#(\d{1,7});/g, function (m, dec) {
+        const cp = parseInt(dec, 10);
+        return cp > 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : m;
+      })
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/&amp;/g, '&');
+  }
+
   let posts = locals.posts.sort('date', -1).toArray();
   if (limit > 0) posts = posts.slice(0, limit);
 
@@ -34,7 +55,7 @@ hexo.extend.generator.register('flatpaper_search_index', function (locals) {
       title: post.title || 'Untitled',
       url: urlFor(post.path),
       date: post.date && post.date.format ? post.date.format('YYYY-MM-DD') : '',
-      text: stripHtml(String(post.excerpt || post.content || ''))
+      text: decodeEntities(stripHtml(String(post.excerpt || post.content || '')))
         .replace(/\s+/g, ' ')
         .trim()
         .slice(0, 200)

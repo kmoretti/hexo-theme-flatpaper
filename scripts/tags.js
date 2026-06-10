@@ -50,19 +50,21 @@ hexo.extend.helper.register('flatpaper_safe_url', safeUrl);
 // Posts sorted newest-first, cached for the current generate pass.
 // Several partials (random-posts, sidebar-right, post.ejs related list,
 // index.ejs featured resolver) all call site.posts.sort('date', -1).toArray()
-// independently — on big sites that adds up. Invalidate when post count
-// changes so a `hexo generate --watch` rebuild after adding/removing posts
-// still picks up the new set.
+// independently — on big sites that adds up. The cache is dropped at the
+// start of every generate pass (below), so watch/server rebuilds pick up ANY
+// post change — including edits to existing posts, which a count-based check
+// would miss.
 let _sortedPostsCache = null;
-let _sortedPostsLen = -1;
 hexo.extend.helper.register('flatpaper_sorted_posts', function () {
   const posts = this.site.posts;
   if (!posts) return [];
-  const len = posts.length;
-  if (_sortedPostsCache && _sortedPostsLen === len) return _sortedPostsCache;
+  if (_sortedPostsCache) return _sortedPostsCache;
   _sortedPostsCache = posts.sort('date', -1).toArray();
-  _sortedPostsLen = len;
   return _sortedPostsCache;
+});
+
+hexo.extend.filter.register('before_generate', function () {
+  _sortedPostsCache = null;
 });
 
 // ---------------- NOTE ----------------
@@ -101,16 +103,27 @@ hexo.extend.tag.register('note', function (args, content) {
 
 // ---------------- TABS ----------------
 hexo.extend.tag.register('tabs', function (args, content) {
-    // args: "[title]", "[defaultIndex]" (after Nunjucks splits on commas)
-    // Hexo passes args as one space-joined string array
+    // Hexo splits tag args on whitespace; we re-join and apply our own
+    // convention: "<title>[, <defaultIndex>]". Only a numeric segment after
+    // the LAST comma is treated as the index, so titles may contain commas.
     const raw = args.join(' ');
-    const parts = raw.split(',').map(function (s) { return s.trim(); });
-    const baseTitle = parts[0] || 'Tabs';
-    let defaultIndex = parseInt(parts[1], 10);
+    let baseTitle = raw;
+    let defaultIndex = NaN;
+    const lastComma = raw.lastIndexOf(',');
+    if (lastComma > -1) {
+      const tail = raw.slice(lastComma + 1).trim();
+      if (/^-?\d+$/.test(tail)) {
+        defaultIndex = parseInt(tail, 10);
+        baseTitle = raw.slice(0, lastComma);
+      }
+    }
+    baseTitle = baseTitle.trim() || 'Tabs';
     if (isNaN(defaultIndex)) defaultIndex = 1;
 
-    // Split body into tabs. Hexo doesn't pre-parse <!-- tab --> markers, so we do.
-    const tabPattern = /<!--\s*tab(?:\s+([^>]*?))?\s*-->([\s\S]*?)<!--\s*endtab\s*-->/g;
+    // Split body into tabs. Hexo doesn't pre-parse <!-- tab --> markers, so we
+    // do. The name is non-greedy up-to "-->" (not [^>]*) so names containing
+    // ">" — e.g. "C++ > Rust" — don't silently fail to match.
+    const tabPattern = /<!--\s*tab(?:[ \t]+(.*?))?\s*-->([\s\S]*?)<!--\s*endtab\s*-->/g;
     const tabs = [];
     let m;
     while ((m = tabPattern.exec(content))) {

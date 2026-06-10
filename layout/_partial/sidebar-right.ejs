@@ -223,7 +223,7 @@ var menuChildren = __menu.children, menuHref = __menu.href, menuIcon = __menu.ic
     <section class="side-card tag-card">
       <header class="tag-card__head">
         <h2><%- partial('_partial/icons', { icon: 'flame' }) %>热门标签</h2>
-        <a class="tag-card__more" href="<%- url_for('tags/') %>">
+        <a class="tag-card__more" href="<%- url_for((config.tag_dir || 'tags') + '/') %>">
           <span>查看全部</span>
           <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
         </a>

@@ -18,7 +18,7 @@ if (typeof post !== 'undefined' && post) {
   }
   thumbAlt = post.title || '';
 }
-safeCover = cover ? flatpaper_safe_url(cover, 'image') : '';
+safeCover = cover ? flatpaper_safe_url(url_for(cover), 'image') : '';
 if (safeCover) classes.push('paper-thumb--cover');
 %>
 <div class="<%= classes.join(' ') %>">

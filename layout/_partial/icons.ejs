@@ -5,8 +5,12 @@
   // Simple Icons (CC0, https://simpleicons.org) and render as filled shapes.
   // Usage: partial('_partial/icons', { icon: 'search' })
   // Optional locals: size (default 1em), cls (extra class names).
-  var size = (typeof size !== 'undefined' && size) ? size : '1em';
-  var cls = 'lucide lucide-' + icon + ((typeof cls !== 'undefined' && cls) ? ' ' + cls : '');
+  // All three locals are interpolated into raw SVG attributes (attrs is
+  // emitted unescaped), so restrict them to attribute-safe charsets — a
+  // quote in a configured icon name must not inject attributes.
+  var size = (typeof size !== 'undefined' && size) ? String(size).replace(/[^0-9a-z.%]/gi, '') : '1em';
+  icon = String(icon || '').replace(/[^a-z0-9-]/gi, '');
+  var cls = 'lucide lucide-' + icon + ((typeof cls !== 'undefined' && cls) ? ' ' + String(cls).replace(/[^a-z0-9_ -]/gi, '') : '');
   var brandIcons = { 'x-twitter': 1, steam: 1, bilibili: 1, youtube: 1, facebook: 1, instagram: 1, telegram: 1, weibo: 1, alipay: 1, wechat: 1, paypal: 1 };
   var attrs = brandIcons[icon]
     ? 'xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size +

@@ -3,7 +3,7 @@
     <%
       var w = theme.welcome || {};
       var ctaText = w.cta_text || '开始阅读';
-      var ctaLink = w.cta_link || 'archives/';
+      var ctaLink = w.cta_link || (config.archive_dir || 'archives') + '/';
     %>
     <section class="welcome-card">
       <div class="welcome-thumb<%= w.image ? ' welcome-thumb--image' : '' %>" aria-hidden="true">

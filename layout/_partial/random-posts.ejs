@@ -2,6 +2,7 @@
 var randomLimit = theme.random_posts != null ? parseInt(theme.random_posts, 10) : 5;
 if (isNaN(randomLimit)) randomLimit = 5;
 var randomPoolLimit = parseInt(theme.random_posts_pool, 10);
+if (isNaN(randomPoolLimit)) randomPoolLimit = 0; // 0 / unset = unlimited pool (documented)
 var randomPool = flatpaper_sorted_posts()
   .filter(function (p) { return !page.path || p.path !== page.path; });
 if (randomPoolLimit > 0) {

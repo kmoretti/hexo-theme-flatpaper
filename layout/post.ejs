@@ -136,7 +136,7 @@ var relatedPosts = allPosts
   <section class="related-paper">
     <header class="related-paper__head">
       <h2><%- partial('_partial/icons', { icon: 'link' }) %>相关文章</h2>
-      <a class="related-paper__more" href="<%- url_for('archives/') %>">
+      <a class="related-paper__more" href="<%- url_for((config.archive_dir || 'archives') + '/') %>">
         <span>查看更多</span>
         <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
       </a>
