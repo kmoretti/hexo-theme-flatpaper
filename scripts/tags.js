@@ -75,7 +75,7 @@ hexo.extend.tag.register('note', function (args, content) {
       title = args.join(' ').trim();
     }
     const body = hexo.render.renderSync({ text: content, engine: 'markdown' }).trim();
-    const cls = 'flatpaper-note flatpaper-note--' + type + (title ? ' is-collapsible' : '');
+    const cls = 'flatpaper-note flatpaper-note--' + type;
     if (title) {
       return (
         '<details class="' + cls + '">' +
@@ -154,7 +154,7 @@ hexo.extend.tag.register('tabs', function (args, content) {
       .join('');
 
     return (
-      '<div class="flatpaper-tabs' + (collapsedMode ? ' is-collapsible' : '') + '" data-default="' + defaultIndex + '">' +
+      '<div class="flatpaper-tabs' + (collapsedMode ? ' is-collapsible' : '') + '">' +
       (intro ? '<div class="flatpaper-tabs__intro">' + intro + '</div>' : '') +
       '<div class="flatpaper-tabs__nav" role="tablist">' + navItems + '</div>' +
       '<div class="flatpaper-tabs__panels">' + panels + '</div>' +

@@ -63,8 +63,6 @@
     }
     function openBrandNav() {
       if (!brandNavWrapper || !brandNavToggle) return;
-      var rect = brandNavToggle.getBoundingClientRect();
-      root.style.setProperty('--brand-nav-top', Math.round(rect.bottom + 10) + 'px');
       brandNavWrapper.classList.add('is-open');
       brandNavToggle.setAttribute('aria-expanded', 'true');
     }

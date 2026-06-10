@@ -39,39 +39,9 @@ var siteInfoItems = [
   item.href = siteInfoUrl(entry.href);
   return item;
 }).filter(Boolean);
-function menuChildren(item) {
-  if (!item || typeof item !== 'object' || Array.isArray(item)) return [];
-  var raw = item.item;
-  if (!raw) return [];
-  if (Array.isArray(raw)) {
-    return raw.map(function (child, index) {
-      var isObj = child && typeof child === 'object' && !Array.isArray(child);
-      var childText = isObj ? (child.label || child.name || child.title || ('Item ' + (index + 1))) : String(child);
-      return { label: childText, item: child };
-    });
-  }
-  if (typeof raw === 'object') {
-    return Object.keys(raw).map(function (childLabel) {
-      return { label: childLabel, item: raw[childLabel] };
-    });
-  }
-  return [];
-}
-function menuHref(item) {
-  var isObj = item && typeof item === 'object' && !Array.isArray(item);
-  return isObj ? (item.path || item.href || item.url || item.link || '') : item;
-}
-function menuIcon(item) {
-  return (item && typeof item === 'object' && !Array.isArray(item)) ? item.icon : null;
-}
-function menuText(label, item) {
-  return (item && typeof item === 'object' && !Array.isArray(item)) ? (item.label || item.name || item.title || label) : label;
-}
-function menuActive(href) {
-  var hrefPath = String(href || '');
-  if (!hrefPath) return false;
-  return (hrefPath === '/' && is_home()) || (hrefPath !== '/' && page.path && page.path.indexOf(hrefPath.replace(/^\//, '')) === 0);
-}
+// Menu entry helpers shared with header.ejs — see scripts/menu-helpers.js.
+var __menu = flatpaper_menu_helpers();
+var menuChildren = __menu.children, menuHref = __menu.href, menuIcon = __menu.icon, menuText = __menu.text, menuActive = __menu.active;
 %>
 
 <aside id="paper-sidebar-drawer" class="paper-sidebar paper-sidebar--right" aria-label="侧边栏">

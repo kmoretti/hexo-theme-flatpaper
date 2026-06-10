@@ -57,19 +57,9 @@ body[data-code-theme="simple"] .article-content .highlight td.gutter pre {
   color: var(--muted);
 }
 
-/* Syntax Highlighting overrides for simple theme to ensure good contrast */
-/* We can let it inherit from dark mode but with some adjustments, or just let it use the default code colors.
-   Wait, the default code colors might be dark mode colors!
-   If it's dark mode colors on a light background (var(--paper-warm)), it will be unreadable!
-   In FlatPaper, there is code-light.styl which defines light syntax colors.
-   Let's just use CSS variables or let it inherit the light theme colors when in light mode?
-   Actually, `code-light.styl` explicitly defines `.highlight .keyword { color: #cf222e; }`.
-   If we use `data-code-theme="simple"`, none of `code-light.styl` rules will apply! So it will use `code-dark.styl` rules (which are the default)!
-   Wait, `code-dark.styl` applies to `.article-content .highlight` globally, unless overridden by `body[data-code-theme="..."]`.
-   If `simple` is used on light mode, the text will be dark (`color: var(--ink)`), but the syntax highlighting elements (`.keyword`, etc) will be dark mode colors (like light green, light blue)! They will be unreadable on `var(--paper-warm)` (which is white/gray)!
-*/
-
-/* Syntax highlighting mapping to theme variables for light/dark support */
+/* Syntax highlighting mapped to theme variables: without these overrides the
+   unscoped code-dark.styl token colors would apply, which are unreadable on
+   the simple theme's light background. */
 body[data-code-theme="simple"] .article-content .highlight .comment,
 body[data-code-theme="simple"] .article-content .highlight .quote { color: var(--muted); font-style: italic; }
 
