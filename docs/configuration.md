@@ -147,7 +147,9 @@ search:
   limit: 0
 ```
 
-`0` or empty means all posts. Set a number to limit the inline search index to the latest N posts.
+`0` or empty means all posts. Set a number to limit the search index to the latest N posts.
+
+The index is generated at build time as a standalone `flatpaper-search.json` at the site root and fetched lazily when the search panel first opens — it is not inlined into pages.
 
 Users can open search from the header or with `Ctrl+K` / `Cmd+K`.
 

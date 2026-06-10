@@ -253,13 +253,39 @@
   var results = document.querySelector('.search-results');
   var indexEl = document.getElementById('flatpaper-post-index');
   var posts = [];
+  // The index lives in a standalone JSON file (scripts/search-index.js) and is
+  // fetched on first open instead of being inlined into every page.
+  var indexState = 'idle'; // idle | loading | ready | error
 
   if (indexEl) {
-    try { posts = JSON.parse(indexEl.textContent.trim() || '[]'); } catch (e) { posts = []; }
+    // Fallback for pages rendered by older theme versions that still inline
+    // the index (e.g. stale CDN-cached HTML served with this newer script).
+    try { posts = JSON.parse(indexEl.textContent.trim() || '[]'); indexState = 'ready'; } catch (e) { posts = []; }
+  }
+
+  function loadIndex() {
+    if (indexState === 'ready' || indexState === 'loading' || !panel) return;
+    var url = panel.getAttribute('data-index-url');
+    if (!url || typeof fetch !== 'function') { indexState = 'error'; return; }
+    indexState = 'loading';
+    fetch(url).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (data) {
+      posts = Array.isArray(data) ? data : [];
+      indexState = 'ready';
+      if (input) render(input.value);
+    }).catch(function () {
+      // Leave state on 'error' so render() can say so; the next openPanel()
+      // retries (loadIndex only short-circuits on ready/loading).
+      indexState = 'error';
+      if (input) render(input.value);
+    });
   }
 
   function openPanel() {
     if (!panel) return;
+    loadIndex();
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
@@ -301,6 +327,15 @@
       empty.className = 'search-empty';
       empty.textContent = '输入关键词后显示匹配的文章';
       results.appendChild(empty);
+      return;
+    }
+    if (indexState !== 'ready') {
+      var pending = document.createElement('p');
+      pending.className = 'search-empty';
+      pending.textContent = indexState === 'error'
+        ? '搜索索引加载失败，请重新打开搜索重试'
+        : '正在加载搜索索引…';
+      results.appendChild(pending);
       return;
     }
     var hits = posts.filter(function (p) {
