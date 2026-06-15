@@ -894,6 +894,8 @@
                 || document.getElementById('artalk-comments')
                 || document.querySelector('.comments-section');
       if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (action === 'scroll-to-top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (action === 'share') {
       var data = { title: document.title, url: location.href };
       if (navigator.share) {
@@ -947,6 +949,27 @@
         window.Fancybox.bind('[data-fancybox="gallery"]');
       }
     });
+  }
+
+  // ---- Back-to-top button: reveal once the reader has scrolled down ----
+  var backToTop = document.querySelector('.back-to-top');
+  if (backToTop) {
+    // Drop the no-JS fallback attribute; visibility is now class-driven so it
+    // can fade rather than snap via display:none.
+    backToTop.hidden = false;
+    var bttThreshold = 600;
+    var bttTicking = false;
+    var syncBackToTop = function () {
+      bttTicking = false;
+      var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+      backToTop.classList.toggle('is-visible', scrolled >= bttThreshold);
+    };
+    window.addEventListener('scroll', function () {
+      if (bttTicking) return;
+      bttTicking = true;
+      window.requestAnimationFrame(syncBackToTop);
+    }, { passive: true });
+    syncBackToTop();
   }
 
   bindGlobalOnce();

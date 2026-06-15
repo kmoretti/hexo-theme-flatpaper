@@ -132,6 +132,10 @@ var relatedPosts = allPosts
 </article>
 </div>
 
+<button type="button" class="back-to-top" data-action="scroll-to-top" aria-label="返回顶部" hidden>
+  <%- partial('_partial/icons', { icon: 'arrow-up' }) %>
+</button>
+
 <% if (relatedPosts.length) { %>
   <section class="related-paper">
     <header class="related-paper__head">
