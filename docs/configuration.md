@@ -121,7 +121,7 @@ Related posts are scored by shared taxonomy:
 
 ## Reactions
 
-Custom reaction buttons are useful for reward/donation QR codes.
+Custom reaction buttons are useful for reward/donation QR codes. Image popovers open on hover or click.
 
 ```yaml
 reactions:

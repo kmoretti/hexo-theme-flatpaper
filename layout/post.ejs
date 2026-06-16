@@ -5,7 +5,7 @@ var tags = page.tags ? page.tags.toArray() : [];
 var relatedCount = (theme.related_posts != null ? theme.related_posts : 3);
 
 // 文章底部互动区的自定义条目（赞赏 / 打赏等）。
-// 当前支持 type: image —— 点击按钮气泡弹出一张图片（通常是收款二维码）。
+// 当前支持 type: image —— hover / 点击按钮气泡弹出一张图片（通常是收款二维码）。
 // align 决定靠左(left)还是靠右(right，默认)；支持配置多个。
 var reactionCfg = theme.reactions || {};
 var customReactions = Array.isArray(reactionCfg.custom) ? reactionCfg.custom : [];

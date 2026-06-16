@@ -63,6 +63,7 @@
 
 /* ---- Custom reward / tip popover ---- */
 .reaction-pop {
+  --reaction-anchor-x: 18px;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -83,7 +84,7 @@
 .reaction-bubble {
   position: absolute;
   bottom: calc(100% + 12px);
-  left: 0;
+  left: var(--reaction-anchor-x);
   /* Above the sticky header (z 20): an open popover scrolling under the
      header should stay readable rather than half-painted. */
   z-index: 30;
@@ -97,11 +98,7 @@
   border-radius: 14px;
   background: var(--paper-warm);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-}
-
-.reaction-pop--right .reaction-bubble {
-  left: auto;
-  right: 0;
+  transform: translateX(-50%);
 }
 
 .reaction-bubble[hidden] {
@@ -113,7 +110,7 @@
   content: "";
   position: absolute;
   top: 100%;
-  left: 18px;
+  left: 50%;
   width: 12px;
   height: 12px;
   margin-top: -7px;
@@ -121,12 +118,7 @@
   border-top: 0;
   border-left: 0;
   background: var(--paper-warm);
-  transform: rotate(45deg);
-}
-
-.reaction-pop--right .reaction-bubble::after {
-  left: auto;
-  right: 18px;
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .reaction-bubble-title {

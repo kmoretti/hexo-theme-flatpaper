@@ -121,7 +121,7 @@ related_posts: 4
 
 ## Reaction 按钮
 
-常用于赞赏 / 打赏二维码。
+常用于赞赏 / 打赏二维码，鼠标 hover 或点击按钮时展示图片弹层。
 
 ```yaml
 reactions:

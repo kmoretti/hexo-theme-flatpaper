@@ -871,16 +871,68 @@
   // Comment button scrolls to whichever comment system is mounted (Twikoo /
   // Artalk), falling back to the wrapping .comments-section. Share button
   // uses the Web Share API and falls back to clipboard copy. Reward buttons
-  // (toggle-pop) open/close a popover bubble holding a custom image (QR code).
+  // (toggle-pop) show a popover bubble holding a custom image (QR code).
+  function setPopOpen(btn, isOpen) {
+    if (!btn) return;
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (!isOpen) btn.removeAttribute('data-pop-pinned');
+    var bubble = btn.parentNode && btn.parentNode.querySelector('.reaction-bubble');
+    if (bubble) bubble.hidden = !isOpen;
+  }
+
   function closeAllPops(except) {
     var open = document.querySelectorAll('.reaction--reward[aria-expanded="true"]');
     for (var i = 0; i < open.length; i++) {
       if (open[i] === except) continue;
-      open[i].setAttribute('aria-expanded', 'false');
-      var b = open[i].parentNode.querySelector('.reaction-bubble');
-      if (b) b.hidden = true;
+      setPopOpen(open[i], false);
     }
   }
+
+  function openPop(btn, pin) {
+    closeAllPops(btn);
+    setPopOpen(btn, true);
+    if (pin) btn.setAttribute('data-pop-pinned', 'true');
+  }
+
+  var rewardPops = document.querySelectorAll('.reaction-pop');
+  for (var rp = 0; rp < rewardPops.length; rp++) {
+    (function (pop) {
+      var btn = pop.querySelector('.reaction--reward[data-action="toggle-pop"]');
+      if (!btn) return;
+      var closeTimer = null;
+
+      function clearCloseTimer() {
+        if (!closeTimer) return;
+        window.clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+
+      function closeIfUnpinned() {
+        clearCloseTimer();
+        closeTimer = window.setTimeout(function () {
+          closeTimer = null;
+          if (btn.getAttribute('data-pop-pinned') === 'true') return;
+          if (pop.contains(document.activeElement)) return;
+          setPopOpen(btn, false);
+        }, 120);
+      }
+
+      pop.addEventListener('mouseenter', function () {
+        clearCloseTimer();
+        openPop(btn, false);
+      });
+
+      pop.addEventListener('mouseleave', closeIfUnpinned);
+
+      pop.addEventListener('focusin', function () {
+        clearCloseTimer();
+        openPop(btn, false);
+      });
+
+      pop.addEventListener('focusout', closeIfUnpinned);
+    })(rewardPops[rp]);
+  }
+
   document.addEventListener('click', function (e) {
     // Clicks inside an open bubble (e.g. the QR image) keep it open.
     if (e.target.closest && e.target.closest('.reaction-bubble')) return;
@@ -906,11 +958,10 @@
         fallbackCopy(location.href);
       }
     } else if (action === 'toggle-pop') {
-      var bubble = btn.parentNode.querySelector('.reaction-bubble');
-      var willOpen = btn.getAttribute('aria-expanded') !== 'true';
-      closeAllPops(btn);
-      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      if (bubble) bubble.hidden = !willOpen;
+      var willOpen = btn.getAttribute('aria-expanded') !== 'true'
+                  || btn.getAttribute('data-pop-pinned') !== 'true';
+      if (willOpen) openPop(btn, true);
+      else setPopOpen(btn, false);
     }
   });
   document.addEventListener('keydown', function (e) {
