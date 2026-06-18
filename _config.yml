@@ -168,12 +168,12 @@ footer:
 #   disabled  去掉所有装饰，保留语义结构
 # icons：是否在正文/标题前显示圆形图标徽章（true | false）
 note:
-  style: flat
+  style: sticky
   icons: true
 
-# 代码块外观主题： dark | sand | light
+# 代码块外观主题： simple | dark | sand | light
 code:
-  theme: dark
+  theme: simple
 
 # Umami 网站统计（https://umami.is）
 # enable 为 true 时，会在每个页面 </head> 前注入 Umami tracker：

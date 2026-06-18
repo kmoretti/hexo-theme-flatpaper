@@ -168,12 +168,12 @@ footer:
 #   disabled  Remove all decoration and keep semantic structure
 # icons: show circular icon badges before body/title (true | false)
 note:
-  style: flat
+  style: sticky
   icons: true
 
-# Code block appearance theme: dark | sand | light
+# Code block appearance theme: simple | dark | sand | light
 code:
-  theme: dark
+  theme: simple
 
 # Umami analytics (https://umami.is)
 # When enable is true, an Umami tracker is injected before </head> on every page:
