@@ -129,10 +129,10 @@
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--paper);
+  background: var(--paper-warm);
   z-index: -1;
   border-radius: 4px;
-  filter: url(#paper-edge) drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+  filter: url(#paper-edge) drop-shadow(var(--paper-shadow));
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
