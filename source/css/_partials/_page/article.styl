@@ -342,6 +342,29 @@
   text-decoration: none;
 }
 
+/* ============== GALLERY ROW ============== */
+.article-content .gallery-preview-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 1.5rem 0;
+}
+
+.article-content .gallery-preview-row figure {
+  margin: 0;
+}
+
+.article-content .gallery-preview-row img {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 720px) {
+  .article-content .gallery-preview-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ============== BACK TO TOP ============== */
 .back-to-top {
   position: fixed;
