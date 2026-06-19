@@ -35,17 +35,24 @@
   gap: 22px;
 }
 
-/* Article-page sidebar: scrolls with the page. Only the TOC sticks once the author card scrolls away. */
-.paper-shell--article .paper-sidebar .toc-card {
+/* Article-page sidebar: scrolls with the page. TOC and article-only cards stick as a group once author cards scroll away. */
+.paper-shell--article .paper-sidebar .post-sticky-stack {
   position: sticky;
   top: 110px;
+  z-index: 2;
   max-height: calc(100dvh - 130px);
+  display: grid;
+  gap: 22px;
+  align-self: start;
+}
+
+.paper-shell--article .paper-sidebar .toc-card {
   display: flex;
   flex-direction: column;
   overflow: visible;
 }
 
-.paper-shell--article .paper-sidebar .toc-card > h2 {
+.paper-shell--article .paper-sidebar .toc-card__head {
   flex-shrink: 0;
 }
 

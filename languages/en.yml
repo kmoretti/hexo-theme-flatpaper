@@ -110,6 +110,9 @@ welcome:
 toc:
   title: Table of contents
   empty: The table of contents is generated from post headings.
+  expand_all: Expand all headings
+  collapse_all: Collapse headings
 
 sidebar:
   hot_tags: Popular tags
+  latest_posts: Latest posts

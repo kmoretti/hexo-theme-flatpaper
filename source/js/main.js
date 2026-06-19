@@ -715,14 +715,56 @@
   // ---- TOC scrollspy ----
   (function () {
     var tocEl = document.querySelector('.toc-content');
-    if (!tocEl || !('IntersectionObserver' in window)) return;
+    if (!tocEl) return;
+    var tocCard = tocEl.closest ? tocEl.closest('.toc-card') : document.querySelector('.toc-card');
+    var toggleAll = tocCard ? tocCard.querySelector('[data-action="toggle-toc"]') : null;
     var links = Array.prototype.slice.call(tocEl.querySelectorAll('a[href^="#"]'));
     if (!links.length) return;
+    var tocExpanded = false;
+
+    function setTocToggleLabel() {
+      if (!toggleAll) return;
+      var label = tocExpanded ? t('toc.collapse_all') : t('toc.expand_all');
+      toggleAll.setAttribute('aria-label', label);
+      toggleAll.setAttribute('title', label);
+      toggleAll.setAttribute('aria-pressed', tocExpanded ? 'true' : 'false');
+    }
+
+    function setExpanded(next) {
+      tocExpanded = !!next;
+      if (tocCard) tocCard.classList.toggle('is-expanded', tocExpanded);
+      setTocToggleLabel();
+    }
+
+    function revealActiveBranch(target) {
+      if (!tocCard || tocExpanded) return;
+      tocEl.querySelectorAll('li.is-open').forEach(function (li) {
+        li.classList.remove('is-open');
+      });
+      var li = target && target.closest ? target.closest('li') : null;
+      while (li && tocEl.contains(li)) {
+        li.classList.add('is-open');
+        li = li.parentElement ? li.parentElement.closest('li') : null;
+      }
+    }
+
+    if (toggleAll) {
+      toggleAll.addEventListener('click', function () {
+        setExpanded(!tocExpanded);
+        if (!tocExpanded) {
+          var active = tocEl.querySelector('a.is-active');
+          if (active) revealActiveBranch(active);
+        }
+      });
+    }
+    setExpanded(false);
 
     var byId = {};
     var headings = [];
     links.forEach(function (a) {
-      var id = decodeURIComponent(a.getAttribute('href').slice(1));
+      var rawId = a.getAttribute('href').slice(1);
+      var id;
+      try { id = decodeURIComponent(rawId); } catch (err) { id = rawId; }
       var h = document.getElementById(id);
       if (h) {
         byId[id] = a;
@@ -742,6 +784,7 @@
       var target = byId[id];
       if (!target) return;
       target.classList.add('is-active');
+      revealActiveBranch(target);
       // Keep the active link inside the visible scroll area of the TOC
       var linkTop = target.offsetTop;
       var linkBottom = linkTop + target.offsetHeight;
@@ -763,6 +806,16 @@
       });
       if (top) activate(top.id);
     }
+
+    if (location.hash) {
+      var hashId;
+      try { hashId = decodeURIComponent(location.hash.slice(1)); } catch (err) { hashId = location.hash.slice(1); }
+      if (byId[hashId]) activate(hashId);
+    } else {
+      activate(headings[0].id);
+    }
+
+    if (!('IntersectionObserver' in window)) return;
 
     var nearBottom = false;
     function atPageEnd() {

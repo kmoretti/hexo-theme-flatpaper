@@ -124,12 +124,16 @@ welcome:
 excerpt_length: 96
 random_posts: 5
 random_posts_pool: 100
+latest_posts:
+  enable: false
+  limit: 5
 related_posts: 4
 ```
 
 - `excerpt_length`：没有 `<!-- more -->` 时的摘要截断长度。
 - `random_posts`：侧栏随机文章数量，`0` 禁用。
 - `random_posts_pool`：从最新 N 篇文章中抽取候选，`0` 或留空表示不限。
+- `latest_posts`：文章页侧栏 TOC 下方的最新文章组件，默认关闭；`limit` 默认 `5`。
 - `related_posts`：相关文章数量，`0` 禁用整块。
 
 相关文章评分：

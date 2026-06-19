@@ -124,12 +124,16 @@ welcome:
 excerpt_length: 96
 random_posts: 5
 random_posts_pool: 100
+latest_posts:
+  enable: false
+  limit: 5
 related_posts: 4
 ```
 
 - `excerpt_length`: fallback excerpt length when `<!-- more -->` is absent.
 - `random_posts`: sidebar random post count. `0` disables the card.
 - `random_posts_pool`: latest-post candidate pool. `0` or empty means unlimited.
+- `latest_posts`: latest-post card below the post TOC in the article sidebar. Disabled by default; `limit` defaults to `5`.
 - `related_posts`: related-post card count. `0` disables the block.
 
 Related posts are scored by shared taxonomy:

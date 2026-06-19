@@ -105,6 +105,10 @@ excerpt_length: 96
 random_posts: 5
 # 随机文章候选池大小；从生成期最新 N 篇中抽取，0 或留空表示不限
 random_posts_pool: 100
+# 文章页侧栏 TOC 下方的最新文章组件；默认关闭。limit 默认为 5。
+latest_posts:
+  enable: false
+  limit: 5
 # 文章页底部"相关文章"展示数量；0 表示禁用；不配置则默认 3 篇
 related_posts: 4
 

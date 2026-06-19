@@ -16,8 +16,54 @@
   transform: rotate(7deg);
 }
 
-.toc-card > h2 {
+.toc-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 14px;
+}
+
+.toc-card__head h2 {
+  margin: 0;
+}
+
+.toc-toggle-all {
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  padding: 0;
+  border: 1px dashed var(--line);
+  border-radius: 50%;
+  background: unquote('color-mix(in srgb, var(--paper) 82%, transparent)');
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.16s ease, border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+}
+
+.toc-toggle-all .lucide {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.18s ease;
+}
+
+.toc-toggle-all:hover {
+  color: var(--color-accent-strong);
+  border-color: var(--color-accent);
+  background: unquote('color-mix(in srgb, var(--color-accent) 10%, var(--paper))');
+}
+
+.dark-mode .toc-toggle-all:hover {
+  color: var(--color-accent-muted);
+}
+
+.toc-card.is-expanded .toc-toggle-all .lucide {
+  transform: rotate(180deg);
 }
 
 .toc-content {
@@ -111,6 +157,11 @@
   margin-top: 2px;
   margin-bottom: 2px;
   font-size: 12.5px;
+}
+
+.toc-card:not(.is-expanded) .toc-content li:not(.is-open) > ol,
+.toc-card:not(.is-expanded) .toc-content li:not(.is-open) > ul {
+  display: none;
 }
 
 .toc-content ol ol a,

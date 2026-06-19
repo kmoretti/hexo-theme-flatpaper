@@ -110,6 +110,9 @@ welcome:
 toc:
   title: 文章目录
   empty: 目录会根据文章标题自动生成。
+  expand_all: 展开全部目录
+  collapse_all: 收起全部目录
 
 sidebar:
   hot_tags: 热门标签
+  latest_posts: 最新文章

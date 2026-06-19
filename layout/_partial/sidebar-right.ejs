@@ -198,16 +198,24 @@ var menuChildren = __menu.children, menuHref = __menu.href, menuIcon = __menu.ic
   <% } %>
 
   <% if (is_post()) { %>
-    <section class="side-card toc-card">
-      <h2><%- partial('_partial/icons', { icon: 'table-of-contents' }) %><%= flatpaper_i18n('toc.title') %></h2>
-      <div class="toc-content">
-        <% if (typeof toc === 'function') { %>
-          <%- toc(page.content, { list_number: false, min_depth: 2, max_depth: 3 }) %>
-        <% } else { %>
-          <p><%= flatpaper_i18n('toc.empty') %></p>
-        <% } %>
-      </div>
-    </section>
+    <div class="post-sticky-stack">
+      <section class="side-card toc-card">
+        <header class="toc-card__head">
+          <h2><%- partial('_partial/icons', { icon: 'table-of-contents' }) %><%= flatpaper_i18n('toc.title') %></h2>
+          <button type="button" class="toc-toggle-all" data-action="toggle-toc" aria-pressed="false" aria-label="<%= flatpaper_i18n('toc.expand_all') %>" title="<%= flatpaper_i18n('toc.expand_all') %>">
+            <%- partial('_partial/icons', { icon: 'chevron-down' }) %>
+          </button>
+        </header>
+        <div class="toc-content">
+          <% if (typeof toc === 'function') { %>
+            <%- toc(page.content, { list_number: false, min_depth: 2, max_depth: 3 }) %>
+          <% } else { %>
+            <p><%= flatpaper_i18n('toc.empty') %></p>
+          <% } %>
+        </div>
+      </section>
+      <%- partial('_partial/latest-posts') %>
+    </div>
   <% } else { %>
     <section class="side-card categories-card">
       <h2><%- partial('_partial/icons', { icon: 'folder' }) %><%= flatpaper_i18n('common.categories') %></h2>

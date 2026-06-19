@@ -105,6 +105,10 @@ excerpt_length: 96
 random_posts: 5
 # Random post candidate pool size. Pick from the latest N posts at generation time; 0 or empty means unlimited.
 random_posts_pool: 100
+# Latest-post card below the post TOC in the article sidebar. Disabled by default; limit defaults to 5.
+latest_posts:
+  enable: false
+  limit: 5
 # Number of related posts at the bottom of posts. 0 disables it; unset defaults to 3.
 related_posts: 4
 
