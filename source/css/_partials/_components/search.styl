@@ -89,7 +89,7 @@ body.no-scroll {
   padding: 0 16px;
   height: 48px;
   border: 2px dashed var(--dash);
-  border-radius: 999px;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   background: var(--paper-warm);
   transition: border-color 0.2s ease;
 }
@@ -123,10 +123,12 @@ body.no-scroll {
 }
 
 .search-results {
-  margin-top: 16px;
+  margin-top: 10px;
+  margin-left: -8px;
+  margin-right: -4px;
   max-height: 52vh;
   overflow-y: auto;
-  padding: 2px 4px 0 0;
+  padding: 8px;
 }
 
 .search-empty {
@@ -141,9 +143,9 @@ body.no-scroll {
   grid-template-columns: 1fr auto;
   column-gap: 12px;
   padding: 12px 14px;
-  margin-bottom: 8px;
-  border: 1px solid transparent;
-  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px dashed var(--dash);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   color: var(--ink);
   background: var(--paper-warm);
   transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
@@ -152,7 +154,8 @@ body.no-scroll {
 .search-result:hover {
   border-color: var(--color-accent);
   background: var(--color-accent-soft);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.01) rotate(0.5deg);
+  box-shadow: var(--soft-shadow);
 }
 
 .search-result strong {
@@ -180,14 +183,16 @@ body.no-scroll {
 }
 
 .search-result mark {
-  padding: 0 2px;
-  border-radius: 3px;
-  background: rgba(241, 193, 84, 0.45);
-  color: inherit;
+  padding: 0 4px;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  background-color: var(--tape-yellow);
+  background-image: var(--tape-stripes);
+  color: var(--ink);
 }
 
 .dark-mode .search-result mark {
-  background: rgba(241, 193, 84, 0.32);
+  background-color: var(--tape-yellow);
+  color: var(--ink);
 }
 
 @media (max-width: 600px) {
