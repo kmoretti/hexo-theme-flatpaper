@@ -44,8 +44,9 @@
 .dot {
   width: 9px;
   height: 9px;
-  border-radius: 50%;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   background: var(--color-accent);
+  transform: rotate(-10deg);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -64,7 +65,7 @@
 }
 
 .categories-card a:hover .dot {
-  transform: scale(1.24);
+  transform: rotate(5deg) scale(1.24);
   box-shadow: 0 0 0 4px rgba(111, 166, 124, 0.14);
 }
 
