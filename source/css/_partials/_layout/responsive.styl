@@ -148,12 +148,15 @@
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s ease, border-radius 0.16s ease;
   }
 
   .brand-link-list a:hover {
     color: var(--color-accent-strong);
-    background: var(--color-accent-soft);
+    background-color: var(--color-accent-soft);
+    background-image: var(--nav-tape-stripes);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    transform: scale(1.02) rotate(-1deg);
   }
 
   .brand-link-list a .lucide,
@@ -177,7 +180,6 @@
 
   .dark-mode .brand-link-list a:hover {
     color: var(--color-accent-muted);
-    background: var(--color-accent-soft);
   }
 
   .site-nav-drawer {
