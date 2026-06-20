@@ -147,6 +147,11 @@ tags:
 links:
   style: paper
 
+# 图标按钮样式： circle（默认圆形，1px 虚线）| tape（手帐贴纸：墨团圆角、手贴歪斜、悬停胶带斜纹）
+# 作用于：顶栏 logo/汉堡/搜索/调色盘/明暗切换、社交链接、文章反应按钮、TOC 折叠、搜索关闭、窄屏抽屉关闭
+buttons:
+  style: circle
+
 # 首页轮播置顶（最多 4 项；按文章 slug / 路径 / 标题任一匹配）
 featured:
   # - hello-world

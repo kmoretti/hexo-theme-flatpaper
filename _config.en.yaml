@@ -147,6 +147,13 @@ tags:
 links:
   style: paper
 
+# Icon button style: circle (default round, 1px dashed) | tape (scrapbook: ink-blob
+# corners, hand-placed tilt, washi-tape stripes on hover)
+# Applies to: header logo/menu/search/palette/theme toggle, social links, post
+# reaction buttons, TOC toggle, search close, and the narrow-screen drawer close.
+buttons:
+  style: circle
+
 # Featured posts on the home carousel. Up to 4 items; match by post slug, path, or title.
 featured:
   # - hello-world

@@ -25,6 +25,8 @@ if (['dark', 'sand', 'light', 'simple'].indexOf(codeTheme) === -1) codeTheme = '
 var noteStyle = theme.note && theme.note.style ? String(theme.note.style).toLowerCase() : 'flat';
 if (['flat', 'simple', 'modern', 'sticky', 'paper', 'disabled'].indexOf(noteStyle) === -1) noteStyle = 'flat';
 var noteIcons = !(theme.note && theme.note.icons === false);
+var buttonStyle = theme.buttons && theme.buttons.style ? String(theme.buttons.style).toLowerCase() : 'circle';
+if (['circle', 'tape'].indexOf(buttonStyle) === -1) buttonStyle = 'circle';
 %>
 <body
   class="<%= is_post() ? 'is-post' : (is_home() ? 'is-home' : 'is-list') %><%= tapeDisabled ? ' tape-disabled' : '' %> tag-style-<%= tagStyle %>"
@@ -32,6 +34,7 @@ var noteIcons = !(theme.note && theme.note.icons === false);
   data-code-theme="<%= codeTheme %>"
   data-note-style="<%= noteStyle %>"
   data-note-icons="<%= noteIcons ? 'on' : 'off' %>"
+  data-button-style="<%= buttonStyle %>"
 >
   <div class="page-grain"></div>
   <svg width="0" height="0" style="position:absolute;z-index:-1;" aria-hidden="true">
