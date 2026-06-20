@@ -292,7 +292,7 @@
     max-width: 100vw;
     max-height: none;
     padding: 14px 18px 26px;
-    background: var(--paper);
+    background: var(--bg);
     border-right: 2px dashed var(--dash);
     box-shadow: 12px 0 28px rgba(60, 44, 22, 0.18);
     transform: translateX(-100%);
@@ -304,6 +304,20 @@
   .paper-shell > .paper-sidebar--right.is-open,
   .paper-shell:not(.paper-shell--article) > .paper-sidebar--right.is-open {
     transform: translateX(0);
+  }
+
+  /* The drawer is transform-positioned, which knocks the filtered z-index:-1
+     paper pseudo (.side-card::after) out of view inside it. Keep the direct
+     card surface aligned with the regular sidebar paper color. */
+  .paper-sidebar--right .side-card {
+    background: var(--paper);
+    border: 1px dashed var(--dash);
+    border-radius: 4px;
+    box-shadow: var(--soft-shadow);
+  }
+
+  .paper-sidebar--right .side-card::after {
+    display: none;
   }
 
   .paper-shell {
