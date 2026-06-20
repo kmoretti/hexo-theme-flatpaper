@@ -234,7 +234,7 @@ Placeholders:
 
 ```yaml
 note:
-  style: paper
+  style: sticky
   icons: true
 ```
 
@@ -244,7 +244,6 @@ note:
 - `simple`: left accent strip and thin border
 - `modern`: filled rounded box without left strip
 - `sticky`: sticky-note style with square corners and top tape
-- `paper`: scrapbook collage with hand-drawn dashed borders and dynamic tape
 - `disabled`: removes decorative chrome but keeps semantic structure
 
 `icons: false` removes the circular icon badge.

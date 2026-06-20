@@ -231,7 +231,7 @@ footer:
 
 ```yaml
 note:
-  style: paper
+  style: sticky
   icons: true
 ```
 
@@ -241,7 +241,6 @@ note:
 - `simple`：左侧色条 + 细边框
 - `modern`：填充式圆角盒，无左侧色条
 - `sticky`：便签贴纸，直角、右下微阴影加顶部胶带
-- `paper`：手帐拼贴，手绘虚线边框、倾斜效果及彩色胶带
 - `disabled`：去掉装饰，仅保留语义结构
 
 `icons: false` 会隐藏圆形图标徽章。

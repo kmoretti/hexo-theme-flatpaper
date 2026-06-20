@@ -185,11 +185,10 @@ footer:
 #   simple    No background, only solid left bar + thin border
 #   modern    Fully filled rounded box with no left bar
 #   sticky    Sticky-note style: square corners, subtle lower-right shadow, centered top tape
-#   paper     Scrapbook collage: hand-drawn dashed borders, random tilt, and dynamic theme-colored tape
 #   disabled  Remove all decoration and keep semantic structure
 # icons: show circular icon badges before body/title (true | false)
 note:
-  style: paper
+  style: sticky
   icons: true
 
 # Code block appearance theme: simple | dark | sand | light
