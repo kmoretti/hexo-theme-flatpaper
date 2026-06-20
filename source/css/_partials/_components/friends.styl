@@ -209,8 +209,8 @@ img.friend-card__avatar {
   font-size: 13px;
 }
 
-/* --- Paper Style Friend Cards --- */
-.friend-card--paper {
+/* --- Tape Style Friend Cards --- */
+.friend-card--tape {
   z-index: 1;
   --friend-tape-top: -8px;
   --friend-tape-left: 25%;
@@ -221,11 +221,11 @@ img.friend-card__avatar {
   --friend-tape-color: var(--tape-yellow);
 }
 
-.friend-card--paper:hover {
+.friend-card--tape:hover {
   z-index: 10;
 }
 
-.friend-card--paper .friend-card__link {
+.friend-card--tape .friend-card__link {
   border: 1px dashed var(--dash);
   border-radius: 2px;
   background: var(--paper-warm);
@@ -233,26 +233,26 @@ img.friend-card__avatar {
   transform-origin: center top;
 }
 
-.friend-card--paper:nth-child(even) .friend-card__link {
+.friend-card--tape:nth-child(even) .friend-card__link {
   transform: rotate(0.6deg);
 }
 
-.friend-card--paper:nth-child(odd) .friend-card__link {
+.friend-card--tape:nth-child(odd) .friend-card__link {
   transform: rotate(-0.6deg);
 }
 
-.friend-card--paper .friend-card__link:hover {
+.friend-card--tape .friend-card__link:hover {
   transform: translateY(-4px) scale(1.02) rotate(0deg);
   border-color: var(--color-accent);
   box-shadow: 0 10px 22px rgba(82, 64, 38, 0.15);
 }
 
-.dark-mode .friend-card--paper .friend-card__link:hover {
+.dark-mode .friend-card--tape .friend-card__link:hover {
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
 }
 
-/* Scrapbook tape for paper cards */
-.friend-card--paper::after {
+/* Scrapbook tape for tape-style cards */
+.friend-card--tape::after {
   content: "";
   position: absolute;
   top: var(--friend-tape-top);
@@ -273,11 +273,11 @@ img.friend-card__avatar {
 }
 
 /* Lift the tape in step with the card on hover. */
-.friend-card--paper:hover::after {
+.friend-card--tape:hover::after {
   transform: translateY(-4px) rotate(var(--friend-tape-rotate));
 }
 
-.friend-card--paper:nth-child(even)::after {
+.friend-card--tape:nth-child(even)::after {
   --friend-tape-top: -8px;
   --friend-tape-left: auto;
   --friend-tape-right: 25%;
@@ -285,28 +285,28 @@ img.friend-card__avatar {
   --friend-tape-color: var(--tape-blue);
 }
 
-.friend-card--paper:nth-child(4n+1)::after {
+.friend-card--tape:nth-child(4n+1)::after {
   --friend-tape-color: var(--tape-yellow);
 }
 
-.friend-card--paper:nth-child(4n+2)::after {
+.friend-card--tape:nth-child(4n+2)::after {
   --friend-tape-color: var(--tape-blue);
 }
 
-.friend-card--paper:nth-child(4n+3)::after {
+.friend-card--tape:nth-child(4n+3)::after {
   --friend-tape-top: -7px;
   --friend-tape-width: 34px;
   --friend-tape-rotate: -4deg;
   --friend-tape-color: var(--tape-pink);
 }
 
-.friend-card--paper:nth-child(4n)::after {
+.friend-card--tape:nth-child(4n)::after {
   --friend-tape-top: -7px;
   --friend-tape-width: 36px;
   --friend-tape-rotate: 4deg;
   --friend-tape-color: var(--tape-green);
 }
 
-.tape-disabled .friend-card--paper::after {
+.tape-disabled .friend-card--tape::after {
   display: none;
 }

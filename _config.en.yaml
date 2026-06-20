@@ -143,9 +143,9 @@ search:
 tags:
   style: tape
 
-# Friend links style: default | paper
+# Friend links style: default | tape
 links:
-  style: paper
+  style: tape
 
 # Icon button style: circle (default round, 1px dashed) | tape (scrapbook: ink-blob
 # corners, hand-placed tilt, washi-tape stripes on hover)
