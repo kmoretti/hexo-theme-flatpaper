@@ -202,7 +202,7 @@
     font-size: 15px;
     text-align: left;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-radius 0.2s ease;
   }
 
   .site-nav-drawer a .lucide,
@@ -218,7 +218,10 @@
   .drawer-nav-parent:hover,
   .drawer-nav-group.active > .drawer-nav-parent {
     color: var(--color-accent-strong);
-    background: var(--color-accent-soft);
+    background-color: var(--color-accent-soft);
+    background-image: var(--tape-stripes);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    transform: scale(1.02) rotate(-1deg);
   }
 
   .site-nav-drawer a:hover .lucide,
