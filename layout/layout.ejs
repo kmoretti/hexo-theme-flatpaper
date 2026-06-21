@@ -31,9 +31,11 @@ var noteIcons = !(theme.note && theme.note.icons === false);
 var buttonStyle = theme.buttons && theme.buttons.style ? String(theme.buttons.style).toLowerCase() : 'circle';
 if (['circle', 'tape'].indexOf(buttonStyle) === -1) buttonStyle = 'circle';
 var strongAccent = !(theme.article && theme.article.strong_accent === false);
+var homeHero = theme.home_hero || {};
+var homeHeroEnabled = is_home() && (!page.current || page.current === 1) && homeHero.enable === true;
 %>
 <body
-  class="<%= is_post() ? 'is-post' : (isNotFoundPage ? 'is-404' : (is_home() ? 'is-home' : 'is-list')) %><%= tapeDisabled ? ' tape-disabled' : '' %> tag-style-<%= tagStyle %>"
+  class="<%= is_post() ? 'is-post' : (isNotFoundPage ? 'is-404' : (is_home() ? 'is-home' : 'is-list')) %><%= tapeDisabled ? ' tape-disabled' : '' %><%= homeHeroEnabled ? ' has-home-hero is-hero-active' : '' %> tag-style-<%= tagStyle %>"
   data-default-accent="<%= accentColor %>"
   data-code-theme="<%= codeTheme %>"
   data-note-style="<%= noteStyle %>"
@@ -50,13 +52,16 @@ var strongAccent = !(theme.article && theme.article.strong_accent === false);
       </filter>
     </defs>
   </svg>
+  <% if (homeHeroEnabled) { %>
+    <%- partial('_partial/home-hero') %>
+  <% } %>
   <%- partial('_partial/header') %>
 
   <%
   // Two-column layout: posts and standalone pages (about / friends / etc.) drop the random-posts rail.
   var isTwoColumn = is_post() || isStandalonePage;
   %>
-  <main class="paper-shell <%= isTwoColumn ? 'paper-shell--article' : '' %>">
+  <main<% if (homeHeroEnabled) { %> id="flatpaper-home-content"<% } %> class="paper-shell <%= isTwoColumn ? 'paper-shell--article' : '' %>">
     <%- partial('_partial/sidebar-right') %>
     <section class="paper-main">
       <%- body %>

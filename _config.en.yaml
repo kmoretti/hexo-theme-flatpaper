@@ -99,6 +99,34 @@ welcome:
   # Supports site-relative paths (such as /images/welcome.jpg under source/) or absolute URLs.
   # image:
 
+# Home opening hero. Disabled by default, so existing sites are unchanged.
+# When enabled, it reuses profile avatar, bio, social links, and RSS unless overridden here.
+home_hero:
+  enable: false
+  # title: My Journal
+  # subtitle: Today
+  # bio: A short note for readers landing here.
+  # avatar: /images/avatar.jpg
+  # avatar_shape: circle
+  # Background image. Leave empty to use the built-in scrapbook paper background.
+  # When set, the image fills the opening screen.
+  # image: /images/hero.jpg
+  # Target for the bouncing bottom arrow. Defaults to the home content.
+  # cta_link: "#flatpaper-home-content"
+  stickers:
+    enable: true
+    draggable: true
+    # Text on the built-in note sticker.
+    # note_text: Today
+    # Custom image stickers. Up to 7 are rendered. link is optional; omit it for draggable decoration only.
+    # items:
+    #   - image: /images/stickers/memo.png
+    #     alt: Journal sticker
+    #     size: 96
+    #   - image: /images/stickers/github.png
+    #     alt: GitHub
+    #     link: https://github.com/yourname
+
 # Maximum excerpt length for home post cards when no <!-- more --> marker is present.
 excerpt_length: 96
 # Number of random posts shown in the sidebar.

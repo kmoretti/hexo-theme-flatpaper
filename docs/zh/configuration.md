@@ -118,6 +118,40 @@ welcome:
 
 `welcome.image` 会把欢迎插画替换为 16:9 封面图；留空则使用 CSS 山景。
 
+## 首页开屏
+
+```yaml
+home_hero:
+  enable: true
+  title: 我的手账
+  subtitle: 今日份记录
+  bio: 写给路过此处的你。
+  avatar: /images/avatar.jpg
+  avatar_shape: circle
+  image: /images/hero.jpg
+  cta_link: "#flatpaper-home-content"
+  stickers:
+    enable: true
+    draggable: true
+    note_text: 今日份
+    items:
+      - image: /images/stickers/memo.png
+        alt: 手账贴纸
+        size: 96
+      - image: /images/stickers/github.png
+        alt: GitHub
+        link: https://github.com/yourname
+```
+
+- 默认 `enable: false`，不会影响已有首页；只在首页分页第 1 页渲染。
+- 未配置 `title`、`subtitle`、`bio`、`avatar` 或社交链接时，会复用站点标题与 `profile` 配置。
+- `image` 留空时使用内置手账纸张背景；设置后图片会铺满整个开屏。
+- 开屏中的社交链接复用 profile 的 `.socials` 样式，也会跟随 `buttons.style` 的配置变化。
+- `stickers.draggable` 为 `true` 时，开屏里的贴纸和胶带可以在页面内随机摆放并拖动，位置会保存在浏览器本地。
+- `stickers.note_text` 可修改内置便签贴纸的文字。
+- `stickers.items` 可添加图片贴纸，最多渲染 7 张；`image` 必填，`link` 可选，`size` 可选并限制在 48 到 180 像素。带 `link` 的贴纸会先弹出访问确认气泡，文案使用 `alt`，例如“要访问 GitHub 吗？”。
+- 底部跳动箭头会滚入首页内容；`cta_link` 可改成其它锚点，并会避开顶部导航遮挡。开屏不会根据滚动距离自动进入首页。
+
 ## 文章相关
 
 ```yaml

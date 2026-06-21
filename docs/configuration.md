@@ -118,6 +118,40 @@ welcome:
 
 `welcome.image` switches the welcome illustration to a 16:9 cover image. Leave it empty to use the CSS mountain scene.
 
+## Home Opening Hero
+
+```yaml
+home_hero:
+  enable: true
+  title: My Journal
+  subtitle: Today
+  bio: A short note for readers landing here.
+  avatar: /images/avatar.jpg
+  avatar_shape: circle
+  image: /images/hero.jpg
+  cta_link: "#flatpaper-home-content"
+  stickers:
+    enable: true
+    draggable: true
+    note_text: Today
+    items:
+      - image: /images/stickers/memo.png
+        alt: Journal sticker
+        size: 96
+      - image: /images/stickers/github.png
+        alt: GitHub
+        link: https://github.com/yourname
+```
+
+- Default is `enable: false`, so existing home pages are unchanged. It renders only on page 1 of the home pagination.
+- When `title`, `subtitle`, `bio`, `avatar`, or social links are omitted, the hero reuses the site title and `profile` config.
+- Leave `image` empty to use the built-in scrapbook paper background. Set it to make the image fill the opening screen.
+- Social links in the hero reuse the profile `.socials` styling and follow the `buttons.style` option.
+- With `stickers.draggable: true`, the hero stickers and tape pieces get randomized and can be dragged around the page. Positions are saved in the visitor's browser.
+- `stickers.note_text` changes the text on the built-in note sticker.
+- `stickers.items` adds image stickers, with a hard limit of 7 rendered items. `image` is required, while `link` is optional. `size` is optional and clamped to 48-180 pixels. Stickers with `link` show a visit confirmation bubble first and use `alt` in the prompt, such as "Visit GitHub?".
+- The bouncing bottom arrow scrolls into the home content. `cta_link` can point to another anchor and offsets for the sticky header. The hero does not auto-enter the home content based on scroll distance.
+
 ## Posts
 
 ```yaml

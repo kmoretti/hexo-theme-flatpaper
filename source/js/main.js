@@ -168,14 +168,14 @@
       });
     }
 
-    var toggle = document.querySelector('.theme-toggle');
-    if (toggle && !toggle.dataset.flatpaperBound) {
+    document.querySelectorAll('.theme-toggle').forEach(function (toggle) {
+      if (!toggle || toggle.dataset.flatpaperBound) return;
       toggle.dataset.flatpaperBound = '1';
       toggle.addEventListener('click', function () {
         root.classList.toggle('dark-mode');
         safeStorage.set('flatpaper-mode', root.classList.contains('dark-mode') ? 'dark' : 'light');
       });
-    }
+    });
 
     document.querySelectorAll('.site-nav-item.has-children').forEach(function (item) {
       var btn = item.querySelector('.site-nav-parent');
@@ -265,6 +265,267 @@
   }
 
   renderRandomPosts();
+
+  // ---- Home hero: scroll affordance and draggable scrapbook stickers ----
+  (function () {
+    var hero = document.querySelector('.home-hero');
+    if (!hero) return;
+    var homeTarget = document.getElementById('flatpaper-home-content');
+    var header = document.querySelector('.site-header');
+    var confirmBubble = null;
+
+    function homeTop() {
+      if (!homeTarget) return hero.offsetTop + hero.offsetHeight;
+      var headerHeight = header ? header.getBoundingClientRect().height : 0;
+      var offset = headerHeight ? headerHeight + 42 : 42;
+      return Math.max(0, homeTarget.getBoundingClientRect().top + window.pageYOffset - offset);
+    }
+
+    function setHeroActive() {
+      var active = window.pageYOffset < (hero.offsetTop + hero.offsetHeight - 80);
+      document.body.classList.toggle('is-hero-active', active);
+    }
+
+    function scrollToHome() {
+      if (!homeTarget) return;
+      closeStickerConfirm();
+      window.scrollTo({ top: homeTop(), behavior: 'smooth' });
+      window.setTimeout(function () {
+        setHeroActive();
+      }, 520);
+    }
+
+    function closeStickerConfirm() {
+      if (!confirmBubble) return;
+      confirmBubble.remove();
+      confirmBubble = null;
+    }
+
+    function openStickerConfirm(sticker) {
+      var href = sticker.getAttribute('href');
+      if (!href) return;
+      var label = sticker.getAttribute('aria-label') || t('home_hero.sticker_image');
+      closeStickerConfirm();
+
+      confirmBubble = document.createElement('div');
+      confirmBubble.className = 'hero-sticker-confirm';
+      confirmBubble.setAttribute('role', 'group');
+      confirmBubble.setAttribute('aria-label', t('home_hero.visit_confirm', label));
+
+      var message = document.createElement('p');
+      message.textContent = t('home_hero.visit_confirm', label);
+      confirmBubble.appendChild(message);
+
+      var actions = document.createElement('div');
+      actions.className = 'hero-sticker-confirm__actions';
+
+      var visit = document.createElement('button');
+      visit.type = 'button';
+      visit.className = 'hero-sticker-confirm__visit';
+      visit.textContent = t('home_hero.visit');
+      visit.addEventListener('click', function () {
+        var target = sticker.getAttribute('target');
+        if (target === '_blank') window.open(href, '_blank', 'noopener');
+        else window.location.href = href;
+      });
+
+      var cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.className = 'hero-sticker-confirm__cancel';
+      cancel.textContent = t('home_hero.cancel');
+      cancel.addEventListener('click', closeStickerConfirm);
+
+      actions.appendChild(visit);
+      actions.appendChild(cancel);
+      confirmBubble.appendChild(actions);
+      hero.appendChild(confirmBubble);
+
+      var heroRect = hero.getBoundingClientRect();
+      var stickerRect = sticker.getBoundingClientRect();
+      var bubbleRect = confirmBubble.getBoundingClientRect();
+      var left = stickerRect.left - heroRect.left + (stickerRect.width / 2) - (bubbleRect.width / 2);
+      var top = stickerRect.top - heroRect.top - bubbleRect.height - 12;
+      left = clamp(left, 12, hero.clientWidth - bubbleRect.width - 12);
+      if (top < 12) top = stickerRect.bottom - heroRect.top + 12;
+      top = clamp(top, 12, hero.clientHeight - bubbleRect.height - 12);
+      confirmBubble.style.left = left + 'px';
+      confirmBubble.style.top = top + 'px';
+      visit.focus({ preventScroll: true });
+    }
+
+    var scrollLinks = hero.querySelectorAll('[data-hero-scroll]');
+    scrollLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        var href = link.getAttribute('href') || '';
+        if (href.charAt(0) !== '#') return;
+        var target = document.getElementById(href.slice(1));
+        if (!target) return;
+        event.preventDefault();
+        scrollToHome();
+      });
+    });
+
+    var stickers = Array.prototype.slice.call(hero.querySelectorAll('[data-hero-sticker]'));
+    window.addEventListener('scroll', function () {
+      setHeroActive();
+    }, { passive: true });
+    setHeroActive();
+
+    if (!stickers.length || !hero.classList.contains('has-draggable-stickers')) return;
+
+    function stickerStorageKey(sticker, index) {
+      return 'flatpaper-hero-sticker-' + (sticker.getAttribute('data-hero-sticker') || index);
+    }
+
+    function persistStickerPosition(sticker, key, rotate) {
+      var heroRect = hero.getBoundingClientRect();
+      var rect = sticker.getBoundingClientRect();
+      var x = clamp(rect.left - heroRect.left, 0, Math.max(0, hero.clientWidth - sticker.offsetWidth));
+      var y = clamp(rect.top - heroRect.top, 0, Math.max(0, hero.clientHeight - sticker.offsetHeight));
+      safeStorage.set(key, JSON.stringify({ x: x, y: y, rotate: rotate }));
+    }
+
+    function randomizeSticker(sticker, key, force) {
+      if (!force && safeStorage.get(key)) return;
+      var zones = [
+        { leftMin: 4, leftMax: 19, topMin: 8, topMax: 78 },
+        { leftMin: 78, leftMax: 90, topMin: 8, topMax: 78 },
+        { leftMin: 20, leftMax: 72, topMin: 6, topMax: 20 },
+        { leftMin: 20, leftMax: 72, topMin: 76, topMax: 88 }
+      ];
+      var zone = zones[Math.floor(Math.random() * zones.length)];
+      var left = zone.leftMin + Math.random() * (zone.leftMax - zone.leftMin);
+      var top = zone.topMin + Math.random() * (zone.topMax - zone.topMin);
+      var rotate = -18 + Math.random() * 36;
+      sticker.style.left = left + '%';
+      sticker.style.top = top + '%';
+      sticker.style.right = 'auto';
+      sticker.style.bottom = 'auto';
+      sticker.style.transform = 'rotate(' + rotate.toFixed(1) + 'deg)';
+      if (force) persistStickerPosition(sticker, key, rotate);
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    stickers.forEach(function (sticker, index) {
+      var key = stickerStorageKey(sticker, index);
+      var saved = safeStorage.get(key);
+      if (saved) {
+        try {
+          var pos = JSON.parse(saved);
+          if (typeof pos.x === 'number' && typeof pos.y === 'number') {
+            var savedX = clamp(pos.x, 0, Math.max(0, hero.clientWidth - sticker.offsetWidth));
+            var savedY = clamp(pos.y, 0, Math.max(0, hero.clientHeight - sticker.offsetHeight));
+            sticker.style.left = savedX + 'px';
+            sticker.style.top = savedY + 'px';
+            sticker.style.right = 'auto';
+            sticker.style.bottom = 'auto';
+            if (typeof pos.rotate === 'number') {
+              sticker.style.transform = 'rotate(' + pos.rotate + 'deg)';
+            }
+          }
+        } catch (e) {
+          randomizeSticker(sticker, key);
+        }
+      } else {
+        randomizeSticker(sticker, key);
+      }
+
+      var state = null;
+      sticker.addEventListener('click', function (event) {
+        if (sticker.dataset.heroDragged === '1') {
+          event.preventDefault();
+          event.stopPropagation();
+          delete sticker.dataset.heroDragged;
+          return;
+        }
+        if (sticker.matches && sticker.matches('a.hero-sticker--custom[href]')) {
+          event.preventDefault();
+          event.stopPropagation();
+          openStickerConfirm(sticker);
+        }
+      });
+
+      sticker.addEventListener('pointerdown', function (event) {
+        if (event.button !== 0 && event.pointerType === 'mouse') return;
+        var heroRect = hero.getBoundingClientRect();
+        var rect = sticker.getBoundingClientRect();
+        state = {
+          offsetX: event.clientX - rect.left,
+          offsetY: event.clientY - rect.top,
+          startX: event.clientX,
+          startY: event.clientY,
+          rotate: -18 + Math.random() * 36,
+          moved: false
+        };
+        sticker.style.transform = 'rotate(' + state.rotate.toFixed(1) + 'deg)';
+        sticker.style.left = (rect.left - heroRect.left) + 'px';
+        sticker.style.top = (rect.top - heroRect.top) + 'px';
+        sticker.style.right = 'auto';
+        sticker.style.bottom = 'auto';
+        sticker.style.zIndex = '6';
+        sticker.classList.add('is-dragging');
+        if (sticker.setPointerCapture) sticker.setPointerCapture(event.pointerId);
+      });
+
+      sticker.addEventListener('pointermove', function (event) {
+        if (!state) return;
+        if (Math.abs(event.clientX - state.startX) > 3 || Math.abs(event.clientY - state.startY) > 3) {
+          state.moved = true;
+        }
+        var heroRect = hero.getBoundingClientRect();
+        var maxX = hero.clientWidth - sticker.offsetWidth;
+        var maxY = hero.clientHeight - sticker.offsetHeight;
+        var x = clamp(event.clientX - heroRect.left - state.offsetX, 0, maxX);
+        var y = clamp(event.clientY - heroRect.top - state.offsetY, 0, maxY);
+        sticker.style.left = x + 'px';
+        sticker.style.top = y + 'px';
+        if (state.moved) event.preventDefault();
+      });
+
+      function endDrag(event) {
+        if (!state) return;
+        var x = parseFloat(sticker.style.left) || 0;
+        var y = parseFloat(sticker.style.top) || 0;
+        sticker.style.zIndex = '';
+        sticker.classList.remove('is-dragging');
+        safeStorage.set(key, JSON.stringify({ x: x, y: y, rotate: state.rotate }));
+        if (state.moved) sticker.dataset.heroDragged = '1';
+        if (sticker.releasePointerCapture && event && event.pointerId != null) {
+          try { sticker.releasePointerCapture(event.pointerId); } catch (e) {}
+        }
+        state = null;
+      }
+
+      sticker.addEventListener('pointerup', endDrag);
+      sticker.addEventListener('pointercancel', endDrag);
+    });
+
+    var shuffleButton = hero.querySelector('.js-hero-shuffle');
+    if (shuffleButton) {
+      shuffleButton.addEventListener('click', function () {
+        closeStickerConfirm();
+        stickers.forEach(function (sticker, index) {
+          delete sticker.dataset.heroDragged;
+          sticker.style.zIndex = '';
+          sticker.classList.remove('is-dragging');
+          randomizeSticker(sticker, stickerStorageKey(sticker, index), true);
+        });
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      if (!confirmBubble) return;
+      if (confirmBubble.contains(event.target)) return;
+      if (event.target.closest && event.target.closest('a.hero-sticker--custom[href]')) return;
+      closeStickerConfirm();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeStickerConfirm();
+    });
+  })();
 
   // ---- Search popover ----
   var panel = document.querySelector('.search-panel');
