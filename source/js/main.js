@@ -290,7 +290,7 @@
     function homeTop() {
       if (!homeTarget) return hero.offsetTop + hero.offsetHeight;
       var headerHeight = header ? header.getBoundingClientRect().height : 0;
-      var offset = headerHeight ? headerHeight + 42 : 42;
+      var offset = headerHeight ? headerHeight + 60 : 60;
       return Math.max(0, homeTarget.getBoundingClientRect().top + window.pageYOffset - offset);
     }
 
