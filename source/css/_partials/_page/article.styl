@@ -176,6 +176,14 @@
   color: var(--ink-soft);
 }
 
+body[data-strong-accent="on"] .article-content :is(strong, b) {
+  color: var(--color-accent-strong);
+}
+
+.dark-mode[data-strong-accent="on"] .article-content :is(strong, b) {
+  color: var(--color-accent-muted);
+}
+
 .article-content a:not(.heading-anchor) {
   position: relative;
   top: 0;

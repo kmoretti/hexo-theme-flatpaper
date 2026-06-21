@@ -128,6 +128,8 @@ latest_posts:
   enable: false
   limit: 5
 related_posts: 4
+article:
+  strong_accent: true
 ```
 
 - `excerpt_length`：没有 `<!-- more -->` 时的摘要截断长度。
@@ -135,6 +137,7 @@ related_posts: 4
 - `random_posts_pool`：从最新 N 篇文章中抽取候选，`0` 或留空表示不限。
 - `latest_posts`：文章页侧栏 TOC 下方的最新文章组件，默认关闭；`limit` 默认 `5`。
 - `related_posts`：相关文章数量，`0` 禁用整块。
+- `article.strong_accent`：文章正文中的加粗文本使用主题色；设为 `false` 时只保留默认加粗。
 
 相关文章评分：
 

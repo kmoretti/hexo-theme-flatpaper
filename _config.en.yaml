@@ -112,6 +112,10 @@ latest_posts:
 # Number of related posts at the bottom of posts. 0 disables it; unset defaults to 3.
 related_posts: 4
 
+# Whether bold text in article content uses the accent color. Set false to keep plain bold only.
+article:
+  strong_accent: true
+
 # Custom action items appended to the post reaction row (comments / share), commonly used for rewards or tips.
 # Hovering or clicking the button opens a bubble with an image, usually a payment QR code. Multiple items are supported.
 # Fields:

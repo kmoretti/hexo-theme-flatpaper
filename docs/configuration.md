@@ -128,6 +128,8 @@ latest_posts:
   enable: false
   limit: 5
 related_posts: 4
+article:
+  strong_accent: true
 ```
 
 - `excerpt_length`: fallback excerpt length when `<!-- more -->` is absent.
@@ -135,6 +137,7 @@ related_posts: 4
 - `random_posts_pool`: latest-post candidate pool. `0` or empty means unlimited.
 - `latest_posts`: latest-post card below the post TOC in the article sidebar. Disabled by default; `limit` defaults to `5`.
 - `related_posts`: related-post card count. `0` disables the block.
+- `article.strong_accent`: uses the accent color for bold text inside article content. Set `false` to keep plain bold text.
 
 Related posts are scored by shared taxonomy:
 
