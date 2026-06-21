@@ -88,6 +88,7 @@ navigation:
   primary: Primary navigation
   mobile: Mobile navigation
   brand_home: FlatPaper home
+  brand_menu: Open site navigation
   open_sidebar: Open sidebar
   close_sidebar: Close sidebar
   sidebar: Sidebar

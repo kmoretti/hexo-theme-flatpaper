@@ -11,7 +11,7 @@
   <div class="brand">
     <div class="brand-mark-wrapper">
       <% if (theme.nav && theme.nav.enable) { %>
-        <button class="brand-mark" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="brand-nav-menu">
+        <button class="brand-mark" type="button" aria-label="<%= flatpaper_i18n('navigation.brand_menu') %>" aria-haspopup="true" aria-expanded="false" aria-controls="brand-nav-menu">
           <%- partial('_partial/icons', { icon: 'layout-grid' }) %>
         </button>
         <div class="brand-nav-menu" id="brand-nav-menu" role="menu">

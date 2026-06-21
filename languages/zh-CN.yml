@@ -88,6 +88,7 @@ navigation:
   primary: 主导航
   mobile: 移动端导航
   brand_home: FlatPaper 首页
+  brand_menu: 打开站点导航
   open_sidebar: 打开侧边栏
   close_sidebar: 关闭侧边栏
   sidebar: 侧边栏
