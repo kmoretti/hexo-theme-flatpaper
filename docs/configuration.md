@@ -2,6 +2,8 @@
 
 All theme options live in `themes/flatpaper/_config.yml`. Copy it to `<site>/_config.flatpaper.yml` before editing.
 
+New features and behavior changes are designed around existing-site compatibility. Options that could affect current layouts stay disabled by default in the site config, so most sites can update the theme directly and opt in when needed.
+
 The site name in the header and the meta description are read from the Hexo site `_config.yml` (`title` and `description`).
 
 ## Language

@@ -115,9 +115,15 @@ comments: false
 ---
 ```
 
-Switch the interface language (in the site `_config.yml`):
+Switch the interface language (in the site `_config.yml`; choose one):
 
 ```yaml
+# Simplified Chinese
+language: zh-CN
+```
+
+```yaml
+# English
 language: en
 ```
 

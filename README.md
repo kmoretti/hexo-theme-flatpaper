@@ -113,9 +113,15 @@ comments: false
 ---
 ```
 
-切换界面语言（在站点 `_config.yml` 中）：
+切换界面语言（在站点 `_config.yml` 中，二选一）：
 
 ```yaml
+# 中文
+language: zh-CN
+```
+
+```yaml
+# English
 language: en
 ```
 

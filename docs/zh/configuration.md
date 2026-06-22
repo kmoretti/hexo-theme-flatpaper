@@ -2,6 +2,8 @@
 
 所有主题选项都位于 `themes/flatpaper/_config.yml`。建议先复制为站点根目录下的 `_config.flatpaper.yml` 再修改。
 
+功能新增与行为调整都会以不影响现有配置为核心原则；可能影响现有布局的选项会在站点配置中默认保持关闭，大部分情况下可以直接更新主题，再按需启用新功能。
+
 Header 中的站点标题与页面 description 读取自 Hexo 站点 `_config.yml` 的 `title` 与 `description`。
 
 ## 语言
