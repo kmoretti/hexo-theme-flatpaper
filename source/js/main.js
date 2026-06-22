@@ -274,6 +274,25 @@
     var header = document.querySelector('.site-header');
     var confirmBubble = null;
 
+    // Sticker placement tuning, shared by the initial layout and shuffle.
+    var ROTATE_MIN = -18;
+    var ROTATE_SPREAD = 36;
+    var DRAG_THRESHOLD = 3;
+    var STICKER_ZONES = [
+      { leftMin: 4, leftMax: 19, topMin: 8, topMax: 78 },
+      { leftMin: 78, leftMax: 90, topMin: 8, topMax: 78 },
+      { leftMin: 20, leftMax: 72, topMin: 6, topMax: 20 },
+      { leftMin: 20, leftMax: 72, topMin: 76, topMax: 88 }
+    ];
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function randomRotate() {
+      return ROTATE_MIN + Math.random() * ROTATE_SPREAD;
+    }
+
     function applyRandomHeroImage() {
       var rawImages = hero.getAttribute('data-hero-images');
       if (!rawImages) return;
@@ -284,7 +303,12 @@
       });
       if (images.length < 2) return;
       var selected = images[Math.floor(Math.random() * images.length)];
-      hero.style.setProperty('--hero-bg-image', 'url("' + selected.replace(/"/g, '\\"') + '")');
+      var next = 'url("' + selected.replace(/"/g, '\\"') + '")';
+      // The server already renders the first image inline; skip the write when
+      // the random pick matches it so we don't trigger a redundant style recalc
+      // (and, when it differs, this is the only extra fetch — by design).
+      if (hero.style.getPropertyValue('--hero-bg-image').trim() === next) return;
+      hero.style.setProperty('--hero-bg-image', next);
     }
 
     function homeTop() {
@@ -380,33 +404,30 @@
     });
 
     var stickers = Array.prototype.slice.call(hero.querySelectorAll('[data-hero-sticker]'));
+    // setHeroActive() reads offsetTop/offsetHeight (forced layout). rAF-throttle
+    // so we touch layout at most once per frame instead of once per scroll event.
+    var heroScrollTicking = false;
     window.addEventListener('scroll', function () {
-      setHeroActive();
+      if (heroScrollTicking) return;
+      heroScrollTicking = true;
+      window.requestAnimationFrame(function () {
+        setHeroActive();
+        heroScrollTicking = false;
+      });
     }, { passive: true });
     setHeroActive();
 
     if (!stickers.length || !hero.classList.contains('has-draggable-stickers')) return;
 
     function randomizeSticker(sticker) {
-      var zones = [
-        { leftMin: 4, leftMax: 19, topMin: 8, topMax: 78 },
-        { leftMin: 78, leftMax: 90, topMin: 8, topMax: 78 },
-        { leftMin: 20, leftMax: 72, topMin: 6, topMax: 20 },
-        { leftMin: 20, leftMax: 72, topMin: 76, topMax: 88 }
-      ];
-      var zone = zones[Math.floor(Math.random() * zones.length)];
+      var zone = STICKER_ZONES[Math.floor(Math.random() * STICKER_ZONES.length)];
       var left = zone.leftMin + Math.random() * (zone.leftMax - zone.leftMin);
       var top = zone.topMin + Math.random() * (zone.topMax - zone.topMin);
-      var rotate = -18 + Math.random() * 36;
       sticker.style.left = left + '%';
       sticker.style.top = top + '%';
       sticker.style.right = 'auto';
       sticker.style.bottom = 'auto';
-      sticker.style.transform = 'rotate(' + rotate.toFixed(1) + 'deg)';
-    }
-
-    function clamp(value, min, max) {
-      return Math.max(min, Math.min(max, value));
+      sticker.style.transform = 'rotate(' + randomRotate().toFixed(1) + 'deg)';
     }
 
     stickers.forEach(function (sticker) {
@@ -429,6 +450,9 @@
 
       sticker.addEventListener('pointerdown', function (event) {
         if (event.button !== 0 && event.pointerType === 'mouse') return;
+        // Cache the hero box and drag bounds once: they don't change mid-drag
+        // (pointer capture + touch-action:none block scroll/resize), so pointermove
+        // can stay read-free instead of forcing layout on every move.
         var heroRect = hero.getBoundingClientRect();
         var rect = sticker.getBoundingClientRect();
         state = {
@@ -436,10 +460,13 @@
           offsetY: event.clientY - rect.top,
           startX: event.clientX,
           startY: event.clientY,
-          rotate: -18 + Math.random() * 36,
+          heroLeft: heroRect.left,
+          heroTop: heroRect.top,
+          maxX: hero.clientWidth - sticker.offsetWidth,
+          maxY: hero.clientHeight - sticker.offsetHeight,
           moved: false
         };
-        sticker.style.transform = 'rotate(' + state.rotate.toFixed(1) + 'deg)';
+        sticker.style.transform = 'rotate(' + randomRotate().toFixed(1) + 'deg)';
         sticker.style.left = (rect.left - heroRect.left) + 'px';
         sticker.style.top = (rect.top - heroRect.top) + 'px';
         sticker.style.right = 'auto';
@@ -451,32 +478,38 @@
 
       sticker.addEventListener('pointermove', function (event) {
         if (!state) return;
-        if (Math.abs(event.clientX - state.startX) > 3 || Math.abs(event.clientY - state.startY) > 3) {
+        if (Math.abs(event.clientX - state.startX) > DRAG_THRESHOLD || Math.abs(event.clientY - state.startY) > DRAG_THRESHOLD) {
           state.moved = true;
         }
-        var heroRect = hero.getBoundingClientRect();
-        var maxX = hero.clientWidth - sticker.offsetWidth;
-        var maxY = hero.clientHeight - sticker.offsetHeight;
-        var x = clamp(event.clientX - heroRect.left - state.offsetX, 0, maxX);
-        var y = clamp(event.clientY - heroRect.top - state.offsetY, 0, maxY);
+        var x = clamp(event.clientX - state.heroLeft - state.offsetX, 0, state.maxX);
+        var y = clamp(event.clientY - state.heroTop - state.offsetY, 0, state.maxY);
         sticker.style.left = x + 'px';
         sticker.style.top = y + 'px';
         if (state.moved) event.preventDefault();
       });
 
-      function endDrag(event) {
+      function endDrag(event, cancelled) {
         if (!state) return;
+        var moved = state.moved;
+        state = null;
         sticker.style.zIndex = '';
         sticker.classList.remove('is-dragging');
-        if (state.moved) sticker.dataset.heroDragged = '1';
+        // Flag a completed drag so the synthetic click that follows pointerup is
+        // swallowed (not treated as a tap). A pointercancel fires no click, so
+        // flagging it would wrongly suppress the *next* genuine tap.
+        if (moved && !cancelled) {
+          sticker.dataset.heroDragged = '1';
+          // Safety net: if the expected click never arrives, don't leave the
+          // sticker permanently unclickable.
+          window.setTimeout(function () { delete sticker.dataset.heroDragged; }, 400);
+        }
         if (sticker.releasePointerCapture && event && event.pointerId != null) {
           try { sticker.releasePointerCapture(event.pointerId); } catch (e) {}
         }
-        state = null;
       }
 
-      sticker.addEventListener('pointerup', endDrag);
-      sticker.addEventListener('pointercancel', endDrag);
+      sticker.addEventListener('pointerup', function (event) { endDrag(event, false); });
+      sticker.addEventListener('pointercancel', function (event) { endDrag(event, true); });
     });
 
     var shuffleButton = hero.querySelector('.js-hero-shuffle');

@@ -37,6 +37,11 @@ function heroImageUrl(value) {
 var configuredHeroImages = Array.isArray(hero.image) ? hero.image : (hero.image ? [hero.image] : []);
 var heroImages = configuredHeroImages.map(heroImageUrl).filter(Boolean);
 var heroImage = heroImages[0] || '';
+// Escape backslash/quote before embedding in a CSS url("...") string, mirroring
+// the client-side randomizer. flatpaper_safe_url already strips control chars,
+// so this just closes the CSS-string-breakout gap that the HTML-entity escape
+// on the output tag alone would miss.
+var heroImageCss = heroImage.replace(/[\\"]/g, '\\$&');
 var ctaHref = heroHref(hero.cta_link || '#flatpaper-home-content');
 var enterLabel = flatpaper_i18n('home_hero.enter');
 var stickerItems = [
@@ -79,7 +84,7 @@ var hasLinkedCustomStickers = customStickerItems.some(function (item) { return !
 <section
   class="home-hero<%= heroImage ? ' home-hero--image' : '' %><%= stickersDraggable ? ' has-draggable-stickers' : '' %>"
   aria-label="<%= flatpaper_i18n('home_hero.label') %>"
-  <% if (heroImage) { %>style="--hero-bg-image: url(&quot;<%= heroImage %>&quot;);"<% } %>
+  <% if (heroImage) { %>style="--hero-bg-image: url(&quot;<%= heroImageCss %>&quot;);"<% } %>
   <% if (heroImages.length > 1) { %>data-hero-images="<%= JSON.stringify(heroImages) %>"<% } %>
 >
   <div class="home-hero__grain" aria-hidden="true"></div>
@@ -116,7 +121,7 @@ var hasLinkedCustomStickers = customStickerItems.some(function (item) { return !
             <% if (item.title) { %>title="<%= item.title %>"<% } %>
             <% if (item.style) { %>style="<%= item.style %>"<% } %>
             <% if (item.external) { %>target="_blank" rel="noopener"<% } %>
-          ><img src="<%= item.image %>" alt="" loading="lazy" decoding="async" draggable="false" aria-hidden="true"></a>
+          ><img src="<%= item.image %>" alt="" loading="lazy" decoding="async" draggable="false" referrerpolicy="no-referrer" aria-hidden="true"></a>
         <% } else { %>
           <button
             type="button"
@@ -125,7 +130,7 @@ var hasLinkedCustomStickers = customStickerItems.some(function (item) { return !
             aria-hidden="true"
             tabindex="-1"
             <% if (item.style) { %>style="<%= item.style %>"<% } %>
-          ><img src="<%= item.image %>" alt="" loading="lazy" decoding="async" draggable="false"></button>
+          ><img src="<%= item.image %>" alt="" loading="lazy" decoding="async" draggable="false" referrerpolicy="no-referrer"></button>
         <% } %>
       <% }) %>
     </div>
