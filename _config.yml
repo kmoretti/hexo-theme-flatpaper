@@ -121,7 +121,7 @@ home_hero:
     draggable: true
     # 内置便签贴纸的文字。
     # note_text: 今日
-    # 自定义图片贴纸，最多渲染 7 张；link 可选，不配置则只是可拖动装饰。
+    # 自定义图片贴纸最多渲染 5 张；加上内置便签后，开屏最多 6 个 sticker。link 可选，不配置则只是可拖动装饰。
     # items:
     #   - image: /images/stickers/memo.png
     #     alt: 手账贴纸

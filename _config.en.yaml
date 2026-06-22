@@ -122,7 +122,8 @@ home_hero:
     draggable: true
     # Text on the built-in note sticker.
     # note_text: Today
-    # Custom image stickers. Up to 7 are rendered. link is optional; omit it for draggable decoration only.
+    # Custom image stickers. Up to 5 custom stickers are rendered, plus the built-in note.
+    # link is optional; omit it for draggable decoration only.
     # items:
     #   - image: /images/stickers/memo.png
     #     alt: Journal sticker

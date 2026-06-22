@@ -40,10 +40,9 @@ var heroImage = heroImages[0] || '';
 var ctaHref = heroHref(hero.cta_link || '#flatpaper-home-content');
 var enterLabel = flatpaper_i18n('home_hero.enter');
 var stickerItems = [
-  { key: 'builtin-tape-a', cls: 'hero-sticker--tape-a', text: '' },
-  { key: 'builtin-note', cls: 'hero-sticker--note', text: builtinNoteText },
-  { key: 'builtin-tape-b', cls: 'hero-sticker--tape-b', text: '' }
+  { key: 'builtin-note', cls: 'hero-sticker--note', text: builtinNoteText }
 ];
+var maxCustomStickers = 5;
 
 function stickerSize(value) {
   var raw = String(value == null ? '' : value).trim();
@@ -54,7 +53,7 @@ function stickerSize(value) {
   return '--sticker-size: ' + size + 'px;';
 }
 
-var customStickerItems = configuredCustomStickers.slice(0, 7).map(function (raw, index) {
+var customStickerItems = configuredCustomStickers.slice(0, maxCustomStickers).map(function (raw, index) {
   var entry = raw && typeof raw === 'object' ? raw : { image: raw };
   var rawImage = String(entry.image || entry.src || entry.sticker || '').trim();
   if (!rawImage) return null;
