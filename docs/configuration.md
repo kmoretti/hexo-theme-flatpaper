@@ -131,6 +131,7 @@ home_hero:
   image:
     - /images/hero-1.jpg
     - /images/hero-2.jpg
+  image_overlay: [0.22, 0.58]
   cta_link: "#flatpaper-home-content"
   stickers:
     enable: true
@@ -148,6 +149,7 @@ home_hero:
 - Default is `enable: false`, so existing home pages are unchanged. It renders only on page 1 of the home pagination.
 - When `title`, `subtitle`, `bio`, `avatar`, or social links are omitted, the hero reuses the site title and `profile` config.
 - Leave `image` empty to use the built-in scrapbook paper background. Set it to a string for one fixed image, or to an array so the browser randomly picks one on each page load. Images fill the opening screen on wider viewports; narrow screens fall back to the paper background so stickers stay readable.
+- `image_overlay` controls the dark overlay on image heroes. Use `[top, bottom]` opacity values from `0` to `1`; the default is `[0.22, 0.58]`.
 - Social links in the hero reuse the profile `.socials` styling and follow the `buttons.style` option.
 - With `stickers.draggable: true`, the hero stickers get randomized and can be dragged around the page for the current view. Positions are not persisted.
 - `stickers.note_text` changes the text on the built-in note sticker.

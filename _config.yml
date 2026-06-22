@@ -114,6 +114,8 @@ home_hero:
   # image:
   #   - /images/hero-1.jpg
   #   - /images/hero-2.jpg
+  # 背景图暗色遮罩透明度：[顶部, 底部]，范围 0-1。
+  # image_overlay: [0.22, 0.58]
   # 底部跳动箭头的目标锚点；默认进入首页内容区。
   # cta_link: "#flatpaper-home-content"
   stickers:

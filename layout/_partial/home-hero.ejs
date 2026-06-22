@@ -34,6 +34,34 @@ function heroImageUrl(value) {
   return flatpaper_safe_url(url_for(raw), 'image');
 }
 
+function heroOverlayValue(value, fallback) {
+  var opacity = parseFloat(value);
+  if (!isFinite(opacity)) opacity = fallback;
+  if (opacity < 0) opacity = 0;
+  if (opacity > 1) opacity = 1;
+  return String(Math.round(opacity * 1000) / 1000);
+}
+
+function heroImageOverlay(value) {
+  var top = 0.22;
+  var bottom = 0.58;
+  if (Array.isArray(value)) {
+    top = value[0];
+    bottom = value.length > 1 ? value[1] : value[0];
+  } else if (value && typeof value === 'object') {
+    top = value.top != null ? value.top : (value.start != null ? value.start : top);
+    bottom = value.bottom != null ? value.bottom : (value.end != null ? value.end : bottom);
+  } else if (value != null) {
+    var parts = String(value).split(/[\s,]+/).filter(Boolean);
+    top = parts[0];
+    bottom = parts.length > 1 ? parts[1] : parts[0];
+  }
+  return {
+    top: heroOverlayValue(top, 0.22),
+    bottom: heroOverlayValue(bottom, 0.58)
+  };
+}
+
 var configuredHeroImages = Array.isArray(hero.image) ? hero.image : (hero.image ? [hero.image] : []);
 var heroImages = configuredHeroImages.map(heroImageUrl).filter(Boolean);
 var heroImage = heroImages[0] || '';
@@ -42,6 +70,7 @@ var heroImage = heroImages[0] || '';
 // so this just closes the CSS-string-breakout gap that the HTML-entity escape
 // on the output tag alone would miss.
 var heroImageCss = heroImage.replace(/[\\"]/g, '\\$&');
+var heroOverlay = heroImageOverlay(hero.image_overlay);
 var ctaHref = heroHref(hero.cta_link || '#flatpaper-home-content');
 var enterLabel = flatpaper_i18n('home_hero.enter');
 var stickerItems = [
@@ -84,7 +113,7 @@ var hasLinkedCustomStickers = customStickerItems.some(function (item) { return !
 <section
   class="home-hero<%= heroImage ? ' home-hero--image' : '' %><%= stickersDraggable ? ' has-draggable-stickers' : '' %>"
   aria-label="<%= flatpaper_i18n('home_hero.label') %>"
-  <% if (heroImage) { %>style="--hero-bg-image: url(&quot;<%= heroImageCss %>&quot;);"<% } %>
+  <% if (heroImage) { %>style="--hero-bg-image: url(&quot;<%= heroImageCss %>&quot;); --hero-image-overlay-top: rgba(42, 33, 22, <%= heroOverlay.top %>); --hero-image-overlay-bottom: rgba(42, 33, 22, <%= heroOverlay.bottom %>);"<% } %>
   <% if (heroImages.length > 1) { %>data-hero-images="<%= JSON.stringify(heroImages) %>"<% } %>
 >
   <div class="home-hero__grain" aria-hidden="true"></div>
