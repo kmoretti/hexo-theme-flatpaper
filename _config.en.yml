@@ -116,7 +116,7 @@ home_hero:
   #   - /images/hero-1.jpg
   #   - /images/hero-2.jpg
   # Dark overlay opacity for hero images: [top, bottom], range 0-1.
-  # image_overlay: [0.22, 0.58]
+  # image_overlay: [0.2, 0.2]
   # Target for the bouncing bottom arrow. Defaults to the home content.
   # cta_link: "#flatpaper-home-content"
   stickers:

@@ -43,8 +43,8 @@ function heroOverlayValue(value, fallback) {
 }
 
 function heroImageOverlay(value) {
-  var top = 0.22;
-  var bottom = 0.58;
+  var top = 0.2;
+  var bottom = 0.2;
   if (Array.isArray(value)) {
     top = value[0];
     bottom = value.length > 1 ? value[1] : value[0];
@@ -57,8 +57,8 @@ function heroImageOverlay(value) {
     bottom = parts.length > 1 ? parts[1] : parts[0];
   }
   return {
-    top: heroOverlayValue(top, 0.22),
-    bottom: heroOverlayValue(bottom, 0.58)
+    top: heroOverlayValue(top, 0.2),
+    bottom: heroOverlayValue(bottom, 0.2)
   };
 }
 
