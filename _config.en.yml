@@ -119,6 +119,16 @@ home_hero:
   # image_overlay: [0.2, 0.2]
   # Target for the bouncing bottom arrow. Defaults to the home content.
   # cta_link: "#flatpaper-home-content"
+  #
+  # Quick navigation links in the hero. When configured, they replace the default wavy divider.
+  # hero_links:
+  #   - name: Archives
+  #     link: /archives/
+  #   - name: Categories
+  #     link: /categories/
+  #   - name: Folio
+  #     link: https://folio.example.com/
+  #     alt: View Folio
   stickers:
     enable: true
     draggable: true
