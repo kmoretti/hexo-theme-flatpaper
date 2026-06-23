@@ -34,10 +34,40 @@ function encodeFamily(value) {
   return encodeURIComponent(value).replace(/%20/g, '+');
 }
 
+function encodeText(value) {
+  return encodeURIComponent(value);
+}
+
 function cleanFontName(value) {
   var raw = String(value || '').trim();
   if (!raw || /[<>{}]/.test(raw)) return '';
   return raw;
+}
+
+function normalizeFontText(value) {
+  if (value === undefined || value === null || value === false) return '';
+  if (Array.isArray(value)) value = value.join('');
+  return String(value).replace(/[\r\n\t]/g, '');
+}
+
+function buildFontHref(families, text) {
+  if (!fontsEnabled || !fontBase || !families.length) return '';
+  var fontParams = uniqueFonts(families).map(function (family) {
+    return 'family=' + encodeFamily(family);
+  });
+  var fontText = normalizeFontText(text);
+  if (fontText) fontParams.push('text=' + encodeText(fontText));
+  fontParams.push('display=swap');
+  return fontBase + '/css2?' + fontParams.join('&');
+}
+
+function uniqueValues(values) {
+  var seen = {};
+  return values.filter(function (value) {
+    if (!value || seen[value]) return false;
+    seen[value] = true;
+    return true;
+  });
 }
 
 function fontStackName(family) {
@@ -66,13 +96,10 @@ var fontBase = normalizeFontBase(googleFonts.cdn || googleFonts.host || googleFo
 var fontOrigin = normalizeFontOrigin(fontBase);
 var sansFamilies = normalizeFontList(googleFonts.fonts);
 var monoFamilies = normalizeFontList(googleFonts.mono || googleFonts.monospace);
-var cssFontFamilies = uniqueFonts(sansFamilies.concat(monoFamilies));
-var fontHref = '';
-if (fontsEnabled && fontBase && cssFontFamilies.length) {
-  fontHref = fontBase + '/css2?' + cssFontFamilies.map(function (family) {
-    return 'family=' + encodeFamily(family);
-  }).join('&') + '&display=swap';
-}
+var fontHrefs = uniqueValues([
+  buildFontHref(sansFamilies, googleFonts.text),
+  buildFontHref(monoFamilies)
+]);
 
 var fontVars = [];
 if (fontsEnabled && sansFamilies.length) {
@@ -82,14 +109,16 @@ if (fontsEnabled && monoFamilies.length) {
   fontVars.push('--font-mono: ' + quoteFontStack(monoFamilies, '"JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Cascadia Code", monospace') + ';');
 }
 %>
-<% if (fontsEnabled && fontHref) { %>
+<% if (fontsEnabled && fontHrefs.length) { %>
 <% if (googleFonts.preconnect !== false && fontOrigin) { %>
 <link rel="preconnect" href="<%= fontOrigin %>">
 <% if (fontOrigin === 'https://fonts.googleapis.com') { %>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <% } %>
 <% } %>
+<% fontHrefs.forEach(function (fontHref) { %>
 <link rel="stylesheet" href="<%= flatpaper_safe_url(fontHref, 'href') %>">
+<% }); %>
 <% } %>
 <% if (fontsEnabled && fontVars.length) { %>
 <style>:root { <%- fontVars.join(' ') %> }</style>

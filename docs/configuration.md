@@ -32,6 +32,7 @@ The theme ships two example configs: `_config.yml` (Chinese comments and default
 google_fonts:
   enable: true
   cdn: https://fonts.googleapis.com
+  # text: ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
   fonts:
     - Noto Sans SC
   mono:
@@ -42,8 +43,18 @@ google_fonts:
 - `fonts` is an ordered list of font names. FlatPaper loads them from Google Fonts and prefers them in the same order for body text.
 - `mono` is an ordered list of monospace font names for code blocks. You can configure only `mono` if you want to keep the default body font.
 - If you need specific weights, use Google Fonts syntax such as `Noto Sans SC:wght@400;700`. FlatPaper uses the full value for the Google Fonts request and automatically keeps only the font name before `:` in the local CSS font stack.
+- `text` is optional and maps to the Google Fonts `text=` parameter for `fonts`. Use it only when you know the exact characters needed, such as logos, headings, or buttons. Characters not included in `text` fall back to the next font.
+- `mono` is requested separately without `text`, so code glyphs stay complete.
 - `cdn` replaces the default `https://fonts.googleapis.com` stylesheet origin. Use a full URL or a plain domain, for example `https://fonts.loli.net` or `fonts.example.com`.
 - Font loading uses `display=swap` automatically.
+
+When `text` includes quotes or other punctuation, prefer a YAML literal block:
+
+```yaml
+google_fonts:
+  text: |-
+    ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+```
 
 ## Menu
 
