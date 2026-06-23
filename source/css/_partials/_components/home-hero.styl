@@ -265,20 +265,18 @@ body.has-home-hero.is-hero-active::before {
 
 body .home-hero .home-hero__profile .home-hero__links {
   position: absolute;
-  top: calc(100% - 1px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: calc(100% - 2px);
+  left: 8px;
+  right: 8px;
   display: flex;
   justify-content: flex-start;
   flex-wrap: nowrap !important;
   gap: 12px;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 var(--hero-links-offset, 0px);
   z-index: -2;
-  width: max-content;
-  max-width: unquote('min(100%, calc(100vw - 32px), 640px)') !important;
-  overflow: hidden;
-  clip-path: inset(0 0 -24px 0);
+  width: auto;
+  max-width: none !important;
 }
 
 body .home-hero .home-hero__profile .home-hero__links a {
@@ -296,6 +294,10 @@ body .home-hero .home-hero__profile .home-hero__links a {
   transition: height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, transform 0.3s, box-shadow 0.3s !important;
   background-image: var(--tape-stripes) !important;
   flex: 0 0 auto;
+}
+
+body .home-hero .home-hero__profile .home-hero__links a:nth-child(-n+5) {
+  margin-top: 1px;
 }
 
 body .home-hero .home-hero__profile .home-hero__links a:nth-child(even) {
