@@ -571,11 +571,19 @@ body .home-hero .home-hero__profile .home-hero__links a:focus-visible {
   // Swap the paper backdrop for the dark palette; .home-hero (and the mobile
   // image-reset) already paint via var(--hero-paper). In --image mode the photo
   // overrides background-image, so this var simply goes unused there.
-  --hero-paper:
-    radial-gradient(circle at 16% 18%, rgba(70, 63, 45, 0.9) 0 11%, transparent 12%),
-    radial-gradient(circle at 82% 16%, rgba(45, 68, 55, 0.86) 0 12%, transparent 13%),
-    radial-gradient(circle at 78% 82%, rgba(74, 44, 53, 0.72) 0 13%, transparent 14%),
-    linear-gradient(135deg, #22262b 0%, #1d2027 48%, #243027 100%);
+  --hero-paper: #22262b;
+}
+
+.dark-mode .home-hero::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.dark-mode .home-hero__grain {
+  background-image:
+    repeating-radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(95deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 8px);
 }
 
 .dark-mode .home-hero__profile::before {
