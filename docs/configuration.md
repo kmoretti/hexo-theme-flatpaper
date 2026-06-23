@@ -26,6 +26,24 @@ Only the theme's own interface strings are translated. Post content, site data, 
 
 The theme ships two example configs: `_config.yml` (Chinese comments and defaults) and `_config.en.yml` (the same keys with English comments and defaults). They share an identical key structure — pick whichever matches your site language as the base for `_config.flatpaper.yml`.
 
+## Fonts
+
+```yaml
+google_fonts:
+  enable: true
+  cdn: https://fonts.googleapis.com
+  fonts:
+    - Noto Sans SC
+  mono:
+    - JetBrains Mono
+```
+
+- `google_fonts.enable` controls whether FlatPaper injects a Google Fonts stylesheet.
+- `fonts` is an ordered list of font names. FlatPaper loads them from Google Fonts and prefers them in the same order for body text.
+- `mono` is an ordered list of monospace font names for code blocks. You can configure only `mono` if you want to keep the default body font.
+- `cdn` replaces the default `https://fonts.googleapis.com` stylesheet origin. Use a full URL or a plain domain, for example `https://fonts.loli.net` or `fonts.example.com`.
+- Font loading uses `display=swap` automatically.
+
 ## Menu
 
 ```yaml

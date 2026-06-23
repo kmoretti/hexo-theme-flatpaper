@@ -310,6 +310,18 @@ fancybox:
   # cdn_css:                            # 可选；覆盖默认 jsDelivr CSS
   # cdn_js:
 
+# Google Fonts。默认关闭；开启后会在 <head> 注入 Google Fonts CSS。
+# cdn 可填写镜像域名，用于覆盖 https://fonts.googleapis.com，例如 https://fonts.loli.net。
+google_fonts:
+  enable: false
+  cdn: https://fonts.googleapis.com
+  # 按顺序填写字体名称即可；第一个字体会优先用于正文。
+  fonts:
+    # - Noto Sans SC
+  # 等宽字体单独配置；也可以只填写 mono，不改变正文字体。
+  mono:
+    # - JetBrains Mono
+
 # 自定义 css 与 js 注入
 # head：每个条目原样输出到 </head> 之前
 # bottom：每个条目原样输出到 </body> 之前

@@ -26,6 +26,24 @@ language:
 
 主题附带两份示例配置：`_config.yml`（中文注释与默认值）和 `_config.en.yml`（键结构相同，注释与默认值为英文）。两者键结构完全一致，按站点语言选用其中一份作为 `_config.flatpaper.yml` 的基础即可。
 
+## 字体
+
+```yaml
+google_fonts:
+  enable: true
+  cdn: https://fonts.googleapis.com
+  fonts:
+    - Noto Sans SC
+  mono:
+    - JetBrains Mono
+```
+
+- `google_fonts.enable` 控制是否注入 Google Fonts 样式表。
+- `fonts` 按顺序填写字体名称即可。FlatPaper 会从 Google Fonts 加载这些字体，并按相同顺序优先用于正文。
+- `mono` 按顺序填写等宽字体名称，用于代码块。也可以只配置 `mono`，不改变正文字体。
+- `cdn` 会替代默认的 `https://fonts.googleapis.com` 样式表域名。可以填写完整 URL 或纯域名，例如 `https://fonts.loli.net` 或 `fonts.example.com`。
+- 字体加载固定使用 `display=swap`。
+
 ## 导航菜单
 
 ```yaml

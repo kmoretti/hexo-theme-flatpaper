@@ -311,6 +311,18 @@ fancybox:
   # cdn_css:                            # Optional. Override the default jsDelivr CSS.
   # cdn_js:
 
+# Google Fonts. Disabled by default; when enabled, FlatPaper injects the Google Fonts CSS into <head>.
+# Set cdn to a mirror domain to replace https://fonts.googleapis.com, for example https://fonts.loli.net.
+google_fonts:
+  enable: false
+  cdn: https://fonts.googleapis.com
+  # List font names in order. The first font is preferred for body text.
+  fonts:
+    # - Noto Sans SC
+  # Configure monospace fonts separately. You can set only mono without changing body text.
+  mono:
+    # - JetBrains Mono
+
 # Custom CSS and JS injection.
 # head: each item is output before </head> as-is.
 # bottom: each item is output before </body> as-is.
