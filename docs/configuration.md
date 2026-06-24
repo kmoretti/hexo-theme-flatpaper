@@ -191,7 +191,7 @@ home_hero:
 - Default is `enable: false`, so existing home pages are unchanged. It renders only on page 1 of the home pagination.
 - When `title`, `subtitle`, `bio`, `avatar`, or social links are omitted, the hero reuses the site title and `profile` config.
 - Leave `image` empty to use the built-in scrapbook paper background. Set it to a string for one fixed image, or to an array so the browser randomly picks one on each page load. Images fill the opening screen on wider viewports; narrow screens fall back to the paper background so stickers stay readable.
-- `image_overlay` controls the dark overlay on image heroes. Use `[top, bottom]` opacity values from `0` to `1`; the default is `[0.2, 0.2]`.
+- `image_overlay` controls the configurable dark overlay on image heroes. Use `[top, bottom]` opacity values from `0` to `1`; the default is `[0.2, 0.2]`.
 - `hero_links` adds quick navigation links between the hero bio and social links. When present, it replaces the default wavy divider. Each item needs `name` and `link`; `alt` is optional and is used for labels and external-link confirmation prompts. External links open in a new tab after a visit confirmation.
 - Social links in the hero reuse the profile `.socials` styling and follow the `buttons.style` option.
 - With `stickers.draggable: true`, the hero stickers get randomized and can be dragged around the page for the current view. Positions are not persisted.
