@@ -304,7 +304,7 @@ img.friend-card__avatar {
 }
 
 /* Tape */
-.friend-card--tape::before {
+.friend-card--tape .friend-card__link::before {
   content: "";
   position: absolute;
   top: -8px;
@@ -321,7 +321,7 @@ img.friend-card__avatar {
 }
 
 /* Tab */
-.friend-card--tape::after {
+.friend-card--tape .friend-card__link::after {
   content: "";
   position: absolute;
   top: 16px;
@@ -338,37 +338,37 @@ img.friend-card__avatar {
   pointer-events: none;
 }
 
-.friend-card--tape:hover::after {
-  right: -14px;
-  width: 14px;
+.friend-card--tape .friend-card__link:hover::after {
+  right: -12px;
+  width: 12px;
 }
 
-.dark-mode .friend-card--tape::before {
+.dark-mode .friend-card--tape .friend-card__link::before {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
 }
 
-.dark-mode .friend-card--tape::after {
+.dark-mode .friend-card--tape .friend-card__link::after {
   border-color: rgba(225, 230, 245, 0.1);
   box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.16);
 }
 
-.tape-disabled .friend-card--tape::before,
-.tape-disabled .friend-card--tape::after {
+.tape-disabled .friend-card--tape .friend-card__link::before,
+.tape-disabled .friend-card--tape .friend-card__link::after {
   display: none;
 }
 
 @media (max-width: 640px) {
-  .friend-card--tape::before {
+  .friend-card--tape .friend-card__link::before {
     left: 16px;
   }
-  .friend-card--tape::after {
+  .friend-card--tape .friend-card__link::after {
     top: 18px;
     right: -5px;
     width: 5px;
     height: 38px;
   }
-  .friend-card--tape:hover::after {
-    right: -11px;
-    width: 11px;
+  .friend-card--tape .friend-card__link:hover::after {
+    right: -9px;
+    width: 9px;
   }
 }
