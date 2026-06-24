@@ -7,6 +7,7 @@ var pageSize = parseInt(page.page_size || 20, 10);
 if (!pageSize || pageSize < 1) pageSize = 20;
 if (pageSize > 100) pageSize = 100;
 var sourceLabel = page.source_label || '';
+var avatarFallback = flatpaper_safe_url(url_for('/images/icon-error.webp'), 'image');
 %>
 
 <article class="article-paper friends-feed-page">
@@ -22,6 +23,7 @@ var sourceLabel = page.source_label || '';
     class="friends-feed"
     data-fcl-all-json="<%= safeAllJson %>"
     data-page-size="<%= pageSize %>"
+    data-avatar-fallback="<%= avatarFallback %>"
     aria-live="polite"
   >
     <div class="friends-feed__summary" hidden>

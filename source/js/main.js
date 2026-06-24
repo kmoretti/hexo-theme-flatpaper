@@ -324,6 +324,7 @@
         state.textContent = t('friends_feed.missing_url');
         return;
       }
+      var avatarFallback = safeRemoteUrl(feed.dataset.avatarFallback, 'image');
 
       var pageSize = parseInt(feed.dataset.pageSize, 10);
       if (!pageSize || pageSize < 1) pageSize = 20;
@@ -375,9 +376,14 @@
           img.loading = 'lazy';
           img.referrerPolicy = 'no-referrer';
           img.addEventListener('error', function () {
+            if (avatarFallback && img.dataset.flatpaperAvatarFallback !== '1' && img.src !== avatarFallback) {
+              img.dataset.flatpaperAvatarFallback = '1';
+              img.src = avatarFallback;
+              return;
+            }
             while (avatarWrap.firstChild) avatarWrap.removeChild(avatarWrap.firstChild);
             avatarWrap.appendChild(fallbackAvatar(article.author));
-          }, { once: true });
+          });
           avatarWrap.appendChild(img);
         } else {
           avatarWrap.appendChild(fallbackAvatar(article.author));

@@ -2,6 +2,7 @@
 var data = site.data && site.data.links ? site.data.links : [];
 var groups = Array.isArray(data) ? data : [data];
 groups = groups.filter(function (g) { return g && (g.link_list || g.class_name); });
+var avatarFallback = flatpaper_safe_url(url_for('/images/icon-error.webp'), 'image');
 %>
 
 <article class="article-paper friends-page">
@@ -38,7 +39,7 @@ groups = groups.filter(function (g) { return g && (g.link_list || g.class_name);
             <a class="friend-card__link" href="<%= flatpaper_safe_url(item.link, 'href') %>" target="_blank" rel="noopener noreferrer" title="<%= item.name %><%= item.descr ? ' · ' + item.descr : '' %>">
               <div class="friend-card__avatar-wrap">
                 <% if (avatar) { %>
-                  <img class="friend-card__avatar" src="<%= avatar %>" alt="<%= item.name %>" loading="lazy" referrerpolicy="no-referrer">
+                  <img class="friend-card__avatar" src="<%= avatar %>" alt="<%= item.name %>" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='<%= avatarFallback %>'">
                 <% } else { %>
                   <span class="friend-card__avatar friend-card__avatar--text" aria-hidden="true"><%= (item.name || '?').charAt(0) %></span>
                 <% } %>
