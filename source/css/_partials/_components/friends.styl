@@ -144,22 +144,53 @@
   box-shadow: var(--small-shadow);
 }
 
-.friend-card__avatar {
+.friend-card__avatar-wrap {
   flex-shrink: 0;
   display: inline-grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  margin-top: 2px;
+  border: 1px solid rgba(82, 64, 38, 0.12);
+  border-radius: 8px;
+  background: var(--paper-solid);
+  box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
+  transform: rotate(-2deg);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.friend-card__link:hover .friend-card__avatar-wrap {
+  border-color: var(--color-accent);
+  box-shadow: 3px 5px 0 rgba(82, 64, 38, 0.1);
+  transform: rotate(0deg) translateY(-1px);
+}
+
+.friend-card__avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
   object-fit: cover;
   background: var(--color-accent-soft);
   color: var(--color-accent-strong);
-  font-weight: 700;
   font-size: 18px;
+  font-weight: 800;
 }
 
 img.friend-card__avatar {
   background: transparent;
+}
+
+.dark-mode .friend-card__avatar-wrap {
+  border-color: rgba(225, 230, 245, 0.12);
+  background: var(--paper-warm);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
+}
+
+.dark-mode .friend-card__link:hover .friend-card__avatar-wrap {
+  border-color: var(--color-accent-muted);
+  box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.22);
 }
 
 .dark-mode .friend-card__avatar--text {
@@ -214,13 +245,27 @@ img.friend-card__avatar {
 /* --- Tape Style Friend Cards --- */
 .friend-card--tape {
   z-index: 1;
-  --friend-tape-top: -8px;
-  --friend-tape-left: 25%;
-  --friend-tape-right: auto;
-  --friend-tape-width: 38px;
-  --friend-tape-height: 15px;
-  --friend-tape-rotate: -6deg;
-  --friend-tape-color: var(--tape-yellow);
+  --feed-tilt: -0.25deg;
+  --feed-tape: var(--tape-yellow);
+  --feed-tab: var(--tape-green);
+}
+
+.friend-card--tape:nth-child(4n+2) {
+  --feed-tilt: 0.22deg;
+  --feed-tape: var(--tape-pink);
+  --feed-tab: var(--tape-blue);
+}
+
+.friend-card--tape:nth-child(4n+3) {
+  --feed-tilt: -0.12deg;
+  --feed-tape: var(--tape-green);
+  --feed-tab: var(--tape-yellow);
+}
+
+.friend-card--tape:nth-child(4n+4) {
+  --feed-tilt: 0.3deg;
+  --feed-tape: var(--tape-blue);
+  --feed-tab: var(--tape-pink);
 }
 
 .friend-card--tape:hover {
@@ -229,86 +274,101 @@ img.friend-card__avatar {
 
 .friend-card--tape .friend-card__link {
   border: 1px dashed var(--dash);
-  border-radius: 2px;
-  background: var(--paper-warm);
-  box-shadow: var(--soft-shadow);
-  transform-origin: center top;
-}
-
-.friend-card--tape:nth-child(even) .friend-card__link {
-  transform: rotate(0.6deg);
-}
-
-.friend-card--tape:nth-child(odd) .friend-card__link {
-  transform: rotate(-0.6deg);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent 0, transparent 54px, rgba(221, 208, 181, 0.42) 54px, rgba(221, 208, 181, 0.42) 55px, transparent 55px),
+    repeating-linear-gradient(180deg, transparent 0 27px, rgba(221, 208, 181, 0.18) 27px 28px),
+    var(--paper);
+  box-shadow: 4px 5px 0 rgba(82, 64, 38, 0.08), var(--soft-shadow);
+  isolation: isolate;
+  transform: rotate(var(--feed-tilt));
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .friend-card--tape .friend-card__link:hover {
-  transform: translateY(-4px) scale(1.02) rotate(0deg);
+  transform: translateY(-3px) rotate(0deg);
   border-color: var(--color-accent);
-  box-shadow: 0 10px 22px rgba(82, 64, 38, 0.15);
+  box-shadow: 6px 8px 0 rgba(82, 64, 38, 0.1), var(--small-shadow);
+}
+
+.dark-mode .friend-card--tape .friend-card__link {
+  background:
+    linear-gradient(90deg, transparent 0, transparent 54px, rgba(225, 230, 245, 0.1) 54px, rgba(225, 230, 245, 0.1) 55px, transparent 55px),
+    repeating-linear-gradient(180deg, transparent 0 27px, rgba(225, 230, 245, 0.04) 27px 28px),
+    var(--paper);
+  box-shadow: 4px 5px 0 rgba(0, 0, 0, 0.18), var(--soft-shadow);
 }
 
 .dark-mode .friend-card--tape .friend-card__link:hover {
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
+  box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.25), var(--small-shadow);
 }
 
-/* Scrapbook tape for tape-style cards */
+/* Tape */
+.friend-card--tape::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 22px;
+  z-index: 2;
+  width: 38px;
+  height: 15px;
+  background-color: var(--feed-tape);
+  background-image: var(--tape-stripes);
+  box-shadow: 0 3px 8px rgba(82, 64, 38, 0.12);
+  filter: saturate(0.92);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+/* Tab */
 .friend-card--tape::after {
   content: "";
   position: absolute;
-  top: var(--friend-tape-top);
-  left: var(--friend-tape-left);
-  right: var(--friend-tape-right);
-  transform: rotate(var(--friend-tape-rotate));
-  transform-origin: center;
-  width: var(--friend-tape-width);
-  height: var(--friend-tape-height);
-  background-color: var(--friend-tape-color);
-  background-image: var(--tape-stripes);
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(82, 64, 38, 0.10);
-  opacity: 0.92;
-  z-index: 1;
+  top: 16px;
+  right: -6px;
+  z-index: -1;
+  width: 6px;
+  height: 48px;
+  border: 1px dashed rgba(82, 64, 38, 0.12);
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
+  background: var(--feed-tab);
+  box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
+  transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
-  transition: transform 0.22s ease;
 }
 
-/* Lift the tape in step with the card on hover. */
 .friend-card--tape:hover::after {
-  transform: translateY(-4px) rotate(var(--friend-tape-rotate));
+  right: -14px;
+  width: 14px;
 }
 
-.friend-card--tape:nth-child(even)::after {
-  --friend-tape-top: -8px;
-  --friend-tape-left: auto;
-  --friend-tape-right: 25%;
-  --friend-tape-rotate: 6deg;
-  --friend-tape-color: var(--tape-blue);
+.dark-mode .friend-card--tape::before {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
 }
 
-.friend-card--tape:nth-child(4n+1)::after {
-  --friend-tape-color: var(--tape-yellow);
+.dark-mode .friend-card--tape::after {
+  border-color: rgba(225, 230, 245, 0.1);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.16);
 }
 
-.friend-card--tape:nth-child(4n+2)::after {
-  --friend-tape-color: var(--tape-blue);
-}
-
-.friend-card--tape:nth-child(4n+3)::after {
-  --friend-tape-top: -7px;
-  --friend-tape-width: 34px;
-  --friend-tape-rotate: -4deg;
-  --friend-tape-color: var(--tape-pink);
-}
-
-.friend-card--tape:nth-child(4n)::after {
-  --friend-tape-top: -7px;
-  --friend-tape-width: 36px;
-  --friend-tape-rotate: 4deg;
-  --friend-tape-color: var(--tape-green);
-}
-
+.tape-disabled .friend-card--tape::before,
 .tape-disabled .friend-card--tape::after {
   display: none;
+}
+
+@media (max-width: 640px) {
+  .friend-card--tape::before {
+    left: 16px;
+  }
+  .friend-card--tape::after {
+    top: 18px;
+    right: -5px;
+    width: 5px;
+    height: 38px;
+  }
+  .friend-card--tape:hover::after {
+    right: -11px;
+    width: 11px;
+  }
 }
