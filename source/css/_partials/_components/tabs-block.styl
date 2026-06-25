@@ -3,10 +3,10 @@
   position: relative;
   margin: 32px 0;
   z-index: 1;
+  border: 1px solid var(--line);
+  border-radius: 6px;
   background: var(--paper);
-  border: 2px dashed var(--dash);
-  border-radius: 4px;
-  box-shadow: var(--soft-shadow);
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.03);
 }
 
 .flatpaper-tabs__intro {
@@ -23,29 +23,35 @@
 .flatpaper-tabs__nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  padding: 8px 14px 8px;
-  background: transparent;
-  border-bottom: 2px dashed var(--dash);
+  gap: 8px;
+  padding: 12px 12px 0 12px;
+  background: var(--bg);
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 2;
 }
 
 .flatpaper-tabs__nav-item {
   appearance: none;
-  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 8px 14px;
-  margin: 0 2px;
-  border: 0;
-  border-radius: 6px;
-  color: var(--muted);
+  justify-content: center;
+  min-width: 90px;
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 4px 4px 0 0;
+  padding: 14px 24px 10px 24px;
+  margin: 0;
+  color: var(--ink);
   font: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.2px;
-  background: transparent;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow: hidden;
+  transition: all 0.2s;
 }
 
 .flatpaper-tabs__nav-item:hover:not(.is-active) {
@@ -53,21 +59,54 @@
   background-color: unquote('color-mix(in srgb, var(--dash) 30%, transparent)');
 }
 
-.flatpaper-tabs__nav-item.is-active {
-  color: var(--color-accent-strong);
-  background-color: var(--color-accent-soft);
-  background-image: var(--nav-tape-stripes);
+/* 用伪元素模拟贴在标签顶部的彩色纸胶带 */
+.flatpaper-tabs__nav-item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -5%;
+  right: -5%;
+  height: 12px;
+  background-color: var(--tape-pink, #f8a5c2);
+  opacity: 0.8;
+  transform: rotate(-1.5deg);
+}
+.flatpaper-tabs__nav-item:nth-child(2n)::before {
+  background-color: var(--tape-blue, #778beb);
+  transform: rotate(1deg);
+}
+.flatpaper-tabs__nav-item:nth-child(3n)::before {
+  background-color: var(--tape-green, #63cdda);
+  transform: rotate(-1deg);
+}
+.flatpaper-tabs__nav-item:nth-child(4n)::before {
+  background-color: var(--tape-yellow, #f7d794);
+  transform: rotate(1.5deg);
 }
 
+.flatpaper-tabs__nav-item.is-active {
+  background: var(--paper);
+  border-bottom-color: var(--paper);
+  margin-bottom: -1px; /* 往下偏移1px，与底部内容区背景融合 */
+  color: var(--color-accent-strong);
+  font-weight: 700;
+  z-index: 3;
+}
 .dark-mode .flatpaper-tabs__nav-item.is-active {
   color: var(--color-accent-muted);
 }
 
+.flatpaper-tabs__nav-item.is-active::before {
+  height: 14px;
+  opacity: 1;
+}
+
 .flatpaper-tabs__panels {
-  padding: 16px 18px;
+  position: relative;
+  z-index: 1;
+  padding: 20px;
 }
 
 .flatpaper-tabs__panel > :first-child { margin-top: 0; }
 .flatpaper-tabs__panel > :last-child { margin-bottom: 0; }
 .flatpaper-tabs__panel[hidden] { display: none; }
-
