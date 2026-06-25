@@ -318,14 +318,45 @@ tape:
 ```yaml
 footer:
   left: '© {year} By {name}'
-  right: 'Powered by Theme {theme}'
+  powered:
+    enable: true
+    prefix: Powered by Theme
+    name: FlatPaper
+    link: https://github.com/Homulilly/hexo-theme-flatpaper
+  links:
+    -
+      - name: 服务条款
+        link: /terms
+      - name: 隐私政策
+        link: /privacy
+    -
+      - name: 简易工具
+        link: https://tools.ooo.run/
 ```
 
-占位符：
+`footer.right` 已不再解析。页脚右侧由 `powered` 与 `links` 生成。
+
+`left` 支持 HTML 与占位符：
 
 - `{year}`：当前年份
 - `{name}`：站点 `_config.yml` 中的 `author`
-- `{theme}`：FlatPaper 仓库链接
+
+`powered` 负责主题署名：
+
+- `enable`：设为 `false` 可隐藏主题署名
+- `prefix`：署名前缀，默认 `Powered by Theme`
+- `name`：主题名称，默认 `FlatPaper`
+- `link`：主题链接，默认 FlatPaper 仓库
+- 也可以直接写 `powered: false` 关闭整段主题署名
+
+`links` 负责额外链接。一维列表会渲染为一行；二维列表会按行渲染，同一行内默认用 ` · ` 分隔。外部 `http(s)` 链接会自动在新标签页打开。
+
+关闭主题署名时：
+
+```yaml
+footer:
+  powered: false
+```
 
 ## Note 提示块
 

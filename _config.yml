@@ -127,9 +127,9 @@ home_hero:
   #     link: /archives/
   #   - name: 分类
   #     link: /categories/
-  #   - name: Folio
-  #     link: https://folio.nep.me/
-  #     alt: Folio 看图
+  #   - name: 简易工具
+  #     link: https://tools.ooo.run
+  #     alt: 建议工具
   # 一些贴纸装饰
   stickers:
     enable: true
@@ -231,12 +231,27 @@ color: green
 tape:
   enable: true
 
-# 页脚（支持 HTML；占位符：{year}=当前年份，{name}=站点 _config.yml 的 author，{theme}=主题署名链接）
-# 想去掉主题署名直接删掉 {theme} 即可
+# 页脚：
+# - left 支持 HTML；占位符：{year}=当前年份，{name}=站点 _config.yml 的 author
+# - powered 负责主题署名；设为 false 或配置 enable: false 可关闭
+# - links 支持一维链接列表（一行）或二维链接列表（多行），同一行内用 " · " 分隔
 # 不配置 footer 时默认：左 "© {year} {author}"，右 "Powered by Theme FlatPaper"
 footer:
   left: '© {year} By {name}'
-  right: 'Powered by Theme {theme}'
+  powered:
+    enable: true
+    prefix: Powered by Theme
+    name: FlatPaper
+    link: https://github.com/Homulilly/hexo-theme-flatpaper
+  links:
+    # -
+    #   - name: 服务条款
+    #     link: /terms
+    #   - name: 隐私政策
+    #     link: /privacy
+    # -
+    #   - name: 简易工具
+    #     link: https://tools.ooo.run/
 
 # {% note %} 提示块外观风格：
 #   flat      左侧实色条 + 淡背景填充（默认）

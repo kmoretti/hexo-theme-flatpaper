@@ -18,7 +18,7 @@
 
 - `head.ejs`：meta 与 stylesheet
 - `header.ejs`：品牌、桌面导航、搜索、调色盘、明暗切换、移动端抽屉按钮
-- `footer.ejs`：页脚模板 token
+- `footer.ejs`：页脚版权、主题署名与结构化链接
 - `home-hero.ejs`：可选首页开屏、profile 链接、图片贴纸与滚动入口
 - `sidebar-right.ejs`：视觉左侧栏与移动端抽屉
 - `sidebar-left.ejs`：首页 / 列表页视觉右侧栏

@@ -126,9 +126,9 @@ home_hero:
   #     link: /archives/
   #   - name: Categories
   #     link: /categories/
-  #   - name: Folio
-  #     link: https://folio.example.com/
-  #     alt: View Folio
+  #   - name: Simple Tools
+  #     link: https://tools.ooo.run
+  #     alt: Simple Tools
   stickers:
     enable: true
     draggable: true
@@ -232,12 +232,27 @@ color: green
 tape:
   enable: true
 
-# Footer. Supports HTML. Placeholders: {year}=current year, {name}=site _config.yml author, {theme}=theme credit link.
-# Remove {theme} if you do not want to show the theme credit.
+# Footer:
+# - left supports HTML. Placeholders: {year}=current year, {name}=site _config.yml author.
+# - powered controls the theme credit. Set powered to false, or set enable: false, to hide it.
+# - links accepts a flat link list for one row, or nested link lists for multiple rows. Links in one row use " · " as the separator.
 # Defaults when footer is not configured: left "(c) {year} {author}", right "Powered by Theme FlatPaper".
 footer:
   left: '(c) {year} By {name}'
-  right: 'Powered by Theme {theme}'
+  powered:
+    enable: true
+    prefix: Powered by Theme
+    name: FlatPaper
+    link: https://github.com/Homulilly/hexo-theme-flatpaper
+  links:
+    # -
+    #   - name: Terms
+    #     link: /terms
+    #   - name: Privacy
+    #     link: /privacy
+    # -
+    #   - name: Tools
+    #     link: https://tools.ooo.run/
 
 # {% note %} block appearance:
 #   flat      Solid left bar + pale background fill (default)

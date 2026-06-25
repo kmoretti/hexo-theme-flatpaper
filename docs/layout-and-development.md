@@ -18,7 +18,7 @@
 
 - `head.ejs`: meta and stylesheet
 - `header.ejs`: brand, desktop navigation, search, accent picker, theme toggle, mobile drawer toggle
-- `footer.ejs`: footer template tokens
+- `footer.ejs`: footer copyright, theme credit, and structured links
 - `home-hero.ejs`: optional first-screen home hero, profile links, image stickers, and scroll affordance
 - `sidebar-right.ejs`: visual-left sidebar and mobile drawer
 - `sidebar-left.ejs`: visual-right sidebar on home/list pages

@@ -321,14 +321,45 @@ tape:
 ```yaml
 footer:
   left: '© {year} By {name}'
-  right: 'Powered by Theme {theme}'
+  powered:
+    enable: true
+    prefix: Powered by Theme
+    name: FlatPaper
+    link: https://github.com/Homulilly/hexo-theme-flatpaper
+  links:
+    -
+      - name: Terms
+        link: /terms
+      - name: Privacy
+        link: /privacy
+    -
+      - name: Tools
+        link: https://tools.ooo.run/
 ```
 
-Placeholders:
+`footer.right` is no longer parsed. The right side of the footer is generated from `powered` and `links`.
+
+`left` supports HTML and placeholders:
 
 - `{year}`: current year
 - `{name}`: site `_config.yml` `author`
-- `{theme}`: link to the FlatPaper repository
+
+`powered` controls the theme credit:
+
+- `enable`: set to `false` to hide the theme credit
+- `prefix`: credit prefix, default `Powered by Theme`
+- `name`: theme name, default `FlatPaper`
+- `link`: theme link, default FlatPaper repository
+- You can also set `powered: false` to disable the whole theme credit
+
+`links` controls extra footer links. A flat list renders as one row; nested lists render as multiple rows. Links in the same row use ` · ` as the separator by default. External `http(s)` links open in a new tab automatically.
+
+To hide the theme credit:
+
+```yaml
+footer:
+  powered: false
+```
 
 ## Note Blocks
 
