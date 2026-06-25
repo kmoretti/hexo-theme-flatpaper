@@ -34,9 +34,11 @@ if (['circle', 'tape'].indexOf(buttonStyle) === -1) buttonStyle = 'circle';
 var strongAccent = !(theme.article && theme.article.strong_accent === false);
 var homeHero = theme.home_hero || {};
 var homeHeroEnabled = is_home() && (!page.current || page.current === 1) && homeHero.enable === true;
+var backgroundStyle = theme.background && theme.background.style ? String(theme.background.style).toLowerCase() : 'default';
+if (['default', 'grid', 'line', 'cross', 'dotted'].indexOf(backgroundStyle) === -1) backgroundStyle = 'default';
 %>
 <body
-  class="<%= is_post() ? 'is-post' : (isNotFoundPage ? 'is-404' : (is_home() ? 'is-home' : 'is-list')) %><%= tapeDisabled ? ' tape-disabled' : '' %><%= homeHeroEnabled ? ' has-home-hero is-hero-active' : '' %> tag-style-<%= tagStyle %>"
+  class="<%= is_post() ? 'is-post' : (isNotFoundPage ? 'is-404' : (is_home() ? 'is-home' : 'is-list')) %><%= tapeDisabled ? ' tape-disabled' : '' %><%= homeHeroEnabled ? ' has-home-hero is-hero-active' : '' %> tag-style-<%= tagStyle %> bg-style-<%= backgroundStyle %>"
   data-default-accent="<%= accentColor %>"
   data-code-theme="<%= codeTheme %>"
   data-note-style="<%= noteStyle %>"
@@ -44,7 +46,9 @@ var homeHeroEnabled = is_home() && (!page.current || page.current === 1) && home
   data-button-style="<%= buttonStyle %>"
   data-strong-accent="<%= strongAccent ? 'on' : 'off' %>"
 >
-  <div class="page-grain"></div>
+  <% if (backgroundStyle === 'default') { %>
+    <div class="page-grain"></div>
+  <% } %>
   <svg width="0" height="0" style="position:absolute;z-index:-1;" aria-hidden="true">
     <defs>
       <filter id="paper-edge" x="-5%" y="-5%" width="110%" height="110%">

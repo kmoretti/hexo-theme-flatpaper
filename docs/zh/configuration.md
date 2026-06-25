@@ -58,6 +58,17 @@ google_fonts:
     ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 ```
 
+## 背景特效
+
+```yaml
+background:
+  style: default
+```
+
+- `background.style` 默认为 `default`，保留主题原有的淡纸纹背景。
+- 可选值：`default`、`grid`、`line`、`cross`、`dotted`。
+- 选择 `grid`、`line`、`cross` 或 `dotted` 时会切换为新的轻量 CSS 纹理；固定背景效果仅在桌面指针设备上启用，移动端会自动使用普通滚动背景。
+
 ## 导航菜单
 
 ```yaml

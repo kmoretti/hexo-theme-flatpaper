@@ -58,6 +58,17 @@ google_fonts:
     ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 ```
 
+## Background Effect
+
+```yaml
+background:
+  style: default
+```
+
+- `background.style` defaults to `default`, preserving the theme's original subtle paper grain.
+- Available values: `default`, `grid`, `line`, `cross`, `dotted`.
+- Choosing `grid`, `line`, `cross`, or `dotted` switches to a new lightweight CSS texture. Fixed attachment is limited to desktop pointer devices, while mobile uses normal scrolling backgrounds.
+
 ## Menu
 
 ```yaml

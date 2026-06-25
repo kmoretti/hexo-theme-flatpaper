@@ -45,6 +45,11 @@ nav:
 # favicon: /images/favicon.svg
 # favicon: false
 
+# 背景特效
+# 选项: default(默认纸纹) / grid(网格) / line(横线) / cross(十字星) / dotted(点阵)
+background:
+  style: default
+
 profile:
   role: 日常记录
   bio: 介绍一下自己 — 一两句话，写写你想被别人记住的部分。

@@ -45,6 +45,11 @@ nav:
 # favicon: /images/favicon.svg
 # favicon: false
 
+# Background Effect
+# Options: default (original paper grain) / grid / line / cross / dotted
+background:
+  style: default
+
 profile:
   role: Daily notes
   bio: A short introduction about who you are and what you want people to remember.
