@@ -151,7 +151,7 @@ if (is_post()) {
 } else {
   jsonLd.about = titleParts.length ? titleParts[0] : siteTitle;
 }
-var favicon = theme.favicon === false ? '' : (theme.favicon || '/images/favicon.svg');
+var favicon = theme.favicon === false ? '' : (theme.favicon || '/images/favicon.png');
 var faviconMime = faviconType(favicon);
 %>
 <title><%= fullTitle %></title>

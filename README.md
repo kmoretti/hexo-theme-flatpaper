@@ -1,10 +1,14 @@
+<p align="center">🇨🇳 中文简体  |  <a title="English" href="README_en.md">🇬🇧 English</a></p>
+
+<p align="center"><img src="source/images/favicon.png" width="64" height="64" alt="FlatPaper logo"></p>
+
 # FlatPaper
 
 FlatPaper 是一个面向个人写作的 Hexo 主题：柔和纸面、扁平插画、便签、胶带条，以及在桌面和移动端都尽量安静的阅读界面。
 
 - [Demo 站点](https://flatpaper.nep.me/)
 - [作者博客](https://homulilly.com/)
-- English: [README_en.md](README_en.md)
+- 文档: [Flatpaper Docs](https://flatpaper-docs.nep.me/)
 
 ## 截图
 
