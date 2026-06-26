@@ -556,8 +556,14 @@
 
   .dark-mode .article-top-img::before {
     background:
-      linear-gradient(to bottom, rgba(29, 32, 39, 0.18) 0%, rgba(29, 32, 39, 0.34) 20%, rgba(29, 32, 39, 0.56) 38%, rgba(29, 32, 39, 0.78) 56%, rgba(29, 32, 39, 0.92) 72%, var(--paper) 90%, var(--paper) 100%),
+      linear-gradient(to bottom, rgba(29, 32, 39, 0.16) 0%, rgba(29, 32, 39, 0.26) 16%, rgba(29, 32, 39, 0.4) 30%, rgba(29, 32, 39, 0.58) 44%, rgba(29, 32, 39, 0.74) 58%, rgba(29, 32, 39, 0.88) 72%, rgba(29, 32, 39, 0.96) 84%, var(--paper) 96%, var(--paper) 100%),
       radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.08), transparent 32%);
+  }
+
+  .dark-mode .article-top-img::after {
+    background: linear-gradient(to bottom, transparent 0%, rgba(29, 32, 39, 0.18) 18%, rgba(29, 32, 39, 0.36) 32%, rgba(29, 32, 39, 0.58) 48%, rgba(29, 32, 39, 0.78) 64%, rgba(29, 32, 39, 0.92) 78%, var(--paper) 92%);
+    opacity: 0.95;
+    transform: translateY(12%);
   }
 
   .comments-section {
