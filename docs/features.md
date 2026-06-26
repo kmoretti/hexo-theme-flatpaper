@@ -52,6 +52,8 @@ If no image exists, FlatPaper renders a CSS illustration fallback.
 
 Images use `object-fit: cover` and `object-position: 50% 50%`.
 
+When `post_top_img.enable` is `true`, the resolved top image appears at the top of article pages. The title overlays the image, and the image fades back into the paper below. A post-level `top_img` front-matter value overrides the resolved image, while `top_img: false` disables it for that post.
+
 ## Search
 
 Search is opened by the header magnifier or `Ctrl+K` / `Cmd+K`.

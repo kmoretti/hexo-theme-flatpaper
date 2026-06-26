@@ -162,6 +162,11 @@ latest_posts:
 # Number of related posts at the bottom of posts. 0 disables it; unset defaults to 3.
 related_posts: 4
 
+# Top image at the top of article pages. Disabled by default.
+# Per-post front matter `top_img` may set an image or `false` to disable it.
+post_top_img:
+  enable: false
+
 # Whether bold text in article content uses the accent color. Set false to keep plain bold only.
 article:
   strong_accent: true

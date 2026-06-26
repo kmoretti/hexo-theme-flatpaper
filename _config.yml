@@ -163,6 +163,11 @@ latest_posts:
 # 文章页底部"相关文章"展示数量；0 表示禁用；不配置则默认 3 篇
 related_posts: 4
 
+# 文章页顶部大图。默认关闭；开启后按 cover/thumbnail/image/banner/正文首图解析。
+# 单篇文章可用 front-matter 的 top_img 指定图片，或设为 false 关闭。
+post_top_img:
+  enable: false
+
 # 文章正文加粗文本是否使用主题色；设为 false 则只保留默认加粗。
 article:
   strong_accent: true

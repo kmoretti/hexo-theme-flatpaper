@@ -47,6 +47,62 @@ function safeUrl(value, kind) {
 
 hexo.extend.helper.register('flatpaper_safe_url', safeUrl);
 
+function resolvePostCover(post) {
+  if (!post) return '';
+  let cover = post.cover || post.thumbnail || post.image || post.banner || '';
+  if (!cover && post.content) {
+    const m = String(post.content).match(/<img[^>]+src=["']([^"'>]+)["']/i);
+    if (m) cover = m[1];
+  }
+  return cover || '';
+}
+
+hexo.extend.helper.register('flatpaper_cover_info', function (post, fallback) {
+  const rawCover = resolvePostCover(post);
+  let src = rawCover ? safeUrl(this.url_for(rawCover), 'image') : '';
+  let isFallback = false;
+
+  if (!src && fallback) {
+    src = safeUrl(this.url_for(fallback), 'image');
+    isFallback = !!src;
+  }
+
+  return {
+    src,
+    raw: rawCover,
+    isFallback
+  };
+});
+
+hexo.extend.helper.register('flatpaper_post_top_img_info', function (post, globallyEnabled) {
+  if (!post) return { src: '', raw: '', source: '', disabled: false };
+
+  const hasTopImg = Object.prototype.hasOwnProperty.call(post, 'top_img');
+  const topImg = post.top_img;
+  if (hasTopImg && (topImg === false || String(topImg).toLowerCase() === 'false')) {
+    return { src: '', raw: '', source: 'top_img', disabled: true };
+  }
+
+  if (typeof topImg === 'string' && topImg.trim()) {
+    return {
+      src: safeUrl(this.url_for(topImg), 'image'),
+      raw: topImg,
+      source: 'top_img',
+      disabled: false
+    };
+  }
+
+  if (!globallyEnabled) return { src: '', raw: '', source: '', disabled: false };
+
+  const rawCover = resolvePostCover(post);
+  return {
+    src: rawCover ? safeUrl(this.url_for(rawCover), 'image') : '',
+    raw: rawCover,
+    source: rawCover ? 'cover' : '',
+    disabled: false
+  };
+});
+
 // Posts sorted newest-first, cached for the current generate pass.
 // Several partials (random-posts, sidebar-right, post.ejs related list,
 // index.ejs featured resolver) all call site.posts.sort('date', -1).toArray()

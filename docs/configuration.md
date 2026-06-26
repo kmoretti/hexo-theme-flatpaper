@@ -220,6 +220,8 @@ latest_posts:
   enable: false
   limit: 5
 related_posts: 4
+post_top_img:
+  enable: false
 article:
   strong_accent: true
 ```
@@ -229,6 +231,8 @@ article:
 - `random_posts_pool`: latest-post candidate pool. `0` or empty means unlimited.
 - `latest_posts`: latest-post card below the post TOC in the article sidebar. Disabled by default; `limit` defaults to `5`.
 - `related_posts`: related-post card count. `0` disables the block.
+- `post_top_img.enable`: renders a top image on article pages, with the title overlaid on the image and the image fading back into the paper below. Disabled by default.
+- Per-post `top_img` has the highest priority: set it to an image path/URL to use that image, or `false` to disable the top image for that post.
 - `article.strong_accent`: uses the accent color for bold text inside article content. Set `false` to keep plain bold text.
 
 Related posts are scored by shared taxonomy:

@@ -15,27 +15,19 @@ if (isSmall) classes.push('paper-thumb--small');
 
 // Resolve a real cover image from the post, if any.
 var cover = '';
-var safeCover = '';
 var fallbackCover = fallbackCovers[index % fallbackCovers.length];
-var safeFallbackCover = '';
 var thumbSrc = '';
 var thumbAlt = '';
 if (typeof post !== 'undefined' && post) {
-  cover = post.cover || post.thumbnail || post.image || post.banner || '';
-  if (!cover && post.content) {
-    var m = String(post.content).match(/<img[^>]+src=["']([^"'>]+)["']/i);
-    if (m) cover = m[1];
-  }
+  cover = flatpaper_cover_info(post, fallbackCover);
   thumbAlt = post.title || '';
 }
-safeCover = cover ? flatpaper_safe_url(url_for(cover), 'image') : '';
-safeFallbackCover = !safeCover ? flatpaper_safe_url(url_for(fallbackCover), 'image') : '';
-thumbSrc = safeCover || safeFallbackCover;
+thumbSrc = cover ? cover.src : flatpaper_safe_url(url_for(fallbackCover), 'image');
 if (thumbSrc) classes.push('paper-thumb--cover');
 %>
 <div class="<%= classes.join(' ') %>">
   <% if (thumbSrc) { %>
-    <img class="paper-thumb__img" src="<%= thumbSrc %>" alt="<%= safeCover ? thumbAlt : '' %>" loading="lazy" referrerpolicy="no-referrer">
+    <img class="paper-thumb__img" src="<%= thumbSrc %>" alt="<%= cover && !cover.isFallback ? thumbAlt : '' %>" loading="lazy" referrerpolicy="no-referrer">
   <% } else { %>
     <div class="sun"></div>
     <div class="cloud cloud-a"></div>
