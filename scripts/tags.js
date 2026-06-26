@@ -108,6 +108,30 @@ hexo.extend.helper.register('flatpaper_post_top_img_info', function (post, mode)
   };
 });
 
+hexo.extend.helper.register('flatpaper_page_top_img_info', function (page) {
+  if (!page || page.layout === 'post') return { src: '', raw: '', source: '', disabled: false };
+
+  if (!Object.prototype.hasOwnProperty.call(page, 'top_img')) {
+    return { src: '', raw: '', source: '', disabled: false };
+  }
+
+  const topImg = page.top_img;
+  if (topImg === false || String(topImg).toLowerCase() === 'false') {
+    return { src: '', raw: '', source: 'top_img', disabled: true };
+  }
+
+  if (typeof topImg !== 'string' || !topImg.trim()) {
+    return { src: '', raw: topImg, source: 'top_img', disabled: false };
+  }
+
+  return {
+    src: safeUrl(this.url_for(topImg), 'image'),
+    raw: topImg,
+    source: 'top_img',
+    disabled: false
+  };
+});
+
 // Posts sorted newest-first, cached for the current generate pass.
 // Several partials (random-posts, sidebar-right, post.ejs related list,
 // index.ejs featured resolver) all call site.posts.sort('date', -1).toArray()

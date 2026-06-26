@@ -5,13 +5,15 @@ var routableTypes = ['404', 'link', 'links', 'tags', 'categories', 'friends-feed
 var typeKey = String(page.type || '').toLowerCase();
 var typeMap = { links: 'link', 'friend-feed': 'friends-feed', fcircle: 'friends-feed' };
 if (typeMap[typeKey]) typeKey = typeMap[typeKey];
+var pageTopImg = flatpaper_page_top_img_info(page);
 %>
 <% if (typeKey && routableTypes.indexOf(typeKey) > -1) { %>
   <%- partial(typeKey) %>
 <% } else { %>
 <div class="article-tape-wrap">
 <span class="tape tape--top-right" aria-hidden="true"></span>
-<article class="article-paper">
+<article class="article-paper<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: page.title || 'FlatPaper' }) %>
   <header class="article-header">
     <span class="label-pill"><%= flatpaper_i18n('common.page') %></span>
     <h1><%= page.title || 'FlatPaper' %></h1>

@@ -54,6 +54,8 @@ Images use `object-fit: cover` and `object-position: 50% 50%`.
 
 When `post_top_img.mode` is `top_img` or `fallback`, the resolved top image appears at the top of article pages. The title overlays the image, and the image fades back into the paper below. `top_img` front-matter has priority, and `top_img: false` disables it for that post.
 
+Standalone pages and special `type:` pages also support a page-local `top_img`. Page top images do not use `post_top_img` or any fallback fields; an image appears only when that page front matter sets `top_img`.
+
 ## Search
 
 Search is opened by the header magnifier or `Ctrl+K` / `Cmd+K`.

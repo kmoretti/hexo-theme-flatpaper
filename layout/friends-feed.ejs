@@ -8,9 +8,11 @@ if (!pageSize || pageSize < 1) pageSize = 20;
 if (pageSize > 100) pageSize = 100;
 var sourceLabel = page.source_label || '';
 var avatarFallback = flatpaper_safe_url(url_for('/images/icon-error.webp'), 'image');
+var pageTopImg = flatpaper_page_top_img_info(page);
 %>
 
-<article class="article-paper friends-feed-page">
+<article class="article-paper friends-feed-page<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: page.title || flatpaper_i18n('friends_feed.title') }) %>
   <header class="article-header">
     <span class="label-pill"><%= flatpaper_i18n('friends_feed.label') %></span>
     <h1><%= page.title || flatpaper_i18n('friends_feed.title') %></h1>

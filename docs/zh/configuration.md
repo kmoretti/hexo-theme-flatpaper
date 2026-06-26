@@ -244,6 +244,20 @@ article:
 - 0 分文章排除
 - 分数相同时较新文章优先
 
+## 页面顶部图
+
+独立页面和特殊 `type:` 页面只通过页面 front-matter 主动开启：
+
+```yaml
+---
+title: 友情链接
+type: links
+top_img: /images/pages/links.jpg
+---
+```
+
+没有主题级页面顶部图配置。页面未填写 `top_img` 时不会渲染顶部图，且页面顶部图不会回退到 `cover`、`thumbnail`、`image`、`banner` 或正文图片。
+
 ## Reaction 按钮
 
 常用于赞赏 / 打赏二维码，鼠标 hover 或点击按钮时展示图片弹层。

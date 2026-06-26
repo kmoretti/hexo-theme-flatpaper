@@ -81,6 +81,18 @@ Recognized values:
 
 Anything else falls back to the default page layout.
 
+Standalone pages and special `type:` pages can render a page-local top image by setting `top_img` in that page's front matter:
+
+```yaml
+---
+title: Links
+type: links
+top_img: /images/pages/links.jpg
+---
+```
+
+Page top images only use the current page's `top_img`. There is no theme-level fallback or configuration for pages; leaving `top_img` empty renders no image.
+
 For a static 404 page, create `source/404.md` in the Hexo site:
 
 ```yaml

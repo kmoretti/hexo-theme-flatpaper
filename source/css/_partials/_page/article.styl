@@ -6,6 +6,8 @@
 }
 
 .article-paper {
+  --article-top-img-pad-top: 44px;
+  --article-top-img-pad-x: 64px;
   padding: 44px 64px 0;
   min-width: 0;
   background: var(--paper);
@@ -16,16 +18,30 @@
 .article-paper--with-top-img {
   --article-top-img-overlap: 208px;
   --article-top-img-header-height: 148px;
-  overflow-x: visible;
+  overflow-x: clip;
+}
+
+.article-paper--page-top-img {
+  --article-top-img-overlap: 126px;
+  --article-top-img-header-height: 108px;
 }
 
 .article-top-img {
   position: relative;
+  width: calc(100% + var(--article-top-img-pad-x) + var(--article-top-img-pad-x));
+  max-width: none;
   height: clamp(220px, 31vw, 360px);
-  margin: -44px -64px 0;
+  margin: calc(-1 * var(--article-top-img-pad-top)) 0 0 calc(-1 * var(--article-top-img-pad-x));
   overflow: hidden;
   border-radius: 4px 4px 0 0;
   background: var(--paper-warm);
+}
+
+.article-top-img--page {
+  aspect-ratio: 4 / 1;
+  height: auto;
+  min-height: 148px;
+  max-height: 260px;
 }
 
 .article-top-img::before,

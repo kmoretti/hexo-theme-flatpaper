@@ -1,11 +1,25 @@
 /* ============== ARCHIVE / TAXONOMY ============== */
 .archive-paper {
+  --article-top-img-pad-top: 32px;
+  --article-top-img-pad-x: 36px;
   padding: 32px 36px;
 }
 
 .taxonomy-paper,
 .empty-paper {
+  --article-top-img-pad-top: 24px;
+  --article-top-img-pad-x: 28px;
   padding: 24px 28px;
+}
+
+.archive-paper--with-top-img,
+.taxonomy-paper--with-top-img {
+  overflow-x: clip;
+}
+
+.archive-paper--with-top-img .article-header h1,
+.taxonomy-paper--with-top-img .article-header h1 {
+  margin: 4px 0 0;
 }
 
 .archive-paper h1,

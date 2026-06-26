@@ -3,9 +3,11 @@ var data = site.data && site.data.links ? site.data.links : [];
 var groups = Array.isArray(data) ? data : [data];
 groups = groups.filter(function (g) { return g && (g.link_list || g.class_name); });
 var avatarFallback = flatpaper_safe_url(url_for('/images/icon-error.webp'), 'image');
+var pageTopImg = flatpaper_page_top_img_info(page);
 %>
 
-<article class="article-paper friends-page">
+<article class="article-paper friends-page<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: page.title || flatpaper_i18n('links.title') }) %>
   <header class="article-header">
     <span class="label-pill"><%= flatpaper_i18n('links.label') %></span>
     <h1><%= page.title || flatpaper_i18n('links.title') %></h1>

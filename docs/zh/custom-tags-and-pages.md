@@ -81,6 +81,18 @@ type: links
 
 其他值会回退到默认页面布局。
 
+独立页面和特殊 `type:` 页面可在该页面 front-matter 中设置页面自己的顶部图：
+
+```yaml
+---
+title: 友情链接
+type: links
+top_img: /images/pages/links.jpg
+---
+```
+
+页面顶部图只读取当前页面的 `top_img`，没有主题级回退或配置；不填写 `top_img` 时不会渲染顶部图。
+
 要生成静态 404 页面，可在 Hexo 站点中创建 `source/404.md`：
 
 ```yaml

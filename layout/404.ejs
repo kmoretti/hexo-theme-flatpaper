@@ -1,6 +1,10 @@
+<%
+var pageTopImg = flatpaper_page_top_img_info(page);
+%>
 <div class="article-tape-wrap not-found-wrap">
 <span class="tape tape--top-right" aria-hidden="true"></span>
-<article class="article-paper not-found-paper">
+<article class="article-paper not-found-paper<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: page.title || flatpaper_i18n('not_found.title') }) %>
   <header class="article-header not-found-header">
     <span class="label-pill"><%= flatpaper_i18n('not_found.label') %></span>
     <p class="not-found-code" aria-hidden="true">404</p>

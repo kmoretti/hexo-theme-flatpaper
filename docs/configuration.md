@@ -244,6 +244,20 @@ Related posts are scored by shared taxonomy:
 - zero-score posts are excluded
 - ties are sorted by newer date
 
+## Page Top Images
+
+Standalone pages and special `type:` pages can opt in with page front matter only:
+
+```yaml
+---
+title: Links
+type: links
+top_img: /images/pages/links.jpg
+---
+```
+
+There is no theme-level page top image option. Pages without `top_img` render without a top image, and page top images do not fall back to `cover`, `thumbnail`, `image`, `banner`, or inline images.
+
 ## Reactions
 
 Custom reaction buttons are useful for reward/donation QR codes. Image popovers open on hover or click.
