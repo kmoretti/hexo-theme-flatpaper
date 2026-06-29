@@ -161,8 +161,10 @@ var menuChildren = __menu.children, menuHref = __menu.href, menuIcon = __menu.ic
           telegram: 'telegram', weibo: 'weibo'
         };
         var iconName = entry.icon || iconMap[key] || 'send';
+        var label = entry.label || entry.name || entry.title || name;
+        var tooltip = entry.tooltip || label;
       %>
-        <a href="<%= flatpaper_safe_url(href, 'href') %>" target="_blank" rel="noopener" aria-label="<%= name %>">
+        <a href="<%= flatpaper_safe_url(href, 'href') %>" target="_blank" rel="noopener" aria-label="<%= label %>" data-tooltip="<%= tooltip %>">
           <% if (entry.svg) { %>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" class="lucide lucide-custom" aria-hidden="true"><%- entry.svg %></svg>
           <% } else { %>
@@ -171,7 +173,9 @@ var menuChildren = __menu.children, menuHref = __menu.href, menuIcon = __menu.ic
         </a>
       <% }) %>
       <% if (rss && rss.enable) { %>
-        <a href="<%= flatpaper_safe_url(url_for(rss.path || 'atom.xml'), 'href') %>" aria-label="RSS feed" title="RSS">
+        <% var rssLabel = rss.label || rss.title || 'RSS feed'; %>
+        <% var rssTooltip = rss.tooltip || rssLabel; %>
+        <a href="<%= flatpaper_safe_url(url_for(rss.path || 'atom.xml'), 'href') %>" aria-label="<%= rssLabel %>" data-tooltip="<%= rssTooltip %>">
           <%- partial('_partial/icons', { icon: 'rss' }) %>
         </a>
       <% } %>

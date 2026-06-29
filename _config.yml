@@ -85,10 +85,12 @@ profile:
     # Mastodon:
     #   url: https://mastodon.social/@yourname
     #   icon: send
+    #   tooltip: 在 Mastodon 找我
     # 写法 3：完全自定义 SVG —— 提供 <path>/<circle> 等子元素字符串，
     # 容器视图框为 24x24，颜色用 currentColor
     # 知乎:
     #   url: https://www.zhihu.com/people/yourname
+    #   tooltip: 知乎主页
     #   svg: '<path d="M2 2 L22 22"/>'
   # 在 socials 区域追加一个 RSS 图标（需要装 hexo-generator-feed 并在站点 _config.yml 启用 feed）
   rss:

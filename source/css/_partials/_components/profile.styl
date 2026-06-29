@@ -239,6 +239,86 @@ a.site-info__item:focus-visible strong {
   height: 15px;
 }
 
+.socials a[data-tooltip]::before,
+.socials a[data-tooltip]::after {
+  position: absolute;
+  left: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  z-index: 5;
+}
+
+.socials a[data-tooltip]::before {
+  content: attr(data-tooltip);
+  bottom: calc(100% + 9px);
+  max-width: min(220px, 68vw);
+  padding: 5px 9px;
+  border: 1px dashed var(--line);
+  border-radius: 255px 18px 225px 18px/18px 225px 18px 255px;
+  background: var(--paper);
+  box-shadow: var(--soft-shadow);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  transform: translateX(-50%) translateY(4px) rotate(-1deg);
+}
+
+.socials a[data-tooltip]::after {
+  content: "";
+  bottom: calc(100% + 4px);
+  width: 8px;
+  height: 8px;
+  border-right: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--line);
+  background: var(--paper);
+  transform: translateX(-50%) translateY(4px) rotate(45deg);
+}
+
+.socials a[data-tooltip]:hover::before,
+.socials a[data-tooltip]:hover::after,
+.socials a[data-tooltip]:focus-visible::before,
+.socials a[data-tooltip]:focus-visible::after {
+  opacity: 1;
+}
+
+.socials a[data-tooltip]:hover::before,
+.socials a[data-tooltip]:focus-visible::before {
+  transform: translateX(-50%) translateY(0) rotate(-1deg);
+}
+
+.socials a[data-tooltip]:hover::after,
+.socials a[data-tooltip]:focus-visible::after {
+  transform: translateX(-50%) translateY(0) rotate(45deg);
+}
+
+.home-hero__links a[data-tooltip]::before {
+  top: calc(100% + 9px);
+  bottom: auto;
+  transform: translateX(-50%) translateY(-4px) rotate(1deg);
+}
+
+.home-hero__links a[data-tooltip]::after {
+  top: calc(100% + 4px);
+  bottom: auto;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 1px dashed var(--line);
+  border-top: 1px dashed var(--line);
+  transform: translateX(-50%) translateY(-4px) rotate(45deg);
+}
+
+.home-hero__links a[data-tooltip]:hover::before,
+.home-hero__links a[data-tooltip]:focus-visible::before {
+  transform: translateX(-50%) translateY(0) rotate(1deg);
+}
+
+.home-hero__links a[data-tooltip]:hover::after,
+.home-hero__links a[data-tooltip]:focus-visible::after {
+  transform: translateX(-50%) translateY(0) rotate(45deg);
+}
+
 .socials a:hover {
   color: var(--color-accent-strong);
   border-color: var(--color-accent);

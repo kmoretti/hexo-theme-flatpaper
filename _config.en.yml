@@ -86,10 +86,12 @@ profile:
     # Mastodon:
     #   url: https://mastodon.social/@yourname
     #   icon: send
+    #   tooltip: Find me on Mastodon
     # Form 3: fully custom SVG. Provide child elements such as <path>/<circle>.
     # The container viewBox is 24x24 and color uses currentColor.
     # Zhihu:
     #   url: https://www.zhihu.com/people/yourname
+    #   tooltip: Zhihu profile
     #   svg: '<path d="M2 2 L22 22"/>'
   # Append an RSS icon in the socials area. Requires hexo-generator-feed and feed enabled in the site _config.yml.
   rss:
