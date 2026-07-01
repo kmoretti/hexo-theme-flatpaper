@@ -357,6 +357,7 @@
 
 .article-content table {
   width: 100%;
+  table-layout: auto;
   border-collapse: separate;
   border-spacing: 0;
   margin: 22px 0;
@@ -367,11 +368,24 @@
 
 .article-content th,
 .article-content td {
+  min-width: 10ch;
   padding: 10px 12px;
   border: 0;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   text-align: left;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.article-content table a:not(.heading-anchor) {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.article-content .highlight th,
+.article-content .highlight td {
+  min-width: 0;
 }
 
 .article-content th[align="center"],
