@@ -65,6 +65,7 @@ function heroImageOverlay(value) {
 var configuredHeroImages = Array.isArray(hero.image) ? hero.image : (hero.image ? [hero.image] : []);
 var heroImages = configuredHeroImages.map(heroImageUrl).filter(Boolean);
 var heroImage = heroImages[0] || '';
+var heroMobileImage = heroImage && hero.mobile_image !== false;
 // Escape backslash/quote before embedding in a CSS url("...") string, mirroring
 // the client-side randomizer. flatpaper_safe_url already strips control chars,
 // so this just closes the CSS-string-breakout gap that the HTML-entity escape
@@ -132,7 +133,7 @@ var hasLinkedCustomStickers = customStickerItems.some(function (item) { return !
 %>
 
 <section
-  class="home-hero<%= heroImage ? ' home-hero--image' : '' %><%= stickersDraggable ? ' has-draggable-stickers' : '' %>"
+  class="home-hero<%= heroImage ? ' home-hero--image' : '' %><%= heroMobileImage ? ' home-hero--mobile-image' : '' %><%= stickersDraggable ? ' has-draggable-stickers' : '' %>"
   aria-label="<%= flatpaper_i18n('home_hero.label') %>"
   <% if (heroImage) { %>style="--hero-bg-image: url(&quot;<%= heroImageCss %>&quot;); --hero-image-overlay-top: rgba(42, 33, 22, <%= heroOverlay.top %>); --hero-image-overlay-bottom: rgba(42, 33, 22, <%= heroOverlay.bottom %>);"<% } %>
   <% if (heroImages.length > 1) { %>data-hero-images="<%= JSON.stringify(heroImages) %>"<% } %>

@@ -124,6 +124,8 @@ home_hero:
   # image:
   #   - /images/hero-1.jpg
   #   - /images/hero-2.jpg
+  # Keep the background image on mobile. Set to false to fall back to the paper background on narrow screens.
+  mobile_image: true
   # Dark overlay opacity for hero images: [top, bottom], range 0-1.
   # image_overlay: [0.2, 0.2]
   # Text and target for the bottom sticker CTA. Defaults to the home content.

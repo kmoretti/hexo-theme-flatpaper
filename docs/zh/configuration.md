@@ -195,6 +195,7 @@ home_hero:
   image:
     - /images/hero-1.jpg
     - /images/hero-2.jpg
+  mobile_image: true
   image_overlay: [0.2, 0.2]
   cta_text: 开始阅读
   cta_link: "#flatpaper-home-content"
@@ -222,7 +223,8 @@ home_hero:
 
 - 默认 `enable: false`，不会影响已有首页；只在首页分页第 1 页渲染。
 - 未配置 `title`、`subtitle`、`bio`、`avatar` 或社交链接时，会复用站点标题与 `profile` 配置。
-- `image` 留空时使用内置手账纸张背景；设置为字符串时固定使用该图片，设置为数组时浏览器每次载入会随机使用一张，图片会在宽屏铺满开屏；窄屏会回退到纸张背景，让贴纸保持清晰。
+- `image` 留空时使用内置手账纸张背景；设置为字符串时固定使用该图片，设置为数组时浏览器每次载入会随机使用一张，图片会在宽屏和窄屏默认铺满开屏。
+- `mobile_image: false` 会让窄屏回退到纸张背景，让贴纸保持清晰。
 - `image_overlay` 控制图片开屏的可配置暗色遮罩，使用 `[顶部, 底部]` 两个 `0` 到 `1` 的透明度数值；默认是 `[0.2, 0.2]`。
 - `hero_links` 可在开屏简介和社交链接之间添加快速导航链接；配置后会替代默认的波浪线分隔符。每一项需要 `name` 和 `link`，`alt` 可选，用于标签和外链访问确认文案。外链会先弹出访问确认，再在新标签页打开。
 - 开屏中的社交链接复用 profile 的 `.socials` 样式、tooltip 文案，也会跟随 `buttons.style` 的配置变化。

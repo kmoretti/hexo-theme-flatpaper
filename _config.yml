@@ -123,6 +123,8 @@ home_hero:
   # image:
   #   - /images/hero-1.jpg
   #   - /images/hero-2.jpg
+  # 移动端是否继续显示背景图；设为 false 时窄屏回退到纸张背景。
+  mobile_image: true
   #
   # 背景图暗色遮罩透明度：[顶部, 底部]，范围 0-1。
   # image_overlay: [0.2, 0.2]
