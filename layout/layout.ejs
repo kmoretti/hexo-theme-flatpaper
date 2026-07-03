@@ -8,8 +8,8 @@ var htmlLang = flatpaper_i18n_language();
 %>
 <html lang="<%= htmlLang %>"<% if (fbEnabled) { %> data-fancybox-enabled="1"<% } %>>
 <head>
-  <%- partial('_partial/google-analytics') %>
   <%- partial('_partial/head') %>
+  <%- partial('_partial/google-analytics') %>
   <%- partial('_partial/umami') %>
   <%- partial('_partial/adsense') %>
   <%- partial('_partial/comments-sdk') %>
@@ -57,7 +57,6 @@ if (['default', 'grid', 'line', 'cross', 'dotted'].indexOf(backgroundStyle) === 
       </filter>
     </defs>
   </svg>
-  <%- flatpaper_icon_sprite() %>
   <% if (homeHeroEnabled) { %>
     <%- partial('_partial/home-hero') %>
   <% } %>
