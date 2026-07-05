@@ -76,6 +76,7 @@ Recognized values:
 - `404`
 - `links`
 - `friends-feed`
+- `guestbook`
 - `tags`
 - `categories`
 
@@ -171,3 +172,26 @@ source_label: Source
 `fcl_all_json` can also be written as `all_json`. `page_size` and `source_label` are optional; different pages can point to different `all.json` files.
 
 With a GitHub raw URL, you do not need to bind GitHub Pages or a custom domain to Friend-Circle-Lite's `page` branch.
+
+## Guestbook Page
+
+`type: guestbook` re-renders the page's own comments as a "message wall": each message becomes a colored sticky note taped to the wall. Paper tint, tape color and tilt are derived deterministically from the comment id, while the wall opens in random order by default and can be switched to latest-first order. The regular comment section stays at the bottom of the page — visitors write there, and the message lands on the wall after a refresh:
+
+```yaml
+---
+title: Guestbook
+type: guestbook
+page_size: 12
+---
+```
+
+Prerequisite: the theme must have Twikoo (`comments: twikoo` + `twikoo.envId`) or Artalk (`comments: artalk` + `artalk.server`) enabled. Without either, the wall shows a hint and the bottom comment section is unaffected.
+
+Behavior notes:
+
+- The wall shows top-level messages only (up to the latest 100). Threaded replies live in the comment section below; every card has a "view original comment" link that jumps there.
+- The sort control toggles between the default random order and latest-first order. Latest-first mode uses a grid layout so cards read left to right.
+- Wall cards render plain text plus image and emote thumbnails extracted from Twikoo HTML or Artalk markdown/HTML. Rich formatting is not re-rendered on cards, and unsafe image URLs are ignored; the original comment section still shows the full comment UI.
+- Twikoo avatars show on the cards; Artalk's public API returns no avatar URL, so its cards use initial-letter avatars.
+- `page_size` controls how many cards render per batch (default 12, max 50); the rest load via the "show more" button.
+- The page's markdown body renders above the wall and works as an intro.

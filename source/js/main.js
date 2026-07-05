@@ -523,6 +523,443 @@
 
   renderFriendsFeed();
 
+  // ---- Guestbook wall: re-render this page's comments as paper stickers ----
+  function renderGuestbookWall() {
+    document.querySelectorAll('.guestbook-wall[data-guestbook-system]').forEach(function (wall) {
+      var system = String(wall.dataset.guestbookSystem || '').toLowerCase();
+      var state = wall.querySelector('[data-guestbook-state]');
+      var list = wall.querySelector('[data-guestbook-list]');
+      var more = wall.querySelector('[data-guestbook-more]');
+      var summary = wall.querySelector('.guestbook-wall__summary');
+      var sortBtn = wall.querySelector('[data-guestbook-sort]');
+      if (!state || !list || !more) return;
+
+      var avatarFallback = safeRemoteUrl(wall.dataset.avatarFallback, 'image');
+      var pageSize = parseInt(wall.dataset.pageSize, 10);
+      if (!pageSize || pageSize < 1) pageSize = 12;
+      var shown = 0;
+      var messages = [];
+      var originalMessages = [];
+      var isRandom = true;
+      var truncated = false;
+
+      function shuffleArray(array) {
+        var a = array.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = a[i];
+          a[i] = a[j];
+          a[j] = temp;
+        }
+        return a;
+      }
+
+      function updateSortButton() {
+        if (!sortBtn) return;
+        sortBtn.hidden = false;
+        var iconTime = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+        var iconShuffle = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>';
+        sortBtn.innerHTML = (isRandom ? iconTime : iconShuffle) + '<span>' + (isRandom ? t('guestbook.sort_time') : t('guestbook.sort_random')) + '</span>';
+      }
+
+      if (sortBtn) {
+        sortBtn.addEventListener('click', function () {
+          isRandom = !isRandom;
+          messages = isRandom ? shuffleArray(originalMessages) : originalMessages.slice();
+          list.classList.toggle('guestbook-wall__list--grid', !isRandom);
+          list.innerHTML = '';
+          shown = 0;
+          updateSortButton();
+          renderNext();
+        });
+      }
+      // Where the real comment section below mounts; fallback jump target.
+      var mountId = system === 'artalk' ? 'artalk-comments' : 'tcomment';
+
+      // Card look (envelope color + tilt) is derived from a hash of the
+      // comment id: stable across reloads (no layout jumps), still "random"
+      // across the wall. Paper palettes live in guestbook.styl (--p0..--p4).
+      var PAPER_COUNT = 5;
+      var ROTATION_COUNT = 8;
+
+      function setState(message, isError) {
+        state.textContent = message || '';
+        state.hidden = !message;
+        state.classList.toggle('is-error', !!isError);
+      }
+
+      function hashSeed(text) {
+        var hash = 5381;
+        var source = String(text || '');
+        for (var i = 0; i < source.length; i++) {
+          hash = ((hash << 5) + hash + source.charCodeAt(i)) >>> 0;
+        }
+        return hash;
+      }
+
+      function formatDate(created) {
+        if (!created) return '';
+        var date = new Date(created);
+        if (isNaN(date.getTime())) return '';
+        try {
+          return date.toLocaleDateString(document.documentElement.lang || undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (e) {
+          return date.toISOString().slice(0, 10);
+        }
+      }
+
+      function normalizeCommentImage(src, isEmotion) {
+        var safeSrc = safeRemoteUrl(src, 'image');
+        if (!safeSrc) return null;
+        return { src: safeSrc, isEmotion: !!isEmotion };
+      }
+
+      function fallbackAvatar(nick) {
+        var span = document.createElement('span');
+        span.className = 'guestbook-card__avatar guestbook-card__avatar--text';
+        span.setAttribute('aria-hidden', 'true');
+        var glyph = Array.from(String(nick || '').trim())[0] || '✿';
+        span.textContent = glyph.toLocaleUpperCase ? glyph.toLocaleUpperCase() : glyph;
+        return span;
+      }
+
+      function stampAvatar(avatar) {
+        var stamp = document.createElement('span');
+        stamp.className = 'guestbook-card__stamp';
+        stamp.setAttribute('aria-hidden', 'true');
+        stamp.appendChild(avatar);
+        return stamp;
+      }
+
+      function jumpToComment(anchorId) {
+        var target = anchorId ? document.getElementById(anchorId) : null;
+        var precise = !!target;
+        if (!target) target = document.getElementById(mountId);
+        if (!target) return;
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        if (precise) {
+          target.classList.add('guestbook-jump-target');
+          window.setTimeout(function () {
+            target.classList.remove('guestbook-jump-target');
+          }, 1600);
+        }
+      }
+
+      function createCard(message) {
+        var seed = hashSeed(message.anchorId || message.nick + message.created);
+        var item = document.createElement('li');
+        item.className = 'guestbook-card-wrap';
+
+        var card = document.createElement('div');
+        // Tilt is derived purely from the comment's seed so a card keeps the
+        // same angle across reloads/re-sorts (no layout jumps); paper color
+        // and translation below are likewise seed-only.
+        var rotationIndex = seed % ROTATION_COUNT;
+        card.className = 'guestbook-card guestbook-card--p' + (seed % PAPER_COUNT) + ' guestbook-card--r' + rotationIndex;
+
+        // Add random small translation to make it look slightly imperfect but avoid heavy overlaps
+        var tx = (seed % 7) - 3; // -3 to 3
+        var ty = ((seed * 7) % 7) - 3; // -3 to 3
+        card.style.setProperty('--gb-tx', tx + 'px');
+        card.style.setProperty('--gb-ty', ty + 'px');
+
+        var meta = document.createElement('div');
+        meta.className = 'guestbook-card__meta';
+
+        if (message.avatar) {
+          var img = document.createElement('img');
+          img.className = 'guestbook-card__avatar';
+          img.src = message.avatar;
+          img.alt = '';
+          img.loading = 'lazy';
+          img.referrerPolicy = 'no-referrer';
+          img.addEventListener('error', function () {
+            if (avatarFallback && img.dataset.flatpaperAvatarFallback !== '1' && img.src !== avatarFallback) {
+              img.dataset.flatpaperAvatarFallback = '1';
+              img.src = avatarFallback;
+              return;
+            }
+            if (img.parentNode) img.parentNode.replaceChild(fallbackAvatar(message.nick), img);
+          });
+          meta.appendChild(stampAvatar(img));
+        } else {
+          meta.appendChild(stampAvatar(fallbackAvatar(message.nick)));
+        }
+
+        var who = document.createElement('div');
+        who.className = 'guestbook-card__who';
+        var nick = document.createElement('span');
+        nick.className = 'guestbook-card__nick';
+        nick.textContent = message.nick;
+        who.appendChild(nick);
+        var dateLabel = formatDate(message.created);
+        if (dateLabel) {
+          var time = document.createElement('time');
+          time.className = 'guestbook-card__date';
+          time.textContent = dateLabel;
+          time.dateTime = new Date(message.created).toISOString();
+          if (message.relativeTime) time.title = message.relativeTime;
+          who.appendChild(time);
+        }
+        meta.appendChild(who);
+
+        card.appendChild(meta);
+
+        if (message.text) {
+          var text = document.createElement('p');
+          text.className = 'guestbook-card__text';
+          text.textContent = message.text;
+          card.appendChild(text);
+        }
+
+        if (message.images && message.images.length > 0) {
+          var imgContainer = document.createElement('div');
+          imgContainer.className = 'guestbook-card__images';
+          var hasFancybox = document.documentElement.getAttribute('data-fancybox-enabled') === '1';
+          message.images.forEach(function (imgData) {
+            var src = safeRemoteUrl(typeof imgData === 'string' ? imgData : imgData.src, 'image');
+            if (!src) return;
+            var isEmotion = typeof imgData === 'object' && imgData.isEmotion;
+            var img = document.createElement('img');
+            img.src = src;
+            img.alt = '';
+            img.loading = 'lazy';
+            img.referrerPolicy = 'no-referrer';
+            img.className = isEmotion ? 'guestbook-card__image guestbook-card__image--emotion' : 'guestbook-card__image';
+            if (hasFancybox && !isEmotion) {
+              var a = document.createElement('a');
+              a.href = src;
+              a.setAttribute('data-fancybox', 'guestbook-wall');
+              a.appendChild(img);
+              imgContainer.appendChild(a);
+            } else {
+              imgContainer.appendChild(img);
+            }
+          });
+          card.appendChild(imgContainer);
+        }
+
+        var jump = document.createElement('a');
+        jump.className = 'guestbook-card__jump';
+        jump.href = '#' + mountId;
+        jump.textContent = t('guestbook.jump_to_comment');
+        jump.addEventListener('click', function (event) {
+          event.preventDefault();
+          jumpToComment(message.anchorId);
+        });
+
+        card.appendChild(jump);
+
+        // Add a hand-drawn doodle to roughly 50% of the cards based on hash seed
+        if (seed % 2 === 0) {
+          var doodles = [
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5c-4.5-4-9-8-9-12.5 0-2.5 2-4.5 4.5-4.5 2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 2.5 0 4.5 2 4.5 4.5 0 4.5-4.5 8.5-9 12.5z"/></svg>', // heart
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 7h7l-5.5 4.5 2 7.5-6-5-6 5 2-7.5-5.5-4.5h7z"/></svg>', // star
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>', // smiley
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6l6 6-6 6"/></svg>' // arrow
+          ];
+          var doodleIndex = (seed % 11) % doodles.length;
+          var posIndex = (seed % 17) % 5;
+          var doodleWrapper = document.createElement('div');
+          doodleWrapper.className = 'guestbook-card__doodle guestbook-card__doodle--pos' + posIndex;
+          doodleWrapper.setAttribute('aria-hidden', 'true');
+          doodleWrapper.innerHTML = doodles[doodleIndex];
+          card.appendChild(doodleWrapper);
+        }
+
+        item.appendChild(card);
+        return item;
+      }
+
+      function renderNext() {
+        var next = messages.slice(shown, shown + pageSize);
+        next.forEach(function (message) {
+          list.appendChild(createCard(message));
+        });
+        shown += next.length;
+        more.hidden = shown >= messages.length;
+      }
+
+      function updateSummary(total) {
+        var totalEl = wall.querySelector('[data-guestbook-stat="total"]');
+        if (totalEl && typeof total === 'number') totalEl.textContent = t('guestbook.total_count', total);
+        var shownEl = wall.querySelector('[data-guestbook-stat="shown"]');
+        if (shownEl && truncated) {
+          shownEl.textContent = t('guestbook.latest_note', messages.length);
+          shownEl.hidden = false;
+        }
+        if (summary) summary.hidden = false;
+      }
+
+      // Each adapter resolves to { messages, total, truncated }: normalized
+      // top-level comments (newest first, text-only so the wall never
+      // re-parses visitor HTML) plus a reply-inclusive total for the summary.
+      var adapters = {
+        twikoo: function () {
+          var envId = wall.dataset.guestbookEnv;
+          if (!envId) return Promise.reject(new Error('twikoo: missing envId'));
+          // The Twikoo SDK loads with `defer` from a CDN while main.js runs at
+          // the end of <body>, so the global may not exist yet — poll instead
+          // of assuming script order.
+          return new Promise(function (resolve, reject) {
+            var waited = 0;
+            (function poll() {
+              if (window.twikoo && typeof window.twikoo.getRecentComments === 'function') {
+                resolve();
+                return;
+              }
+              waited += 250;
+              if (waited >= 15000) {
+                reject(new Error('twikoo: sdk timeout'));
+                return;
+              }
+              window.setTimeout(poll, 250);
+            })();
+          }).then(function () {
+            // Twikoo keys comments by location.pathname (its default pageKey),
+            // so the live pathname keeps the wall and the comment box below
+            // reading the same bucket.
+            var pageKey = window.location.pathname || '/';
+            return window.twikoo.getRecentComments({
+              envId: envId,
+              urls: [pageKey],
+              pageSize: 100,
+              includeReply: false
+            }).then(function (raw) {
+              var items = Array.isArray(raw) ? raw : [];
+              var normalized = items.map(function (item) {
+                // Parse the comment HTML with DOMParser rather than assigning
+                // to a live element's innerHTML: the resulting document has no
+                // browsing context, so <img src=x onerror=…> and other inline
+                // handlers never fire while we extract text/images.
+                var doc = new DOMParser().parseFromString(String(item.comment || ''), 'text/html');
+                var images = [];
+                Array.from(doc.querySelectorAll('img')).forEach(function (img) {
+                  var cls = img.className || '';
+                  var src = img.getAttribute('src') || '';
+                  var isEmotion = cls.indexOf('emotion') !== -1 || cls.indexOf('sticker') !== -1 || src.indexOf('bilibili') !== -1 || src.indexOf('tieba') !== -1;
+                  var image = normalizeCommentImage(src, isEmotion);
+                  if (image) images.push(image);
+                });
+                var text = (doc.body.textContent || '').trim();
+                if (!text && !images.length) return null;
+                var created = item.created;
+                if (typeof created !== 'number') created = parseInt(created, 10) || 0;
+                return {
+                  anchorId: String(item.id || ''),
+                  nick: String(item.nick || '').trim() || t('guestbook.anonymous'),
+                  avatar: safeRemoteUrl(item.avatar, 'image'),
+                  text: text,
+                  images: images,
+                  created: created,
+                  relativeTime: String(item.relativeTime || '')
+                };
+              }).filter(Boolean);
+              var result = { messages: normalized, total: normalized.length, truncated: items.length >= 100 };
+              if (typeof window.twikoo.getCommentsCount !== 'function') return result;
+              return window.twikoo.getCommentsCount({ envId: envId, urls: [pageKey], includeReply: true })
+                .then(function (counts) {
+                  var entry = Array.isArray(counts) ? counts[0] : null;
+                  if (entry && typeof entry.count === 'number') result.total = entry.count;
+                  return result;
+                })
+                .catch(function () { return result; });
+            });
+          });
+        },
+        artalk: function () {
+          var server = safeRemoteUrl(wall.dataset.guestbookServer);
+          if (!server) return Promise.reject(new Error('artalk: missing server'));
+          // Artalk buckets comments by the pageKey passed at init — the theme
+          // inits it with the page permalink, echoed here via data attribute.
+          var pageKey = wall.dataset.guestbookKey || window.location.pathname || '/';
+          var site = wall.dataset.guestbookSite || '';
+          var query = 'page_key=' + encodeURIComponent(pageKey)
+            + (site ? '&site_name=' + encodeURIComponent(site) : '')
+            + '&limit=100&offset=0&flat_mode=0&sort_by=date_desc';
+          return fetch(server.replace(/\/+$/, '') + '/api/v2/comments?' + query, {
+            headers: { Accept: 'application/json' }
+          }).then(function (response) {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.json();
+          }).then(function (payload) {
+            var items = payload && Array.isArray(payload.comments) ? payload.comments : [];
+            var normalized = items.map(function (item) {
+              if (!item || item.rid || item.is_pending) return null;
+              var contentStr = String(item.content || '').trim();
+              var images = [];
+
+              // Markdown images: pure string matching, no DOM/resource load.
+              var mdRegex = /!\[.*?\]\((.*?)\)/g;
+              var match;
+              while ((match = mdRegex.exec(contentStr)) !== null) {
+                var mdImage = normalizeCommentImage(match[1], false);
+                if (mdImage) images.push(mdImage);
+              }
+
+              // HTML images + text: parse via DOMParser so inline event
+              // handlers on any embedded HTML can't fire (see Twikoo adapter).
+              var doc = new DOMParser().parseFromString(contentStr, 'text/html');
+              Array.from(doc.querySelectorAll('img')).forEach(function (imgEl) {
+                var cls = imgEl.className || '';
+                var src = imgEl.getAttribute('src') || '';
+                var isEmotion = cls.indexOf('emotion') !== -1 || cls.indexOf('sticker') !== -1 || src.indexOf('bilibili') !== -1;
+                var htmlImage = normalizeCommentImage(src, isEmotion);
+                if (htmlImage) images.push(htmlImage);
+              });
+
+              // textContent still holds literal markdown image syntax; drop it.
+              var text = (doc.body.textContent || '').replace(/!\[.*?\]\(.*?\)/g, '').trim();
+
+              if (!text && !images.length) return null;
+              var created = Date.parse(String(item.date || '').replace(/\//g, '-').replace(' ', 'T')) || 0;
+              return {
+                anchorId: 'atk-comment-' + item.id,
+                nick: String(item.nick || '').trim() || t('guestbook.anonymous'),
+                avatar: '',
+                text: text,
+                images: images,
+                created: created,
+                relativeTime: ''
+              };
+            }).filter(Boolean);
+            return {
+              messages: normalized,
+              total: typeof payload.count === 'number' ? payload.count : normalized.length,
+              truncated: typeof payload.roots_count === 'number' && payload.roots_count > normalized.length
+            };
+          });
+        }
+      };
+      if (!adapters[system]) return;
+
+      more.addEventListener('click', renderNext);
+      setState(t('guestbook.loading'));
+
+      adapters[system]().then(function (result) {
+        originalMessages = result.messages || [];
+        messages = isRandom ? shuffleArray(originalMessages) : originalMessages.slice();
+        truncated = !!result.truncated;
+        list.innerHTML = '';
+        shown = 0;
+        if (!messages.length) {
+          setState(t('guestbook.empty'));
+          return;
+        }
+        setState('');
+        list.classList.toggle('guestbook-wall__list--grid', !isRandom);
+        updateSortButton();
+        renderNext();
+        updateSummary(result.total);
+      }).catch(function () {
+        setState(t('guestbook.load_failed'), true);
+      });
+    });
+  }
+
+  renderGuestbookWall();
+
   // ---- Home hero: scroll affordance and draggable scrapbook stickers ----
   (function () {
     var hero = document.querySelector('.home-hero');
@@ -1708,6 +2145,7 @@
     window.addEventListener('load', function () {
       if (typeof window.Fancybox !== 'undefined') {
         window.Fancybox.bind('[data-fancybox="gallery"]');
+        window.Fancybox.bind('[data-fancybox="guestbook-wall"]');
       }
     });
   }
