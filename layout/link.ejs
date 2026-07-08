@@ -4,6 +4,7 @@ var groups = Array.isArray(data) ? data : [data];
 groups = groups.filter(function (g) { return g && (g.link_list || g.class_name); });
 var avatarFallback = flatpaper_safe_url(url_for('/images/icon-error.webp'), 'image');
 var pageTopImg = flatpaper_page_top_img_info(page);
+var statusCheckUrl = theme.links && theme.links.status && theme.links.status.url ? theme.links.status.url : '';
 %>
 
 <article class="article-paper friends-page<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
@@ -35,10 +36,18 @@ var pageTopImg = flatpaper_page_top_img_info(page);
       <ul class="friends-grid">
         <% list.forEach(function (item) {
           var avatar = item.avatar ? flatpaper_safe_url(url_for(item.avatar), 'image') : '';
+          var siteshot = item.siteshot || '';
+          var rss = item.rss || item.feeds || '';
           var styleClass = (theme.links && theme.links.style === 'tape') ? ' friend-card--tape' : '';
+          var shotClass = siteshot ? ' friend-card--shot' : '';
         %>
-          <li class="friend-card<%= styleClass %>">
+          <li class="friend-card<%= styleClass %><%= shotClass %>" data-link="<%= flatpaper_safe_url(item.link, 'href') %>">
             <a class="friend-card__link" href="<%= flatpaper_safe_url(item.link, 'href') %>" target="_blank" rel="noopener noreferrer" title="<%= item.name %><%= item.descr ? ' · ' + item.descr : '' %>">
+              <% if (siteshot) { %>
+                <div class="friend-card__shot-wrap">
+                  <img class="friend-card__shot" src="<%= flatpaper_safe_url(siteshot, 'image') %>" alt="<%= item.name %> 截图" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'">
+                </div>
+              <% } %>
               <div class="friend-card__avatar-wrap">
                 <% if (avatar) { %>
                   <img class="friend-card__avatar" src="<%= avatar %>" alt="<%= item.name %>" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='<%= avatarFallback %>'">
@@ -53,8 +62,8 @@ var pageTopImg = flatpaper_page_top_img_info(page);
                 <% } %>
               </div>
             </a>
-            <% if (item.rss) { %>
-              <a class="friend-card__rss" href="<%= flatpaper_safe_url(item.rss, 'href') %>" target="_blank" rel="noopener noreferrer" aria-label="<%= flatpaper_i18n('links.rss_label', item.name) %>" title="RSS">
+            <% if (rss) { %>
+              <a class="friend-card__rss" href="<%= flatpaper_safe_url(rss, 'href') %>" target="_blank" rel="noopener noreferrer" aria-label="<%= flatpaper_i18n('links.rss_label', item.name) %>" title="RSS">
                 <%- partial('_partial/icons', { icon: 'rss' }) %>
               </a>
             <% } %>
@@ -70,3 +79,85 @@ var pageTopImg = flatpaper_page_top_img_info(page);
     </div>
   <% } %>
 </article>
+
+<% if (statusCheckUrl) { %>
+<script>
+(function() {
+  var STATUS_URL = '<%- statusCheckUrl %>';
+  var CACHE_KEY = 'flatpaper_friend_status';
+  var CACHE_TTL = 30 * 60 * 1000;
+
+  function cleanUrl(s) {
+    return String(s || '').replace(/`/g, '').trim().replace(/\/$/, '');
+  }
+
+  function getStatusClass(item) {
+    if (!item.reachable) return 'friend-card__status--red';
+    var latency = typeof item.latency === 'number' ? item.latency : -1;
+    if (latency <= 2) return 'friend-card__status--green';
+    if (latency <= 5) return 'friend-card__status--light-yellow';
+    if (latency <= 10) return 'friend-card__status--dark-yellow';
+    return 'friend-card__status--red';
+  }
+
+  function getStatusText(item) {
+    if (!item.reachable) return '离线';
+    var latency = typeof item.latency === 'number' ? item.latency : -1;
+    return latency.toFixed(2) + 's';
+  }
+
+  function applyStatusTags(data) {
+    var linkList = data.link_data || data.link_status || data;
+    if (!Array.isArray(linkList)) return;
+
+    var map = {};
+    linkList.forEach(function(item) {
+      var key = cleanUrl(item.link);
+      if (key) map[key] = item;
+    });
+
+    document.querySelectorAll('.friend-card').forEach(function(card) {
+      var link = cleanUrl(card.getAttribute('data-link'));
+      if (!link) return;
+
+      var status = map[link];
+      if (!status) return;
+
+      var existing = card.querySelector('.friend-card__status');
+      if (existing) existing.remove();
+
+      var tag = document.createElement('div');
+      tag.classList.add('friend-card__status');
+      tag.classList.add(getStatusClass(status));
+      tag.textContent = getStatusText(status);
+      card.appendChild(tag);
+    });
+  }
+
+  function fetchAndUpdate() {
+    fetch(STATUS_URL)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        applyStatusTags(data);
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: data, ts: Date.now() }));
+      })
+      .catch(function(e) {
+        console.warn('[FlatPaper] Failed to load friend status:', e);
+      });
+  }
+
+  try {
+    var cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      var parsed = JSON.parse(cached);
+      if (parsed.data && Date.now() - parsed.ts < CACHE_TTL) {
+        applyStatusTags(parsed.data);
+        return;
+      }
+    }
+  } catch (e) { /* ignore */ }
+
+  fetchAndUpdate();
+})();
+</script>
+<% } %>

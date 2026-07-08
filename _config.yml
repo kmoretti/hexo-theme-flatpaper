@@ -214,6 +214,11 @@ tags:
 # 友链样式： default | tape
 links:
   style: tape
+  # 友链延迟检测（状态标签）
+  # 填入检测服务的 result.json 地址后，友链卡片左上角会显示延迟标签
+  # 颜色规则：绿色(≤2s) · 浅黄(≤5s) · 深黄(≤10s) · 红色(>10s 或离线)
+  status:
+    url:
 
 # Friend-Circle-Lite 兼容数据
 # https://github.com/willow-god/Friend-Circle-Lite
