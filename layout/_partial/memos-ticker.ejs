@@ -1,0 +1,41 @@
+<%
+var ech0Ticker = theme.ech0_ticker || {};
+var tickerEnabled = ech0Ticker.enable !== false;
+var tickerTitle = ech0Ticker.title || '今日手账';
+var tickerEmptyText = ech0Ticker.empty_text || '暂时没有新的记录';
+var tickerLoadingText = ech0Ticker.loading_text || '正在翻阅最新记录';
+var tickerApi = ech0Ticker.api || '';
+var tickerPageSize = parseInt(ech0Ticker.page_size, 10);
+if (!isFinite(tickerPageSize) || tickerPageSize < 1) tickerPageSize = 10;
+if (tickerPageSize > 50) tickerPageSize = 50;
+var tickerInterval = parseInt(ech0Ticker.interval, 10);
+if (!isFinite(tickerInterval) || tickerInterval < 2500) tickerInterval = 6000;
+%>
+<% if (tickerEnabled && is_home() && (!page.current || page.current === 1)) { %>
+<section
+  class="memos-ticker"
+  data-ech0-api="<%= tickerApi %>"
+  data-ech0-proxy="<%= ech0Ticker.proxy || '' %>"
+  data-ech0-page-size="<%= tickerPageSize %>"
+  data-ech0-interval="<%= tickerInterval %>"
+  data-ech0-autoplay="<%= ech0Ticker.autoplay !== false ? 'true' : 'false' %>"
+  aria-labelledby="memos-ticker-title"
+>
+  <span class="memos-ticker__tape" aria-hidden="true"></span>
+  <a href="/shuoshuo/" class="memos-ticker__label" aria-label="前往说说页面">
+    <span class="memos-ticker__pin" aria-hidden="true"></span>
+    <h2 id="memos-ticker-title"><%= tickerTitle %></h2>
+    <span class="memos-ticker__date" data-memos-date></span>
+  </a>
+  <div class="memos-ticker__viewport" aria-live="polite">
+    <p class="memos-ticker__message is-loading" data-memos-message><%= tickerLoadingText %></p>
+  </div>
+  <div class="memos-ticker__controls" data-memos-controls hidden>
+    <button type="button" data-memos-prev aria-label="上一条">←</button>
+    <span data-memos-count>0 / 0</span>
+    <button type="button" data-memos-next aria-label="下一条">→</button>
+  </div>
+  <div class="memos-ticker__progress" data-memos-progress aria-hidden="true"></div>
+  <noscript><p class="memos-ticker__message"><%= tickerEmptyText %></p></noscript>
+</section>
+<% } %>

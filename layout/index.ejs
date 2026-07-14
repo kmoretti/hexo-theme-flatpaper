@@ -76,6 +76,8 @@ var featuredImageZigzag = theme.featured_image_zigzag !== false;
   </section>
 <% } %>
 
+<%- partial('_partial/memos-ticker') %>
+
 <% if (featured.length) { %>
   <section class="section-head">
     <h2><%- partial('_partial/icons', { icon: 'history' }) %><%= flatpaper_i18n('index.latest_posts') %></h2>

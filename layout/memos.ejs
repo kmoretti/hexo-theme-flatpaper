@@ -1,0 +1,40 @@
+<%
+var pageTopImg = flatpaper_page_top_img_info(page);
+var ech0Ticker = theme.ech0_ticker || {};
+var ech0Api = ech0Ticker.api || '';
+var ech0Proxy = ech0Ticker.proxy || '';
+var ech0BaseUrl = ech0Ticker.base_url || '';
+var memosPageSize = parseInt(page.page_size, 10);
+if (!isFinite(memosPageSize) || memosPageSize < 1) memosPageSize = 10;
+var pageTitle = page.title || '说说';
+var pageSubtitle = page.subtitle || '记录生活中的点点滴滴';
+%>
+<div class="memos-page">
+  <div class="article-tape-wrap">
+    <span class="tape tape--top-right" aria-hidden="true"></span>
+    <article class="article-paper article-paper--page<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
+      <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: pageTitle }) %>
+      <header class="article-header memos-page__header">
+        <span class="label-pill"><%= pageTitle %></span>
+        <h1><%= pageTitle %></h1>
+        <p class="memos-page__subtitle"><%= pageSubtitle %></p>
+      </header>
+      <div
+        class="memos-page__feed"
+        data-ech0-api="<%= ech0Api %>"
+        data-ech0-proxy="<%= ech0Proxy %>"
+        data-ech0-base-url="<%= ech0BaseUrl %>"
+        data-ech0-page-size="<%= memosPageSize %>"
+      >
+        <div class="memos-page__waterfall" data-memos-waterfall></div>
+        <div class="memos-page__loading" data-memos-loading>
+          <span class="memos-page__spinner"></span>
+          <span>正在翻阅记录...</span>
+        </div>
+        <div class="memos-page__empty" data-memos-empty hidden>暂时没有记录</div>
+        <div class="memos-page__error" data-memos-error hidden>记录暂时无法读取</div>
+      </div>
+      <div data-memos-sentinel class="memos-page__sentinel" aria-hidden="true"></div>
+    </article>
+  </div>
+</div>

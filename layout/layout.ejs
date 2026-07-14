@@ -85,6 +85,12 @@ if (['default', 'grid', 'line', 'cross', 'dotted'].indexOf(backgroundStyle) === 
   window.FLATPAPER_I18N = <%- flatpaper_i18n_json() %>;
   </script>
   <%- js('js/main') %>
+  <% if (is_home()) { %>
+    <%- js('js/memos-ticker') %>
+  <% } %>
+  <% if (page.type === 'memos') { %>
+    <%- js('js/memos-page') %>
+  <% } %>
   <% (theme.inject && Array.isArray(theme.inject.bottom) ? theme.inject.bottom : []).forEach(function(snippet) { if (snippet) { %>
   <%- snippet %>
   <% } }) %>
