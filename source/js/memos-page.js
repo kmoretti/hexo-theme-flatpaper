@@ -331,22 +331,35 @@
       }, 2200);
     }
 
+    /* ---- Fetch (direct → proxy fallback) ---- */
+    function fetchEch0(body) {
+      var payload = JSON.stringify(body);
+      var opts = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'omit',
+        body: payload
+      };
+      return fetch(api, opts).then(function (r) {
+        if (r.ok) return r.json();
+        if (proxy) return fetch(proxy, opts).then(function (r2) { return r2.json(); });
+        throw new Error('request failed');
+      }).catch(function () {
+        if (!proxy) throw new Error('request failed');
+        return fetch(proxy, opts).then(function (r) {
+          if (!r.ok) throw new Error('proxy failed');
+          return r.json();
+        });
+      });
+    }
+
     /* ---- Load more ---- */
     function loadMore() {
       if (loadingMore || !hasMore) return;
       loadingMore = true;
       if (loading) loading.hidden = false;
 
-      var target = proxy || api;
-      return fetch(target, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        credentials: 'omit',
-        body: JSON.stringify({ page: page, pageSize: pageSize, search: '' })
-      }).then(function (response) {
-        if (!response.ok) throw new Error('Ech0 request failed: ' + response.status);
-        return response.json();
-      }).then(function (data) {
+      return fetchEch0({ page: page, pageSize: pageSize, search: '' }).then(function (data) {
         if (data.code !== 1 || !Array.isArray(data.data && data.data.items)) {
           throw new Error('Unexpected Ech0 response');
         }
