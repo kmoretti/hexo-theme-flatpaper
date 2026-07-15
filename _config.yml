@@ -110,7 +110,7 @@ welcome:
 # 首页开屏大图。默认关闭，不影响已有站点；仅在首页第一页渲染。
 # 开启后默认复用 profile 的头像、简介、社交链接与 RSS，也可以在这里覆盖。
 home_hero:
-  enable: false
+  enable: true
   # title: 我的手账
   # subtitle: 今日份记录
   # bio: 写给路过此处的你。
