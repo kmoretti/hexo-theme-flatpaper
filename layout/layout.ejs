@@ -94,5 +94,11 @@ if (['default', 'grid', 'line', 'cross', 'dotted'].indexOf(backgroundStyle) === 
   <% (theme.inject && Array.isArray(theme.inject.bottom) ? theme.inject.bottom : []).forEach(function(snippet) { if (snippet) { %>
   <%- snippet %>
   <% } }) %>
+  <% if (theme.calendar && theme.calendar.enable !== false) { %>
+    <% if (theme.calendar.lunar_api) { %>
+      <script defer src="<%= theme.calendar.lunar_api %>"></script>
+    <% } %>
+    <%- js('js/calendar') %>
+  <% } %>
 </body>
 </html>

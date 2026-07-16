@@ -1,0 +1,34 @@
+<%
+var calConfig = theme.calendar || {};
+var calEnabled = calConfig.enable !== false;
+%>
+<% if (calEnabled) { %>
+<section class="side-card calendar-card">
+  <h2><%- partial('_partial/icons', { icon: 'calendar' }) %><%= flatpaper_i18n('calendar.title') %></h2>
+  <div class="calendar-card__body" id="card-widget-calendar">
+    <div class="calendar-card__row">
+      <div class="calendar-card__left">
+        <div class="calendar-card__date" id="calendar-date"></div>
+        <div class="calendar-card__week" id="calendar-week"></div>
+      </div>
+      <div class="calendar-card__right">
+        <div class="calendar-card__meta">
+          <span id="calendar-solar"></span>
+          <span class="calendar-card__lunar" id="calendar-lunar"></span>
+        </div>
+      </div>
+    </div>
+    <div class="calendar-card__grid" id="calendar-main">
+      <div class="calendar-rh">
+        <div class="calendar-d0">日</div>
+        <div class="calendar-d1">一</div>
+        <div class="calendar-d2">二</div>
+        <div class="calendar-d3">三</div>
+        <div class="calendar-d4">四</div>
+        <div class="calendar-d5">五</div>
+        <div class="calendar-d6">六</div>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>

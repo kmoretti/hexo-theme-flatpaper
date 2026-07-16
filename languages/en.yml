@@ -145,7 +145,10 @@ profile:
 welcome:
   cta: Start reading
   title: Welcome to FlatPaper
-  text: A blog theme focused on content and a calm reading experience.
+  text: A blog theme focused on content and reading experience.
+
+calendar:
+  title: Calendar
 
 home_hero:
   label: Home opening

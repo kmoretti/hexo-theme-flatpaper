@@ -1,0 +1,44 @@
+<%
+var calConfig = theme.calendar || {};
+var calEnabled = calConfig.enable !== false;
+%>
+<% if (calEnabled) { %>
+<section class="side-card schedule-card">
+  <h2><%- partial('_partial/icons', { icon: 'clock' }) %><%= flatpaper_i18n('calendar.title') %><span style="margin-left:auto;font-size:0.68rem;font-weight:400;color:var(--muted);font-family:var(--font-mono)">进度</span></h2>
+  <div class="schedule-card__body" id="card-widget-schedule">
+    <div class="schedule-card__row">
+      <div class="schedule-card__left">
+        <div class="schedule-card__countdown-title">距离除夕</div>
+        <div class="schedule-card__countdown" id="schedule-days"></div>
+        <div class="schedule-card__countdown-date" id="schedule-countdown-date"></div>
+      </div>
+      <div class="schedule-card__right">
+        <div class="schedule-r0">
+          <div class="schedule-d0">本年</div>
+          <div class="schedule-d1">
+            <span id="p_span_year" class="aside-span1"></span>
+            <span class="aside-span2">还剩<span id="p_remaining_year"></span>天</span>
+            <progress id="pBar_year" max="365"></progress>
+          </div>
+        </div>
+        <div class="schedule-r1">
+          <div class="schedule-d0">本月</div>
+          <div class="schedule-d1">
+            <span id="p_span_month" class="aside-span1"></span>
+            <span class="aside-span2">还剩<span id="p_remaining_month"></span>天</span>
+            <progress id="pBar_month" max="31"></progress>
+          </div>
+        </div>
+        <div class="schedule-r2">
+          <div class="schedule-d0">本周</div>
+          <div class="schedule-d1">
+            <span id="p_span_week" class="aside-span1"></span>
+            <span class="aside-span2">还剩<span id="p_remaining_week"></span>天</span>
+            <progress id="pBar_week" max="7"></progress>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>
